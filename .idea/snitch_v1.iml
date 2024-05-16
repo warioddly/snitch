@@ -7,9 +7,9 @@
       <excludeFolder url="file://$MODULE_DIR$/convey/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/convey/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/convey/build" />
-      <excludeFolder url="file://$MODULE_DIR$/snitch/.dart_tool" />
-      <excludeFolder url="file://$MODULE_DIR$/snitch/.pub" />
-      <excludeFolder url="file://$MODULE_DIR$/snitch/build" />
+      <excludeFolder url="file://$MODULE_DIR$/app/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/app/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/app/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
