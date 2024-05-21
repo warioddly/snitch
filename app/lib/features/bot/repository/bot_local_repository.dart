@@ -29,7 +29,7 @@ class BotLocalRepository implements IBotLocalRepository {
 
 
   @override
-  Future<bool> delete(String id) async {
+  Future<bool> delete(int id) async {
     try {
       int result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
       return result > 0;

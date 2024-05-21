@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:snitch/features/bot/bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/widgets/bot_list_card.dart';
 import 'package:snitch/features/home/widgets/empty_home_page.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
-
 
 class HomeView extends StatefulWidget {
 
@@ -21,16 +19,6 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
 
-  final botBloc = GetIt.I.get<BotBloc>();
-
-
-  @override
-  void initState() {
-    super.initState();
-    botBloc.add(const BotReadAllEvent());
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
           children: [
             Flexible(
               child: BlocBuilder(
-                bloc: botBloc,
+                bloc: context.read<BotBloc>()..add(const BotReadAllEvent()),
                 builder: (context, state) {
 
                   if (state is BotListEmpty) {
@@ -51,7 +39,7 @@ class _HomeViewState extends State<HomeView> {
 
                   if (state is BotAllLoaded) {
                     return ListView(
-                      shrinkWrap: true,
+                      shrinkWrap: false,
                       children: [
 
                         Padding(

@@ -22,7 +22,7 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
     throw UnimplementedError();
   }
 
-  Future<bool> delete(String id) async {
+  Future<bool> delete(int id) async {
     throw UnimplementedError();
   }
 

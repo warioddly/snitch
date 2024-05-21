@@ -32,7 +32,7 @@ final class BotUpdateEvent extends BotEvent {
 }
 
 final class BotDeleteEvent extends BotEvent {
-  final String id;
+  final int id;
 
   const BotDeleteEvent(this.id);
 

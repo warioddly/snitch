@@ -1,8 +1,13 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/features/bot/bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/widgets/bot_delete_alert_dialog.dart';
 import 'package:snitch/features/bot/widgets/bot_mini_info_card.dart';
+import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
@@ -47,7 +52,37 @@ class BotSettingsView extends StatelessWidget {
               MenuListTileItem(
                   title: 'Delete Bot',
                   icon: CupertinoIcons.delete,
-                  onTap: () => print('Delete bot'),
+                  onTap: () async {
+
+                    if (bot.id == null) {
+                      BotToast.showSimpleNotification(
+                        title: "Bot does not exist",
+                        duration: const Duration(seconds: 3),
+                      );
+                      return;
+                    }
+                    
+                    await showDialog<bool?>(
+                      context: context,
+                      builder: (context) => BotDeleteAlertDialog(bot: bot)
+                    ).then((bool? success) {
+
+                      if (success == null || !success) return;
+
+                      BotToast.showSimpleNotification(
+                        title: "Bot ${bot.name} Deleted",
+                        duration: const Duration(seconds: 3),
+                        crossPage: true,
+                      );
+
+                      context.read<BotBloc>().add(const BotReadAllEvent());
+
+                      Navigator.popUntil(context, (route) => route.settings.name == NavigationWrapperView.route);
+
+                    });
+
+
+                  },
                   type: MenuListTileType.ERROR,
                   enableTrailing: false
               ),
