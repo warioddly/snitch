@@ -32,10 +32,15 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
       leading: leadingTo != null || Navigator.canPop(context) && enableImplyLeading ? IconButton(
         style: ButtonStyle(
           shape: WidgetStateProperty.all<OutlinedBorder>(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14)))),
-          backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF232627)),
+          backgroundColor: WidgetStateProperty.all<Color>(
+              theme.brightness == Brightness.dark ? const Color(0xFF232627) : const Color(0xFFE5E5E5)
+          ),
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(0)),
         ),
-        icon: const Icon(CupertinoIcons.back),
+        icon: Icon(
+          CupertinoIcons.back,
+          color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+        ),
         onPressed: () {
 
           if (Navigator.canPop(context)) {

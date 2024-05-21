@@ -16,7 +16,6 @@ class BotBloc extends Bloc<BotEvent, BotState> {
     on<BotDeleteEvent>(_onDelete);
     on<BotReadAllEvent>(_onReadAll);
     on<BotDeleteAllEvent>(_onDeleteAll);
-    on<BotErrorEvent>(_onError);
   }
 
 
@@ -102,11 +101,5 @@ class BotBloc extends Bloc<BotEvent, BotState> {
       emit(BotError(e.toString()));
     }
   }
-
-
-  void _onError(BotErrorEvent event, Emitter<BotState> emit) async {
-    emit(BotError(event.message));
-  }
-
 
 }

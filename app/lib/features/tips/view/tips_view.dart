@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/images/logo.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 
 class TipsView extends StatelessWidget {
@@ -14,7 +15,9 @@ class TipsView extends StatelessWidget {
         title: "Tips",
       ),
       body: ContentBox(
-        child: Placeholder(),
+        child: Placeholder(
+          child: Logo(),
+        ),
       ),
     );
   }

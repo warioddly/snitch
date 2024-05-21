@@ -2,6 +2,8 @@ part of 'bot_bloc.dart';
 
 sealed class BotEvent extends Equatable {
   const BotEvent();
+  @override
+  List<Object> get props => [];
 }
 
 final class BotCreateEvent extends BotEvent {
@@ -42,23 +44,8 @@ final class BotDeleteEvent extends BotEvent {
 
 final class BotReadAllEvent extends BotEvent {
   const BotReadAllEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 final class BotDeleteAllEvent extends BotEvent {
   const BotDeleteAllEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
-final class BotErrorEvent extends BotEvent {
-  final String message;
-
-  const BotErrorEvent(this.message);
-
-  @override
-  List<Object> get props => [message];
 }

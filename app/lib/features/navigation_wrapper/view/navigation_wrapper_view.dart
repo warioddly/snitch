@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snitch/features/bot/view/bot_home_view.dart';
 import 'package:snitch/features/home/bloc/navigation_bar_bloc.dart';
 import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/widgets/bottom_navigation.dart';
@@ -23,7 +24,7 @@ class _NavigationWrapperViewState extends State<NavigationWrapperView> {
   final List<BottomNavigationItem> items = [
     ('Home', const HomeView(), CupertinoIcons.home),
     ('Tips', const TipsView(), CupertinoIcons.rectangle_on_rectangle_angled),
-    ('History', const HomeView(), CupertinoIcons.timelapse),
+    ('History', const BotHomeView(), CupertinoIcons.timelapse),
     ('Profile', const ProfileSettingsView(), CupertinoIcons.person),
   ];
 
@@ -41,7 +42,6 @@ class _NavigationWrapperViewState extends State<NavigationWrapperView> {
               bottomNavigationBar: BottomNavigation(
                 items: items,
                 index: state,
-
                 onTap: (index) {
 
                   if (index == bloc.state) {
@@ -53,6 +53,7 @@ class _NavigationWrapperViewState extends State<NavigationWrapperView> {
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.ease,
                   );
+
                   bloc.add(NavigationBarChanged(index));
                 },
               ),

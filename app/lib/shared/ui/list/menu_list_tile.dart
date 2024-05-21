@@ -66,7 +66,7 @@ class MenuListTile extends StatelessWidget {
           style: theme.listTileTheme.subtitleTextStyle?.copyWith(color: item.type.color)
       ) : null,
       onTap: item.onTap,
-      leading: Icon(item.icon, size: 30, color: item.type.color),
+      leading: Icon(item.icon, size: 25, color: item.type.color),
       trailing: item.enableTrailing ? const Icon(Icons.arrow_forward_ios) : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),

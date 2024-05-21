@@ -31,7 +31,7 @@ class DB {
     return openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async {
 
       if (!exists) {
-        await Migrations().up(db);
+        await Migrations.up(db);
         await Seeder.seed(db);
       }
 

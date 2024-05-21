@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
+import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
 
 class ChatFooter extends StatefulWidget {
 
@@ -23,27 +24,16 @@ class _ChatFooterState extends State<ChatFooter> {
         children: [
 
           Flexible(
-            child: TextField(
-              autofocus: false,
+            child: StyledTextField(
                 controller: textController,
                 decoration: InputDecoration(
-                  isDense: true,
                   hintText: 'Send a command',
-                  hintStyle: const TextStyle(
-                      color: Color(0xFFA3A3A8),
-                      fontWeight: FontWeight.w400
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFF232627),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF2D2F32)),
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF2D2F32)),
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
+                  suffixIconConstraints: const BoxConstraints(
+                    maxWidth: 42,
+                    maxHeight: 42,
                   ),
                   suffixIcon: IconButton(
+                    visualDensity: VisualDensity.compact,
                     tooltip: "Send",
                     icon: const Icon(CupertinoIcons.paperplane),
                     color: const Color(0xFFA3A3A8),
@@ -53,10 +43,6 @@ class _ChatFooterState extends State<ChatFooter> {
                     },
                   ),
                 ),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: const Color(0xFFA3A3A8),
-                  fontWeight: FontWeight.w400,
-                )
             ),
           ),
 

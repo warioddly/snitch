@@ -32,6 +32,12 @@ class ProfileSettingsView extends StatelessWidget {
                   onTap: () => print('Preferences'),
                 ),
                 MenuListTileItem(
+                  title: 'Languages',
+                  subtitle: "App language settings",
+                  icon: CupertinoIcons.globe,
+                  onTap: () => print('Preferences'),
+                ),
+                MenuListTileItem(
                   title: 'Theme',
                   subtitle: "Change the app's theme",
                   icon: CupertinoIcons.paintbrush,

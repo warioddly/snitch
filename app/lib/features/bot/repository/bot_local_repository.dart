@@ -20,7 +20,7 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<BotModel> create(BotModel model) async {
     try {
-      int id = await db.insert(table, model.toJson());
+      final id = await db.insert(table, model.toJson());
       return model.copyWith(id: id);
     } catch (e) {
       throw Exception(e);
@@ -31,7 +31,7 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<bool> delete(int id) async {
     try {
-      int result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
+      final result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
       return result > 0;
     } catch (e) {
       throw Exception(e);
@@ -42,7 +42,7 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<bool> deleteAll() async {
     try {
-      int result = await db.delete(table);
+      final result = await db.delete(table);
       return result > 0;
     } catch (e) {
       throw Exception(e);
@@ -53,7 +53,7 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<BotModel> read(String id) async {
     try {
-      List<Map<String, dynamic>> maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
+      final maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
       if (maps.isEmpty) {
         throw Exception('Record not found');
       }
@@ -67,7 +67,7 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<List<BotModel>> readAll() async {
     try {
-      List<Map<String, dynamic>> maps = await db.query(table);
+      final maps = await db.query(table);
       return maps.map((e) => BotModel.fromJson(e)).toList();
     } catch (e) {
       throw Exception(e);
@@ -84,6 +84,20 @@ class BotLocalRepository implements IBotLocalRepository {
       }
       return model;
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
+  @override
+  Future<List<BotModel>> search(String query) async {
+    try {
+      print(query);
+      // final maps = await db.query(table, where: 'name LIKE ?', whereArgs: ['%$query%']);
+      final maps = await db.rawQuery("SELECT * FROM $table WHERE name LIKE '%$query%'");
+      return maps.map((e) => BotModel.fromJson(e)).toList();
+    }
+    catch (e) {
       throw Exception(e);
     }
   }

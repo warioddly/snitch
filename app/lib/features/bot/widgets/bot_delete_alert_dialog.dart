@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 
 class BotDeleteAlertDialog extends StatelessWidget {

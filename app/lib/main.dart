@@ -7,7 +7,7 @@ import 'package:snitch/core/configs/app_routes.dart';
 import 'package:snitch/core/configs/scroll_behavior.dart';
 import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/core/services/locator.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 
 void main() async {

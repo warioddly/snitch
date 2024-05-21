@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/core/services/faker.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
+import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
 
 class BotCreateView extends StatefulWidget {
 
@@ -39,14 +40,20 @@ class _BotCreateViewState extends State<BotCreateView> {
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              TextField(
+              StyledTextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                    labelText: 'Bot name*',
-                    hintText: 'Enter bot name',
-                    suffix: IconButton(
+                    hintText: 'Enter bot name*',
+                    suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 42,
+                        maxWidth: 42
+                    ),
+                    suffixIcon: IconButton(
+                        visualDensity: VisualDensity.compact,
+                        enableFeedback: true,
                         icon: const Icon(CupertinoIcons.wand_stars),
                         onPressed: () {
                           _nameController
@@ -57,21 +64,28 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
+              const SizedBox(height: 10),
 
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Bot description',
+              StyledTextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
                   hintText: 'Enter bot description',
                 ),
               ),
 
+              const SizedBox(height: 10),
 
-              TextField(
+              StyledTextField(
                 controller: _tokenController,
                 decoration: InputDecoration(
-                    labelText: 'Token',
                     hintText: 'Enter bot token',
-                    suffix: IconButton(
+                    suffixIconConstraints: const BoxConstraints(
+                        maxHeight: 42,
+                        maxWidth: 42
+                    ),
+                    suffixIcon: IconButton(
+                        visualDensity: VisualDensity.compact,
+                        enableFeedback: true,
                         icon: const Icon(CupertinoIcons.info),
                         onPressed: () {
                           Navigator.pushNamed(context, TipsView.route, arguments: 'token');
@@ -80,9 +94,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
-
-              const Spacer(),
-
+              const SizedBox(height: 10),
 
               ElevatedButton(
                 onPressed: () {
@@ -113,7 +125,6 @@ class _BotCreateViewState extends State<BotCreateView> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               )
-
 
             ],
           ),

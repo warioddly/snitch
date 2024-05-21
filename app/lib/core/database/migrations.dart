@@ -10,7 +10,7 @@ class Migrations {
   ];
 
 
-  Future<void> up(Database db) async {
+  static Future<void> up(Database db) async {
 
     for (final migration in migrations) {
       if (!await migration.isMigrated(db)) {

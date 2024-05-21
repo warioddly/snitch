@@ -19,7 +19,8 @@ class BotListCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: const Color(0xFF232627),
+            color: theme.brightness == Brightness.dark ? const Color(0xFF232627) : const Color(0xFFE5E5E5),
+            // color: const Color(0xFF232627),
           ),
           child: InkWell(
             onTap: () {
@@ -60,7 +61,9 @@ class BotListCard extends StatelessWidget {
 
                             Text(
                                 du.DateUtils.humanize(bot.updatedAt),
-                                style: theme.textTheme.bodySmall?.copyWith(color: const Color(0xFF9E9E9E))
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                    color: const Color(0xFF9E9E9E)
+                                )
                             ),
 
                           ],

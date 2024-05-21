@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:flutter/services.dart';
+import 'package:snitch/shared/ui/images/logo.dart';
 
 class ConsoleMessageBoxHeader extends StatelessWidget {
 
@@ -18,11 +19,8 @@ class ConsoleMessageBoxHeader extends StatelessWidget {
 
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
-          child: Image.asset(
-            'assets/images/logo.png',
-            width: 41,
-            height: 44,
-            fit: BoxFit.cover,
+          child: const Logo(
+            width: 31,
           ),
         ),
 

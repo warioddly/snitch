@@ -155,6 +155,24 @@ class SnitchTheme {
           fontSize: 16,
         ),
       ),
+      hintColor: const Color(0xFFA3A3A8),
+      inputDecorationTheme: const InputDecorationTheme(
+        isDense: true,
+        filled: true,
+        hintStyle: TextStyle(
+            color: Color(0xFFA3A3A8),
+            fontWeight: FontWeight.w400
+        ),
+        fillColor: Color(0xFF232627),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF2D2F32)),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF2D2F32)),
+          borderRadius: BorderRadius.all(Radius.circular(7)),
+        ),
+      ),
     );
   }
 

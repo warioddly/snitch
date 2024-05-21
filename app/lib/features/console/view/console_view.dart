@@ -5,7 +5,6 @@ import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/console/faker/console_message_faker.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/console/widgets/console_chat_footer.dart';
-import 'package:snitch/features/console/widgets/console_empty_chat.dart';
 import 'package:snitch/features/console/widgets/console_message_box.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 
@@ -27,7 +26,7 @@ class _ConsoleViewState extends State<ConsoleView> {
 
   BotModel get bot => widget.bot;
 
-  final List<ConsoleMessageModel> messages = ConsoleMessageFaker.createMessages(20);
+  final List<ConsoleMessageModel> messages = ConsoleMessageFaker.createMessages(15);
 
 
   @override
@@ -44,32 +43,56 @@ class _ConsoleViewState extends State<ConsoleView> {
           )
         ],
       ),
-      body: Column(
-        children: [
+      body: CustomScrollView(
+        shrinkWrap: false,
+        slivers: [
 
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                GestureDetector(
-                  onPanDown: (_) => FocusScope.of(context).unfocus(),
-                  child: ListView(
-                    reverse: true,
-                    shrinkWrap: true,
-                    children: true
-                        ? messages.map((message) => ConsoleMessageBox(message: message)).toList()
-                        : const [ ConsoleEmptyChat() ],
-                  )
-                ),
-              ],
-            ),
+          const SliverAppBar(
+            snap: true,
+            floating: true,
+            pinned: false,
+            automaticallyImplyLeading: false,
+            flexibleSpace: ChatFooter(),
           ),
 
 
-          const ChatFooter()
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ConsoleMessageBox(message: messages[index]);
+              },
+              childCount: messages.length,
+            ),
+          ),
+          // Stack(
+          //   children: <Widget>[
+          //     GestureDetector(
+          //         onPanDown: (_) => FocusScope.of(context).unfocus(),
+          //         child: ListView(
+          //           reverse: true,
+          //           shrinkWrap: true,
+          //           children: true
+          //               ? messages.map((message) => ConsoleMessageBox(message: message)).toList()
+          //               : const [ ConsoleEmptyChat() ],
+          //         )
+          //     ),
+          //   ],
+          // ),
+
+
+
+          // SliverAppBar(
+          //   snap: false,
+          //   floating: true,
+          //   pinned: true,
+          //   automaticallyImplyLeading: false,
+          //   flexibleSpace: const ChatFooter(),
+          // )
 
 
         ],
-      )
+      ),
+      bottomNavigationBar: const ChatFooter(),
     );
   }
 

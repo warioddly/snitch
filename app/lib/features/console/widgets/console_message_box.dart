@@ -10,10 +10,11 @@ class ConsoleMessageBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 35),
       decoration: BoxDecoration(
-        color: message.user ? Colors.transparent : const Color(0xFF232627),
+        color: message.user ? Colors.transparent : theme.colorScheme.secondary.withOpacity(0.1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +25,7 @@ class ConsoleMessageBox extends StatelessWidget {
           SelectableText(
             message.content,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: const Color(0xFFA0A0A5),
+              color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
               fontWeight: FontWeight.w400
             )
           )

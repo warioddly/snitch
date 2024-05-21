@@ -30,4 +30,8 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
     throw UnimplementedError();
   }
 
+  Future<List<T>> search(String query) async {
+    throw UnimplementedError();
+  }
+
 }
