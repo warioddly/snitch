@@ -19,8 +19,8 @@ class BotFaker {
   }
 
 
-  static List<BotModel> createBots([int amount = 10, int? uniqueId]) {
-    return List.generate(amount, (index) => createBot(uniqueId != null ? index : null));
+  static List<BotModel> createBots([int amount = 10, bool uniqueId = false]) {
+    return List.generate(amount, (index) => createBot(uniqueId ? index : null));
   }
 
 

@@ -1,21 +1,26 @@
 import 'package:snitch/features/bot/migrations/bot_migration.dart';
 import 'package:snitch/shared/migration/base_migration_interface.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' show Database;
 
 
 class Migrations {
 
   static const migrations = <IBaseMigration>[
+    BotMigration(),
   ];
 
 
   Future<void> up(Database db) async {
 
-    await const BotMigration().up(db);
-
-    // for (final migration in migrations) {
-    //   await const BotMigration().up(db);
-    // }
+    for (final migration in migrations) {
+      if (!await migration.isMigrated(db)) {
+        await migration.up(db);
+        print('Table ${migration.table} created');
+      }
+      else {
+        print('Table ${migration.table} already exists');
+      }
+    }
 
   }
 

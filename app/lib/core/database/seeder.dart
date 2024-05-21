@@ -1,6 +1,6 @@
 import 'package:snitch/features/bot/migrations/bot_seeder.dart';
 import 'package:snitch/shared/seeder/base_seeder_interface.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' show Database;
 
 
 class Seeder {

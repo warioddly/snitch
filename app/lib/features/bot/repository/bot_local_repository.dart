@@ -1,14 +1,21 @@
+import 'package:snitch/core/constants/db_constants.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' show Database;
 
 interface class IBotLocalRepository extends IBaseLocalRepository<BotModel> { }
 
-class BotLocalRepository extends IBotLocalRepository {
+class BotLocalRepository implements IBotLocalRepository {
 
   BotLocalRepository({ required this.db });
 
+
   final Database db;
+
+
+  @override
+  String get table => DbConstants.BOT_TABLE_NAME;
+
 
   @override
   Future<BotModel> create(BotModel model) async {

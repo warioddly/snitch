@@ -3,19 +3,16 @@ import 'package:snitch/shared/model/base_model_interface.dart';
 
 class BotModel extends IBaseModel {
 
-  @override
-  String get table => "bots";
-
 
   BotModel({
     this.id,
     required this.name,
     required this.description,
-    this.image,
     required this.token,
     required this.status,
     required this.createdAt,
-    required this.updatedAt
+    required this.updatedAt,
+    this.image,
   });
 
 
@@ -46,7 +43,9 @@ class BotModel extends IBaseModel {
   @override
   toJson() {
     return {
-      'id': id,
+      if (id != null) ...{
+        'id': id,
+      },
       'name': name,
       'description': description,
       'image': image,

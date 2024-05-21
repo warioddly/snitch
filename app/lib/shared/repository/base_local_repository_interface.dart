@@ -4,7 +4,7 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
 
   const IBaseLocalRepository();
 
-  String get table => (T as IBaseModel).table;
+  String get table => throw UnimplementedError();
 
   Future<T> create(T model) async {
     throw UnimplementedError();

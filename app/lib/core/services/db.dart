@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/constants/db_constants.dart';
+import 'package:snitch/core/database/migrations.dart';
+import 'package:snitch/core/database/seeder.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -14,7 +16,7 @@ class DB {
 
     final databasesPath = await getDatabasesPath();
 
-    final path = join(databasesPath, "$APP_DB_NAME.db");
+    final path = join(databasesPath, "${DbConstants.DB_NAME}.db");
 
     final exists = await databaseExists(path);
 
@@ -26,12 +28,12 @@ class DB {
       } catch (_) {}
    }
 
-    return openDatabase(path, version: 1, onOpen: (db) async {
+    return openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async {
 
-      // if (exists) {
-      //   await Migrations().up(db);
-      //   await Seeder.seed(db);
-      // }
+      if (!exists) {
+        await Migrations().up(db);
+        await Seeder.seed(db);
+      }
 
     });
 

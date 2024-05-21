@@ -1,20 +1,16 @@
-import 'package:snitch/shared/model/base_model_interface.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' show Database;
 
 
-
-abstract class IBaseMigration<T extends IBaseModel> {
+abstract class IBaseMigration {
 
 
   const IBaseMigration();
 
 
-  String get table => (T as IBaseModel).table;
+  String get table;
 
 
-  Future<void> up(Database db) {
-    throw UnimplementedError();
-  }
+  Future<void> up(Database db);
 
 
   Future<void> down(Database db) async {

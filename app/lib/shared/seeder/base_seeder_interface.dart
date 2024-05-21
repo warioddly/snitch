@@ -1,16 +1,13 @@
-
-import 'package:snitch/shared/model/base_model_interface.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-abstract class IBaseSeeder<T extends IBaseModel> {
+interface class IBaseSeeder {
 
   const IBaseSeeder();
 
-  String get table => (T as IBaseModel).table;
+  String get table => throw UnimplementedError();
 
   Future<void> seed(Database db, [count = 15]) async {
     throw UnimplementedError();
   }
-
 
 }
