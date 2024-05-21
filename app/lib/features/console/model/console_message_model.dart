@@ -1,14 +1,12 @@
 import 'package:snitch/shared/model/base_model_interface.dart';
 
-class ConsoleMessageModel implements BaseModel {
+class ConsoleMessageModel extends IBaseModel {
 
-
-  const ConsoleMessageModel({required this.user, required this.content, required this.createdDate});
+  ConsoleMessageModel({required this.user, required this.content, required this.createdDate});
 
   final bool user;
   final String content;
   final DateTime createdDate;
-
 
   factory ConsoleMessageModel.fromJson(Map<String, dynamic> data) {
     return ConsoleMessageModel(
@@ -19,6 +17,7 @@ class ConsoleMessageModel implements BaseModel {
   }
 
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       "user": user,
@@ -27,8 +26,5 @@ class ConsoleMessageModel implements BaseModel {
     };
   }
 
-
-  @override
-  String get table => "cmd";
 
 }

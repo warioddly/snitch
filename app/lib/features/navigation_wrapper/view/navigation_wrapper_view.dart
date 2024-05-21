@@ -28,8 +28,7 @@ class _NavigationWrapperViewState extends State<NavigationWrapperView> {
   ];
 
   final bloc = NavigationBarBloc();
-
-  final PageController pageController = PageController();
+  final pageController = PageController(keepPage: true);
 
   @override
   Widget build(BuildContext context) {

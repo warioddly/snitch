@@ -3,7 +3,7 @@
 
 import 'package:snitch/shared/model/base_model_interface.dart';
 
-class TipModel implements BaseModel {
+class TipModel implements IBaseModel {
 
   const TipModel({required this.title, required this.description});
 
@@ -17,7 +17,16 @@ class TipModel implements BaseModel {
     );
   }
 
+
   @override
-  String get table => "tips";
+  toJson() {
+    return {
+      "title": title,
+      "description": description
+    };
+  }
+
+  @override
+  String get table => 'tips';
 
 }

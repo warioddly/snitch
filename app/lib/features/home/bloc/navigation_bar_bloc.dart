@@ -6,10 +6,6 @@ part 'navigation_bar_state.dart';
 
 class NavigationBarBloc extends Bloc<NavigationBarEvent, int> {
   NavigationBarBloc() : super(0) {
-    on<NavigationBarEvent>((event, emit) {
-      if (event is NavigationBarChanged) {
-        emit(event.index);
-      }
-    });
+    on<NavigationBarChanged>((event, emit) => emit(event.index));
   }
 }

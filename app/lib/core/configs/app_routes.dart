@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/view/bot_create_view.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
@@ -26,7 +27,8 @@ class AppRoutes {
     BotSettingsView.route: (context) {
       final bot = ModalRoute.of(context)!.settings.arguments as BotModel;
       return BotSettingsView(bot: bot);
-    }
+    },
+    BotCreateView.route: (context) => const BotCreateView(),
   };
 
 }

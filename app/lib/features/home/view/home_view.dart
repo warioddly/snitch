@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/features/bot/faker/bot_faker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:snitch/features/bot/bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/widgets/bot_list_card.dart';
 import 'package:snitch/features/home/widgets/empty_home_page.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
 
   const HomeView({super.key});
 
   static const String route = '/home';
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+
+
+  final botBloc = GetIt.I.get<BotBloc>();
+
+
+  @override
+  void initState() {
+    super.initState();
+    botBloc.add(const BotReadAllEvent());
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +40,17 @@ class HomeView extends StatelessWidget {
       body: ContentBox(
         child: Column(
           children: [
+            Flexible(
+              child: BlocBuilder(
+                bloc: botBloc,
+                builder: (context, state) {
 
-            Expanded(
-              child: false
-                  ? const EmptyHomePage()
-                  : ListView(
+                  if (state is BotListEmpty) {
+                    return const EmptyHomePage();
+                  }
+
+                  if (state is BotAllLoaded) {
+                    return ListView(
                       shrinkWrap: true,
                       children: [
 
@@ -37,12 +62,19 @@ class HomeView extends StatelessWidget {
                           ),
                         ),
 
-                  ...BotFaker.createBots(15).map((bot) => BotListCard(bot: bot))
+                        ...state.bots.map((bot) => BotListCard(bot: bot))
 
-                ],
+                      ],
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+
+                },
               ),
-            )
-
+            ),
           ],
         ),
       ),

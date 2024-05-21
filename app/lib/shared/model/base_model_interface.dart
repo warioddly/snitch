@@ -1,6 +1,8 @@
 
-abstract class BaseModel {
+abstract class IBaseModel {
 
-  String get table;
+  String get table => throw UnimplementedError();
+
+  toJson() { }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snitch/features/bot/view/bot_create_view.dart';
 
 class EmptyHomePage extends StatelessWidget {
 
@@ -46,7 +47,7 @@ class EmptyHomePage extends StatelessWidget {
 
           TextButton(
             onPressed: () {
-              // Navigator.of(context).pushNamed('/console');
+              Navigator.of(context).pushNamed(BotCreateView.route);
             },
             child: Text(
               "Create Bot",
