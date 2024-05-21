@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:args/args.dart';
+import 'package:convey/convey.dart';
 
 const String version = '0.0.1';
 
@@ -28,7 +31,14 @@ void printUsage(ArgParser argParser) {
   print(argParser.usage);
 }
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
+
+  await runConvey();
+
+  // dont close terminal after running the app
+
+  exit(0);
+
   final ArgParser argParser = buildParser();
   try {
     final ArgResults results = argParser.parse(arguments);
