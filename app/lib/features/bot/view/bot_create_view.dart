@@ -7,6 +7,7 @@ import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/images/logo.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
 
@@ -42,6 +43,13 @@ class _BotCreateViewState extends State<BotCreateView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
+              const Logo(
+                width: 100,
+                height: 100,
+              ),
+
+              const SizedBox(height: 10),
 
               StyledTextField(
                 controller: _nameController,
