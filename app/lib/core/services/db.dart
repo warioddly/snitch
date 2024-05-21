@@ -10,7 +10,7 @@ class DB {
 
   final Database db;
 
-  DB({required this.db});
+  const DB({required this.db});
 
   static Future<Database> init() async {
 
