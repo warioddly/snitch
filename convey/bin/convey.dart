@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:args/args.dart';
 import 'package:convey/convey.dart';
 
@@ -34,38 +32,37 @@ void printUsage(ArgParser argParser) {
 void main(List<String> arguments) async {
 
   await runConvey();
-
-  // dont close terminal after running the app
-
-  exit(0);
-
-  final ArgParser argParser = buildParser();
-  try {
-    final ArgResults results = argParser.parse(arguments);
-    bool verbose = false;
-
-    // Process the parsed arguments.
-    if (results.wasParsed('help')) {
-      printUsage(argParser);
-      return;
-    }
-    if (results.wasParsed('version')) {
-      print('convey version: $version');
-      return;
-    }
-    if (results.wasParsed('verbose')) {
-      verbose = true;
-    }
-
-    // Act on the arguments provided.
-    print('Positional arguments: ${results.rest}');
-    if (verbose) {
-      print('[VERBOSE] All arguments: ${results.arguments}');
-    }
-  } on FormatException catch (e) {
-    // Print usage information if an invalid argument was provided.
-    print(e.message);
-    print('');
-    printUsage(argParser);
-  }
+  //
+  // // dont close terminal after running the app
+  //
+  //
+  // final ArgParser argParser = buildParser();
+  // try {
+  //   final ArgResults results = argParser.parse(arguments);
+  //   bool verbose = false;
+  //
+  //   // Process the parsed arguments.
+  //   if (results.wasParsed('help')) {
+  //     printUsage(argParser);
+  //     return;
+  //   }
+  //   if (results.wasParsed('version')) {
+  //     print('convey version: $version');
+  //     return;
+  //   }
+  //   if (results.wasParsed('verbose')) {
+  //     verbose = true;
+  //   }
+  //
+  //   // Act on the arguments provided.
+  //   print('Positional arguments: ${results.rest}');
+  //   if (verbose) {
+  //     print('[VERBOSE] All arguments: ${results.arguments}');
+  //   }
+  // } on FormatException catch (e) {
+  //   // Print usage information if an invalid argument was provided.
+  //   print(e.message);
+  //   print('');
+  //   printUsage(argParser);
+  // }
 }

@@ -4,10 +4,10 @@ sealed class BotEvent extends Equatable {
   const BotEvent();
 }
 
-final class BotCreate extends BotEvent {
+final class BotCreateEvent extends BotEvent {
   final BotModel bot;
 
-  const BotCreate(this.bot);
+  const BotCreateEvent(this.bot);
 
   @override
   List<Object> get props => [bot];

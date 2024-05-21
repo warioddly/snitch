@@ -10,7 +10,7 @@ class BotBloc extends Bloc<BotEvent, BotState> {
 
 
   BotBloc({required this.repository}) : super(BotLoading()) {
-    on<BotCreate>(_onCreate);
+    on<BotCreateEvent>(_onCreate);
     on<BotReadEvent>(_onRead);
     on<BotUpdateEvent>(_onUpdate);
     on<BotDeleteEvent>(_onDelete);
@@ -23,7 +23,7 @@ class BotBloc extends Bloc<BotEvent, BotState> {
   final BotLocalRepository repository;
 
 
-  void _onCreate(BotCreate event, Emitter<BotState> emit) async {
+  void _onCreate(BotCreateEvent event, Emitter<BotState> emit) async {
     emit(BotLoading());
     try {
       BotModel bot = await repository.create(event.bot);
