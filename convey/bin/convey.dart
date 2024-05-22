@@ -25,7 +25,7 @@ ArgParser buildParser() {
 }
 
 void printUsage(ArgParser argParser) {
-  print('Usage: dart convey.dart <flags> [arguments]');
+  print('Usage: dart discord.dart <flags> [arguments]');
   print(argParser.usage);
 }
 

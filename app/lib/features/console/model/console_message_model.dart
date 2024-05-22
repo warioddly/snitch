@@ -1,18 +1,31 @@
+import 'package:discord/discord.dart';
+import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/shared/model/base_model_interface.dart';
 
 class ConsoleMessageModel extends IBaseModel {
 
-  ConsoleMessageModel({required this.user, required this.content, required this.createdDate});
+  const ConsoleMessageModel({
+    super.id,
+    required this.content,
+    required this.createdAt,
+    required this.bot,
+    required this.user,
+  });
 
-  final bool user;
+
+  final BotModel bot;
+  final DiscordUserModel user;
   final String content;
-  final DateTime createdDate;
+  final DateTime createdAt;
+
 
   factory ConsoleMessageModel.fromJson(Map<String, dynamic> data) {
     return ConsoleMessageModel(
-        user: data["user"] ?? true,
-        content: data["command"] ?? "",
-        createdDate: data["createdDate"] ? DateTime.parse(data["createdDate"]) : DateTime.now()
+        id: data["id"],
+        bot: BotModel.fromJson(data["bot"]),
+        user: DiscordUserModel.fromJson(data["user"]),
+        content: data["content"] ?? "",
+        createdAt: data["createdAt"] != null ? DateTime.parse(data["createdAt"]) : DateTime.now()
     );
   }
 
@@ -20,11 +33,17 @@ class ConsoleMessageModel extends IBaseModel {
   @override
   Map<String, dynamic> toJson() {
     return {
-      "user": user,
-      "command": content,
-      "createdDate": createdDate.toIso8601String(),
+      if (id != null)
+        "id": id,
+      "bot": bot.toJson(),
+      "user": user.toJson(),
+      "content": content,
+      "createdAt": createdAt.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, bot, user, content, createdAt];
 
 
 }

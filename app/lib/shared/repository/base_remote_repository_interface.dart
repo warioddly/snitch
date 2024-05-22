@@ -1,7 +1,2 @@
 
-
-
-abstract class BaseRepository<T> {
-
-
-}
+abstract class BaseRemoteRepository<T> { }

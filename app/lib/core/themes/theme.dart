@@ -143,16 +143,18 @@ class SnitchTheme {
       ),
       listTileTheme: const ListTileThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: BorderRadius.all((Radius.circular(20))),
         ),
         textColor: Color(0xFFA7A7AB),
+        tileColor: Color(0xFF232627),
         subtitleTextStyle: TextStyle(
           color: Color(0xFFBDBDBD),
           fontSize: 12,
-      ),
-          titleTextStyle: TextStyle(
-          color: Color(0xFFFFFFFF),
-          fontSize: 16,
+        ),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w600
         ),
       ),
       hintColor: const Color(0xFFA3A3A8),

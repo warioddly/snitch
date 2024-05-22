@@ -4,24 +4,21 @@ import 'package:snitch/shared/model/base_model_interface.dart';
 class BotModel extends IBaseModel {
 
 
-  BotModel({
-    this.id,
+  const BotModel({
+    super.id,
     required this.name,
     required this.description,
     required this.token,
-    required this.status,
     required this.createdAt,
     required this.updatedAt,
     this.image,
   });
 
 
-  final int? id;
   final String name;
   final String description;
   final String? image;
   final String token;
-  final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -32,8 +29,7 @@ class BotModel extends IBaseModel {
       name: data['name'],
       description: data['description'],
       image: data['image'],
-      token: data['token'],
-      status: data['status'],
+      token: data['token'] ?? '',
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt'])
     );
@@ -50,7 +46,6 @@ class BotModel extends IBaseModel {
       'description': description,
       'image': image,
       'token': token,
-      'status': status,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String()
     };
@@ -63,7 +58,6 @@ class BotModel extends IBaseModel {
     String? description,
     String? image,
     String? token,
-    String? status,
     DateTime? createdAt,
     DateTime? updatedAt
   }) {
@@ -73,10 +67,20 @@ class BotModel extends IBaseModel {
       description: description ?? this.description,
       image: image ?? this.image,
       token: token ?? this.token,
-      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt
     );
   }
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    description,
+    image,
+    token,
+    createdAt,
+    updatedAt
+  ];
 
 }

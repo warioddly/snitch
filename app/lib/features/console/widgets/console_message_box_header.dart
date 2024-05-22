@@ -1,8 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:flutter/services.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
+import 'package:snitch/shared/ui/images/asset.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 
 class ConsoleMessageBoxHeader extends StatelessWidget {
@@ -13,15 +16,22 @@ class ConsoleMessageBoxHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final userBotBloc = context.read<UserBotBloc>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
 
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
-          child: const Logo(
-            width: 31,
-          ),
+          child: (userBotBloc.user?.id != message.user.id)
+              ? Asset(
+                  message.user.avatar,
+                  width: 30,
+                  height: 30,
+                )
+              : const Logo(width: 30, height: 30),
         ),
 
 

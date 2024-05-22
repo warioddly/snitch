@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
-import 'package:snitch/shared/ui/layout/content_box.dart';
-import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
+import 'package:snitch/shared/ui/textfield/bordered_text_field.dart';
 
 class ChatFooter extends StatefulWidget {
 
@@ -18,13 +19,17 @@ class _ChatFooterState extends State<ChatFooter> {
 
   @override
   Widget build(BuildContext context) {
-    return ContentBox(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+
+    final bloc = context.read<UserBotBloc>();
+
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
       child: Row(
         children: [
 
           Flexible(
-            child: StyledTextField(
+            child: BorderedTextField(
                 controller: textController,
                 decoration: InputDecoration(
                   hintText: 'Send a command',
@@ -38,8 +43,9 @@ class _ChatFooterState extends State<ChatFooter> {
                     icon: const Icon(CupertinoIcons.paperplane),
                     color: const Color(0xFFA3A3A8),
                     onPressed: () {
-                      textController.clear();
                       FocusScope.of(context).unfocus();
+                      bloc.add(UserBotMessageSendEvent(textController.text));
+                      textController.clear();
                     },
                   ),
                 ),

@@ -56,20 +56,20 @@ class MenuListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ListTile(
-      title: Text(
-          item.title,
-          style: theme.listTileTheme.titleTextStyle?.copyWith(color: item.type.color)
-      ),
-      subtitle: item.subtitle != null ? Text(
-          item.subtitle!,
-          style: theme.listTileTheme.subtitleTextStyle?.copyWith(color: item.type.color)
-      ) : null,
-      onTap: item.onTap,
-      leading: Icon(item.icon, size: 25, color: item.type.color),
-      trailing: item.enableTrailing ? const Icon(Icons.arrow_forward_ios) : null,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: ListTile(
+        title: Text(
+            item.title,
+            style: theme.listTileTheme.titleTextStyle?.copyWith(color: item.type.color)
+        ),
+        subtitle: item.subtitle != null ? Text(
+            item.subtitle!,
+            style: theme.listTileTheme.subtitleTextStyle?.copyWith(color: item.type.color)
+        ) : null,
+        onTap: item.onTap,
+        leading: Icon(item.icon, size: 25, color: item.type.color),
+        trailing: item.enableTrailing ? const Icon(Icons.arrow_forward_ios) : null,
       ),
     );
   }

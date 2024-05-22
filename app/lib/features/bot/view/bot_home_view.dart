@@ -4,7 +4,7 @@ import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/view/bot_all_list_view.dart';
 import 'package:snitch/features/bot/widgets/bot_appbar_create_button.dart';
 import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
-import 'package:snitch/features/bot/widgets/bot_list_card.dart';
+import 'package:snitch/features/bot/widgets/bot_list_context_menu_wrapper_card.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/typography/headline.dart';
@@ -47,7 +47,7 @@ class BotHomeView extends StatelessWidget {
                           },
                         ),
 
-                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListCard(bot: bot)),
+                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListContextMenuWrapperCard(bot: bot)),
 
 
                         const Headline(
@@ -55,7 +55,7 @@ class BotHomeView extends StatelessWidget {
                           rightText: "View all history",
                         ),
 
-                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListCard(bot: bot)),
+                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListContextMenuWrapperCard(bot: bot)),
 
                       ],
                     );

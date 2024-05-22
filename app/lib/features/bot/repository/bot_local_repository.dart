@@ -1,16 +1,19 @@
 import 'package:snitch/core/constants/db_constants.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
-import 'package:sqflite/sqflite.dart' show Database;
 
-interface class IBotLocalRepository extends IBaseLocalRepository<BotModel> { }
+abstract class IBotLocalRepository<T> extends IBaseLocalRepository<BotModel> {
+  const IBotLocalRepository({required super.db});
 
-class BotLocalRepository implements IBotLocalRepository {
+  Future<bool> hasToken(String token, [int? id]);
 
-  BotLocalRepository({ required this.db });
+}
 
 
-  final Database db;
+class BotLocalRepository extends IBotLocalRepository<BotModel> {
+
+
+  const BotLocalRepository({ required super.db });
 
 
   @override
@@ -18,7 +21,7 @@ class BotLocalRepository implements IBotLocalRepository {
 
 
   @override
-  Future<BotModel> create(BotModel model) async {
+  Future<BotModel?> create(BotModel model) async {
     try {
       final id = await db.insert(table, model.toJson());
       return model.copyWith(id: id);
@@ -51,7 +54,7 @@ class BotLocalRepository implements IBotLocalRepository {
 
 
   @override
-  Future<BotModel> read(String id) async {
+  Future<BotModel?> read(int id) async {
     try {
       final maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
       if (maps.isEmpty) {
@@ -92,12 +95,25 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<List<BotModel>> search(String query) async {
     try {
-      print(query);
-      // final maps = await db.query(table, where: 'name LIKE ?', whereArgs: ['%$query%']);
       final maps = await db.rawQuery("SELECT * FROM $table WHERE name LIKE '%$query%'");
       return maps.map((e) => BotModel.fromJson(e)).toList();
     }
     catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
+  @override
+  Future<bool> hasToken(String token, [int? id]) async {
+    try {
+      if (id != null) {
+        final maps = await db.query(table, where: 'token = ? AND id != ?', whereArgs: [token, id]);
+        return maps.isNotEmpty;
+      }
+      final maps = await db.query(table, where: 'token = ?', whereArgs: [token]);
+      return maps.isNotEmpty;
+    } catch (e) {
       throw Exception(e);
     }
   }

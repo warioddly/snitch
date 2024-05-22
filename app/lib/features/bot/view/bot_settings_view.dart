@@ -2,12 +2,13 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/view/bot_edit_view.dart';
+import 'package:snitch/features/bot/widgets/bot_convey_info.dart';
 import 'package:snitch/features/bot/widgets/bot_delete_alert_dialog.dart';
 import 'package:snitch/features/bot/widgets/bot_mini_info_card.dart';
-import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
+import 'package:snitch/features/wrapper/view/wrapper_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
@@ -41,14 +42,16 @@ class BotSettingsView extends StatelessWidget {
                 title: 'Preferences',
                 subtitle: "Change bot's preferences",
                 icon: CupertinoIcons.gear_alt,
-                onTap: () => print('Preferences'),
+                onTap: () {
+                  Navigator.pushNamed(context, BotEditView.route, arguments: bot);
+                }
               ),
-              MenuListTileItem(
-                title: 'Information & Stats',
-                subtitle: "View bot's information and statistics",
-                icon: CupertinoIcons.info,
-                onTap: () => print('Information'),
-              ),
+              // MenuListTileItem(
+              //   title: 'Information & Stats',
+              //   subtitle: "View bot's information and statistics",
+              //   icon: CupertinoIcons.info,
+              //   onTap: () => debugPrint('Information'),
+              // ),
               MenuListTileItem(
                   title: 'Delete Bot',
                   icon: CupertinoIcons.delete,
@@ -77,10 +80,9 @@ class BotSettingsView extends StatelessWidget {
 
                       context.read<BotsBloc>().add(const BotsReadEvent());
 
-                      Navigator.popUntil(context, (route) => route.settings.name == NavigationWrapperView.route);
+                      Navigator.popUntil(context, (route) => route.settings.name == WrapperView.route);
 
                     });
-
 
                   },
                   type: MenuListTileType.ERROR,
@@ -90,13 +92,7 @@ class BotSettingsView extends StatelessWidget {
 
             const Spacer(),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                "${BOT_APP_NAME.toUpperCase()} v1.0.0",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            )
+            const BotConveyInfo()
 
           ],
         ),

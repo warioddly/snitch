@@ -11,7 +11,6 @@ class BotSearchBloc extends Bloc<BotSearchEvent, BotSearchState> {
 
 
   BotSearchBloc({required this.repository}) : super(BotSearchInitial()) {
-    on<BotSearchReadAllEvent>(_onReadAll);
     on<BotSearchBotEvent>(_onSearch);
   }
 
@@ -19,27 +18,11 @@ class BotSearchBloc extends Bloc<BotSearchEvent, BotSearchState> {
   final BotLocalRepository repository;
 
 
-  void _onReadAll(BotSearchReadAllEvent event, Emitter<BotSearchState> emit) async {
-
-    try {
-      List<BotModel> bots = await repository.readAll();
-      if (bots.isEmpty) {
-        emit(BotSearchEmpty());
-      } else {
-        emit(BotSearchBots(bots: bots));
-      }
-    } catch (e) {
-      emit(BotSearchError(message: e.toString()));
-    }
-
-  }
-
 
   void _onSearch(BotSearchBotEvent event, Emitter<BotSearchState> emit) async {
     emit(BotSearchLoading());
     try {
       final bots = await repository.search(event.query);
-      print(bots.length);
       if (bots.isEmpty) {
         emit(BotSearchEmpty());
       } else {

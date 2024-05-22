@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/core/utils/date_utils.dart' as du;
+import 'package:snitch/shared/ui/images/asset.dart';
 
 class BotMiniInfoCard extends StatelessWidget {
 
@@ -18,12 +19,12 @@ class BotMiniInfoCard extends StatelessWidget {
 
         ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.network(
+          child: Asset(
             bot.image!,
             width: 106,
             height: 106,
             fit: BoxFit.cover,
-          ),
+          )
         ),
 
         const SizedBox(height: 12),
