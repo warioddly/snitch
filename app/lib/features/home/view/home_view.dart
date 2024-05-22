@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/view/bot_all_list_view.dart';
 import 'package:snitch/features/bot/widgets/bot_appbar_create_button.dart';
-import 'package:snitch/features/bot/widgets/bot_list_card.dart';
+import 'package:snitch/features/bot/widgets/bot_list_context_menu_wrapper_card.dart';
 import 'package:snitch/features/home/widgets/empty_home_page.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
@@ -55,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
                           },
                         ),
 
-                        ...state.bots.map((bot) => BotListCard(bot: bot))
+                        ...state.bots.map((bot) => BotListContextMenuWrapperCard(bot: bot))
 
                       ],
                     );

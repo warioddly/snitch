@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:snitch/core/constants/db_constants.dart';
 import 'package:snitch/core/database/migrations.dart';
-import 'package:snitch/core/database/seeder.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -20,8 +19,6 @@ class DB {
 
     final exists = await databaseExists(path);
 
-    print("exists $exists");
-
     if (!exists) {
       try {
         await Directory(dirname(path)).create(recursive: true);
@@ -29,12 +26,7 @@ class DB {
    }
 
     return openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async {
-
-      if (!exists) {
-        await Migrations.up(db);
-        await Seeder.seed(db);
-      }
-
+      await Migrations.up(db);
     });
 
   }

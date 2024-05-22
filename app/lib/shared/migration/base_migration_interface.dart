@@ -27,4 +27,10 @@ abstract class IBaseMigration {
   }
 
 
+  Future<void> truncate(Database db) async {
+    db.execute('''
+      DELETE FROM $table
+    ''');
+  }
+
 }

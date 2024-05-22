@@ -11,9 +11,6 @@ class BotSearchInitialEvent extends BotSearchEvent {
   const BotSearchInitialEvent();
 }
 
-class BotSearchReadAllEvent extends BotSearchEvent {
-  const BotSearchReadAllEvent();
-}
 
 class BotSearchBotEvent extends BotSearchEvent {
   final String query;

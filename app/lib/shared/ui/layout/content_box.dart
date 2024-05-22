@@ -8,7 +8,7 @@ class ContentBox extends StatelessWidget {
   const ContentBox({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.symmetric(horizontal: 30),
+    this.padding = const EdgeInsets.symmetric(horizontal: 25),
   });
 
   @override

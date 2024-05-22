@@ -8,3 +8,9 @@ final class ConsoleInitial extends ConsoleState {
   @override
   List<Object> get props => [];
 }
+
+final class ConsoleLoading extends ConsoleState {
+  @override
+  List<Object> get props => [];
+}
+

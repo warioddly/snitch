@@ -11,7 +11,7 @@ class PathHelper {
 
 
   static String getConfigFilePath() {
-    return join(getCurrentPath(), Constants.CONFIG_FILENAME);
+    return join(getCurrentPath(), CONFIG_FILENAME);
   }
 
 

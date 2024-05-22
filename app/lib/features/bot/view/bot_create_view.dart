@@ -2,14 +2,17 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/core/services/faker.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/tips/view/tips_view.dart';
+import 'package:snitch/features/bot/widgets/bot_convey_info.dart';
+import 'package:snitch/features/tips/tips/tips.dart';
+import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
-import 'package:snitch/shared/ui/images/logo.dart';
+import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
@@ -26,11 +29,12 @@ class BotCreateView extends StatefulWidget {
 class _BotCreateViewState extends State<BotCreateView> {
 
 
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _tokenController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
+  final nameController        = TextEditingController();
+  final descriptionController = TextEditingController();
+  final tokenController       = TextEditingController();
+  final formKey               = GlobalKey<FormState>();
+  final actionBotBloc          = GetIt.I.get<BotActionBloc>();
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -41,33 +45,40 @@ class _BotCreateViewState extends State<BotCreateView> {
       ),
       body: ContentBox(
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              const Logo(
-                width: 100,
-                height: 100,
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(
+                    'Create Your ${BOT_APP_NAME.toUpperCase()} Bot',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    )
+                ),
               ),
 
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 20),
 
               StyledTextField(
-                controller: _nameController,
+                controller: nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Bot name is required';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                     hintText: 'Enter bot name*',
-                    suffixIconConstraints: const BoxConstraints(
-                        maxHeight: 42,
-                        maxWidth: 42
-                    ),
                     suffixIcon: IconButton(
                         visualDensity: VisualDensity.compact,
                         enableFeedback: true,
                         icon: const Icon(CupertinoIcons.wand_stars),
                         onPressed: () {
-                          _nameController
+                          nameController
                             ..clear()
                             ..text = 'Bot ${faker.animal.name()}';
                         }
@@ -75,46 +86,42 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
-
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 20),
 
               StyledTextField(
-                controller: _descriptionController,
+                controller: descriptionController,
                 decoration: const InputDecoration(
                   hintText: 'Enter bot description',
                 ),
               ),
 
-
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 20),
 
               StyledTextField(
-                controller: _tokenController,
+                controller: tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please, provide your Discord BOT token";
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                     hintText: 'Enter bot token',
-                    suffixIconConstraints: const BoxConstraints(
-                        maxHeight: 42,
-                        maxWidth: 42
-                    ),
                     suffixIcon: IconButton(
                         visualDensity: VisualDensity.compact,
                         enableFeedback: true,
                         icon: const Icon(CupertinoIcons.info),
                         onPressed: () {
-                          Navigator.pushNamed(context, TipsView.route, arguments: 'token');
+                          Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
                         }
                     )
                 ),
               ),
 
-
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 20),
 
               BlocConsumer<BotActionBloc, BotActionState>(
-                bloc: context.read<BotActionBloc>()..add(const BotActionInitialEvent()),
+                bloc: actionBotBloc..add(const BotActionInitialEvent()),
                 listener: (context, state) {
 
                   if (state is BotActionSuccess) {
@@ -125,63 +132,42 @@ class _BotCreateViewState extends State<BotCreateView> {
                   if (state is BotActionError) {
                     BotToast.showSimpleNotification(
                       title: "Oops! Something went wrong",
+                      subTitle: state.message,
                       backgroundColor: Colors.red,
                     );
                   }
 
                 },
                 builder: (context, state) {
-                  return ElevatedButton(
+                  return StyledTextButton(
+                    loading: state is BotActionLoading,
                     onPressed: () {
 
                       if (state is BotActionLoading) {
                         return;
                       }
 
-                      if (_formKey.currentState!.validate()) {
+                      if (formKey.currentState!.validate()) {
 
                         final bot = BotModel(
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          token: _tokenController.text,
-                          status: "active",
+                          name: nameController.text,
+                          description: descriptionController.text,
+                          token: tokenController.text,
                           image: faker.image.image(),
                           createdAt: DateTime.now(),
                           updatedAt: DateTime.now(),
                         );
 
-                        context.read<BotActionBloc>().add(BotActionCreateEvent(bot: bot));
+                        actionBotBloc.add(BotActionCreateEvent(bot: bot));
 
                       }
                     },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('Create Bot'),
-
-                        const SizedBox(width: 16),
-
-                        if (state is BotActionLoading)
-                          const SizedBox(
-                            width: 10,
-                            height: 10,
-                            child: CupertinoActivityIndicator()
-                          )
-
-                      ],
-                    ),
+                    text: 'Create Bot',
                   );
                 },
               ),
 
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  "${BOT_APP_NAME.toUpperCase()} v1.0.0",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              )
+              const BotConveyInfo()
 
             ],
           ),

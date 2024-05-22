@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +31,6 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
           backgroundColor: WidgetStateProperty.all<Color>(
               theme.brightness == Brightness.dark ? const Color(0xFF232627) : const Color(0xFFE5E5E5)
           ),
-          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(0)),
         ),
         icon: Icon(
           CupertinoIcons.back,
