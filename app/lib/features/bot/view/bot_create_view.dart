@@ -1,9 +1,11 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/core/services/faker.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
+import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
@@ -51,6 +53,7 @@ class _BotCreateViewState extends State<BotCreateView> {
 
               const SizedBox(height: 10),
 
+
               StyledTextField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -72,7 +75,9 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
+
               const SizedBox(height: 10),
+
 
               StyledTextField(
                 controller: _descriptionController,
@@ -81,7 +86,9 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
+
               const SizedBox(height: 10),
+
 
               StyledTextField(
                 controller: _tokenController,
@@ -102,27 +109,69 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
+
               const SizedBox(height: 10),
 
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
 
-                    final bot = BotModel(
-                      name: _nameController.text,
-                      description: _descriptionController.text,
-                      token: _tokenController.text,
-                      status: "active",
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
-                    );
+              BlocConsumer<BotActionBloc, BotActionState>(
+                bloc: context.read<BotActionBloc>()..add(const BotActionInitialEvent()),
+                listener: (context, state) {
 
-                    context.read<BotBloc>().add(BotCreateEvent(bot));
-                    Navigator.maybePop(context);
-
+                  if (state is BotActionSuccess) {
+                    context.read<BotsBloc>().add(const BotsReadEvent());
+                    Navigator.pop(context);
                   }
+
+                  if (state is BotActionError) {
+                    BotToast.showSimpleNotification(
+                      title: "Oops! Something went wrong",
+                      backgroundColor: Colors.red,
+                    );
+                  }
+
                 },
-                child: const Text('Create Bot'),
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () {
+
+                      if (state is BotActionLoading) {
+                        return;
+                      }
+
+                      if (_formKey.currentState!.validate()) {
+
+                        final bot = BotModel(
+                          name: _nameController.text,
+                          description: _descriptionController.text,
+                          token: _tokenController.text,
+                          status: "active",
+                          image: faker.image.image(),
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        );
+
+                        context.read<BotActionBloc>().add(BotActionCreateEvent(bot: bot));
+
+                      }
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Create Bot'),
+
+                        const SizedBox(width: 16),
+
+                        if (state is BotActionLoading)
+                          const SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: CupertinoActivityIndicator()
+                          )
+
+                      ],
+                    ),
+                  );
+                },
               ),
 
 

@@ -13,7 +13,6 @@ class BotSearchBloc extends Bloc<BotSearchEvent, BotSearchState> {
   BotSearchBloc({required this.repository}) : super(BotSearchInitial()) {
     on<BotSearchReadAllEvent>(_onReadAll);
     on<BotSearchBotEvent>(_onSearch);
-
   }
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/view/bot_all_list_view.dart';
 import 'package:snitch/features/bot/widgets/bot_appbar_create_button.dart';
 import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
@@ -27,14 +27,14 @@ class BotHomeView extends StatelessWidget {
           children: [
             Flexible(
               child: BlocBuilder(
-                bloc: context.read<BotBloc>()..add(const BotReadAllEvent()),
+                bloc: context.read<BotsBloc>()..add(const BotsReadEvent()),
                 builder: (context, state) {
 
-                  if (state is BotListEmpty) {
+                  if (state is BotsEmpty) {
                     return const BotEmptyWidget();
                   }
 
-                  if (state is BotAllLoaded) {
+                  if (state is BotsLoaded) {
                     return ListView(
                       shrinkWrap: false,
                       children: [

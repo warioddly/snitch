@@ -7,7 +7,8 @@ import 'package:snitch/core/configs/app_routes.dart';
 import 'package:snitch/core/configs/scroll_behavior.dart';
 import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/core/services/locator.dart';
-import 'package:snitch/features/bot/bloc/bot_bloc/bot_bloc.dart';
+import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
+import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 
 void main() async {
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => GetIt.I.get<BotBloc>()),
+        BlocProvider(create: (context) => GetIt.I.get<BotsBloc>()),
+        BlocProvider(create: (context) => GetIt.I.get<BotActionBloc>()),
         BlocProvider(create: (context) => GetIt.I.get<ThemeCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, SnitchThemeType>(
