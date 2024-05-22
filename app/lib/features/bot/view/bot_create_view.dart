@@ -7,7 +7,8 @@ import 'package:snitch/core/services/faker.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/tips/view/tips_view.dart';
+import 'package:snitch/features/tips/tips/tips.dart';
+import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
@@ -91,7 +92,7 @@ class _BotCreateViewState extends State<BotCreateView> {
 
 
               StyledTextField(
-                controller: _tokenController,
+                controller: _tokenController..text = "7021758078:AAH1GzauHADSqHl1jiwAPDpGeRvBUse6-yQ",
                 decoration: InputDecoration(
                     hintText: 'Enter bot token',
                     suffixIconConstraints: const BoxConstraints(
@@ -103,7 +104,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                         enableFeedback: true,
                         icon: const Icon(CupertinoIcons.info),
                         onPressed: () {
-                          Navigator.pushNamed(context, TipsView.route, arguments: 'token');
+                          Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_telegram_bot_token);
                         }
                     )
                 ),

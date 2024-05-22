@@ -1,19 +1,48 @@
-
-
-
 import 'package:snitch/shared/model/base_model_interface.dart';
 
-class TipModel implements IBaseModel {
 
-  const TipModel({required this.title, required this.description});
+enum TipCategory {
+  learn,
+  feature,
+  other,
+  faq;
+}
+
+
+TipCategory _getCategory(String category) {
+  return switch(category) {
+    "learn"   => TipCategory.learn,
+    "feature" => TipCategory.feature,
+    "faq"     => TipCategory.faq,
+    _         => TipCategory.other,
+  };
+}
+
+
+class TipModel extends IBaseModel {
+
+
+  const TipModel({
+    super.id,
+    required this.title,
+    required this.description,
+    required this.category,
+    required this.markdown
+  });
+
 
   final String title;
   final String description;
+  final String markdown;
+  final TipCategory category;
+
 
   factory TipModel.fromJson(Map<String, dynamic> data) {
     return TipModel(
       title: data["title"] ?? "",
-      description: data["description"] ?? ""
+      description: data["description"] ?? "",
+      category: _getCategory(data["category"]),
+      markdown: data["markdown"]
     );
   }
 
@@ -21,12 +50,15 @@ class TipModel implements IBaseModel {
   @override
   toJson() {
     return {
+      if (id != null) ...{
+        'id': id,
+      },
       "title": title,
-      "description": description
+      "description": description,
+      "markdown": markdown,
+      "category": category.toString(),
     };
   }
 
-  @override
-  String get table => 'tips';
 
 }

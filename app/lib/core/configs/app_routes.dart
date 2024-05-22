@@ -9,6 +9,8 @@ import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.
 import 'package:snitch/features/console/view/console_view.dart';
 import 'package:snitch/features/profile/view/profile_settings_view.dart';
 import 'package:snitch/features/profile/view/profile_theme_settings_view.dart';
+import 'package:snitch/features/tips/model/tip_model.dart';
+import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
 
 
@@ -21,6 +23,10 @@ class AppRoutes {
     HomeView.route: (context) => const HomeView(),
 
     TipsView.route: (context) => const TipsView(),
+    TipDetailView.route: (context) {
+      final tip = ModalRoute.of(context)!.settings.arguments as TipModel;
+      return TipDetailView(tip: tip);
+    },
 
     ProfileSettingsView.route: (context) => const ProfileSettingsView(),
     ProfileThemeSettingsView.route: (context) => const ProfileThemeSettingsView(),

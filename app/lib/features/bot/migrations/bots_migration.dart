@@ -30,6 +30,4 @@ class BotMigration extends IBaseMigration {
 
   }
 
-
-
 }

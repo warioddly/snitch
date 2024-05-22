@@ -5,6 +5,7 @@ class ConsoleMessageFaker {
 
   static ConsoleMessageModel createMessage() {
     return ConsoleMessageModel(
+          id: faker.randomGenerator.integer(9999),
         user: faker.randomGenerator.boolean(),
         content: faker.lorem.sentence(),
         createdDate: faker.date.dateTime()

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ContentBox extends StatelessWidget {
+class SliverContentBox extends StatelessWidget {
 
   final Widget child;
   final EdgeInsets padding;
 
-  const ContentBox({
+  const SliverContentBox({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.symmetric(horizontal: 25),
@@ -13,9 +13,9 @@ class ContentBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SliverPadding(
       padding: padding,
-      child: child,
+      sliver: child,
     );
   }
 

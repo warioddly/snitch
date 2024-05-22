@@ -1,4 +1,6 @@
-import 'package:snitch/features/bot/migrations/bot_migration.dart';
+import 'package:snitch/features/bot/migrations/bots_migration.dart';
+import 'package:snitch/features/tips/migration/tips_categories_migration.dart';
+import 'package:snitch/features/tips/migration/tips_migration.dart';
 import 'package:snitch/shared/migration/base_migration_interface.dart';
 import 'package:sqflite/sqflite.dart' show Database;
 
@@ -7,6 +9,8 @@ class Migrations {
 
   static const migrations = <IBaseMigration>[
     BotMigration(),
+    TipCategoriesMigration(),
+    TipsMigration()
   ];
 
 

@@ -6,6 +6,7 @@ import 'package:snitch/features/bot/bloc/bot_search_bloc/bot_search_bloc.dart';
 import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
 import 'package:snitch/features/bot/widgets/bot_list_card.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/layout/sliver_content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
 class BotAllListView extends StatefulWidget {
@@ -27,33 +28,40 @@ class _BotAllListViewState extends State<BotAllListView> {
   void initState() {
     super.initState();
 
-    bloc.add(const BotSearchReadAllEvent());
+    bloc.add(const BotSearchBotEvent(""));
 
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {
-        bloc.add(const BotSearchReadAllEvent());
+        bloc.add(const BotSearchBotEvent(""));
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const Appbar(
-        title: 'Search Bots',
-        enableImplyLeading: true,
-      ),
-      body: BlocProvider<BotSearchBloc>(
-        create: (context) => bloc,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+    return SafeArea(
+      child: Scaffold(
+        body: BlocProvider<BotSearchBloc>(
+          create: (context) => bloc,
           child: CustomScrollView(
             shrinkWrap: false,
             slivers: [
 
-              SliverPadding(
-                padding: const EdgeInsets.only(top: 15),
-                sliver: SliverAppBar(
+              const SliverAppBar(
+                pinned: false,
+                floating: true,
+                stretch: false,
+                snap: true,
+                automaticallyImplyLeading: false,
+                flexibleSpace: Appbar(
+                  title: 'Search Bots',
+                  enableImplyLeading: true,
+                ),
+              ),
+
+              SliverContentBox(
+                padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                child: SliverAppBar(
                   pinned: false,
                   floating: true,
                   stretch: false,
@@ -83,25 +91,28 @@ class _BotAllListViewState extends State<BotAllListView> {
                 ),
               ),
 
-              BlocBuilder<BotSearchBloc, BotSearchState>(
-                builder: (context, state) {
-                  return SliverList(
-                    delegate: SliverChildListDelegate(
-                        [
+              SliverContentBox(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: BlocBuilder<BotSearchBloc, BotSearchState>(
+                  builder: (context, state) {
+                    return SliverList(
+                      delegate: SliverChildListDelegate(
+                          [
 
-                          if (state is BotSearchError)
-                            Text(state.message),
+                            if (state is BotSearchError)
+                              Text(state.message),
 
-                          if (state is BotSearchBots)
-                            ...state.bots.map((bot) => BotListCard(bot: bot)),
+                            if (state is BotSearchBots)
+                              ...state.bots.map((bot) => BotListCard(bot: bot)),
 
-                          if (state is BotSearchEmpty)
-                            const BotEmptyWidget(),
+                            if (state is BotSearchEmpty)
+                              const BotEmptyWidget(),
 
-                        ]
-                    ),
-                  );
-                },
+                          ]
+                      ),
+                    );
+                  },
+                ),
               )
 
             ],

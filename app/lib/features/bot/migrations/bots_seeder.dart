@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:snitch/core/constants/db_constants.dart';
 import 'package:snitch/features/bot/faker/bot_faker.dart';
-import 'package:snitch/shared/seeder/base_seeder_interface.dart';
+import 'package:snitch/shared/migration/base_seeder_interface.dart';
 import 'package:sqflite/sqflite.dart' show Database;
 
 class BotSeeder implements IBaseSeeder {
@@ -12,9 +12,9 @@ class BotSeeder implements IBaseSeeder {
 
 
   @override
-  Future<void> seed(Database db, [count = 15]) async {
+  Future<void> seed(Database db) async {
 
-    final bots = BotFaker.createBots(count, true);
+    final bots = BotFaker.createBots(15, true);
 
     for (final bot in bots) {
       var botJson = bot.toJson();

@@ -1,7 +1,9 @@
 
 abstract class IBaseModel {
 
-  String get table => throw UnimplementedError();
+  const IBaseModel({required this.id});
+
+  final int? id;
 
   toJson() { }
 

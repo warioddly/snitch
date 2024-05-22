@@ -10,4 +10,6 @@ class DbConstants {
 
   static const String TIP_TABLE_NAME = 'tips';
 
+  static const String TIP_CATEGORIES_TABLE_NAME = 'tips_categories';
+
 }

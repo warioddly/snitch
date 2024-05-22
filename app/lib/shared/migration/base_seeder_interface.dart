@@ -6,7 +6,7 @@ interface class IBaseSeeder {
 
   String get table => throw UnimplementedError();
 
-  Future<void> seed(Database db, [count = 15]) async {
+  Future<void> seed(Database db) async {
     throw UnimplementedError();
   }
 

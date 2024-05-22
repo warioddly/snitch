@@ -4,8 +4,8 @@ import 'package:snitch/shared/model/base_model_interface.dart';
 class BotModel extends IBaseModel {
 
 
-  BotModel({
-    this.id,
+  const BotModel({
+    super.id,
     required this.name,
     required this.description,
     required this.token,
@@ -16,7 +16,6 @@ class BotModel extends IBaseModel {
   });
 
 
-  final int? id;
   final String name;
   final String description;
   final String? image;
