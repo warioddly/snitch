@@ -11,7 +11,7 @@ import 'package:snitch/features/tips/view/tips_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
-import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
+import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
 class BotCreateView extends StatefulWidget {
 

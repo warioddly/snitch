@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
-import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
+import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
 class ChatFooter extends StatefulWidget {
 

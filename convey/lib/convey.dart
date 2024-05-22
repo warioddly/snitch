@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:convey/core/services/locator.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
@@ -9,7 +8,7 @@ Future<void> runConvey() async {
 
   await setupLocator();
 
-  ProcessResult results =  await Process.run('cmd.exe', ['ipconfig']);
+  // ProcessResult results =  await Process.run('cmd.exe', ['ipconfig']);
 
   var BOT_TOKEN = '7021758078:AAH1GzauHADSqHl1jiwAPDpGeRvBUse6-yQ';
   final username = (await Telegram(BOT_TOKEN).getMe()).username;

@@ -6,7 +6,7 @@ import 'package:snitch/features/bot/bloc/bot_search_bloc/bot_search_bloc.dart';
 import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
 import 'package:snitch/features/bot/widgets/bot_list_card.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
-import 'package:snitch/shared/ui/textfield/StyledTextField.dart';
+import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
 class BotAllListView extends StatefulWidget {
 
