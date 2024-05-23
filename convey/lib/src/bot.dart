@@ -28,7 +28,8 @@ class Bot {
     teledart
       ..start()
       ..onMessage().listen(_onMessage)
-      ..onCommand('start').listen(_onCommand);
+      ..onCommand('start').listen(_onCommand)
+      ..onCommand('config').listen(_onConfig);
 
     print('Bot is ready to receive messages! 🚀');
 
@@ -68,7 +69,16 @@ class Bot {
     }
 
   }
-  
+
+
+  void _onConfig(Message message) {
+    print('Config command received: ${message.text}');
+    _sendMessage(message, jsonEncode({
+      'bot': bot.toJson(),
+      'config': message.toJson()
+    }));
+  }
+
   
   void _sendMessage(Message message, String text) {
     teledart.sendMessage(message.chat.id, jsonEncode(MessageModel(bot: bot, content: text).toJson()));

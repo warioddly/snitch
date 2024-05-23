@@ -24,11 +24,10 @@ final class ConsoleMessageReceived extends ConsoleEvent {
 }
 
 final class ConsoleMessageSent extends ConsoleEvent {
-  const ConsoleMessageSent(this.message, this.content);
+  const ConsoleMessageSent(this.content);
 
-  final Message message;
   final String content;
 
   @override
-  List<Object> get props => [message, content];
+  List<Object> get props => [content];
 }

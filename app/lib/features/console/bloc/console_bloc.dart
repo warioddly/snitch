@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';
-import 'package:teledart/telegram.dart';
 
 part 'console_event.dart';
 part 'console_state.dart';
@@ -18,15 +17,19 @@ class ConsoleBloc extends Bloc<ConsoleEvent, ConsoleState> {
 
   final BotModel bot;
   late final TeleDart teledart;
+  int chatId = -1;
+
 
   Future<void> _onStarted(ConsoleStarted event, Emitter<ConsoleState> emit) async {
 
     // final telegram = Telegram(bot.token);
     teledart = TeleDart(bot.token, Event(bot.name));
-    teledart.start();
-    teledart.onMessage().listen((message) {
-      add(ConsoleMessageReceived(message));
-    });
+    teledart
+      ..start()
+      ..onMessage().listen((message) {
+        chatId = message.chat.id;
+        add(ConsoleMessageReceived(message));
+      });
 
   }
 
@@ -36,7 +39,11 @@ class ConsoleBloc extends Bloc<ConsoleEvent, ConsoleState> {
   }
 
   Future<void> _onMessageSent(ConsoleMessageSent event, Emitter<ConsoleState> emit) async {
-    teledart.sendMessage(event.message.chat.id, event.content);
+    if (chatId == -1) {
+      print('No chatId');
+      return;
+    }
+    teledart.sendMessage(chatId, event.content);
   }
 
 }

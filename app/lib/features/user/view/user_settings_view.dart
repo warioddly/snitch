@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch/core/constants/constants.dart';
-import 'package:snitch/features/profile/view/profile_theme_settings_view.dart';
+import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
 
-class ProfileSettingsView extends StatelessWidget {
+class UserSettingsView extends StatelessWidget {
 
-  const ProfileSettingsView({super.key});
+  const UserSettingsView({super.key});
 
   static const String route = '/profile-settings';
 

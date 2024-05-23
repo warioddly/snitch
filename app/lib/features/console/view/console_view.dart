@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/console/bloc/console_bloc.dart';
@@ -35,74 +36,67 @@ class _ConsoleViewState extends State<ConsoleView> {
   @override
   void initState() {
     super.initState();
-    bloc = ConsoleBloc(bot: bot)..add(ConsoleStarted());
+    // bloc = ConsoleBloc(bot: bot)
+    //   ..add(ConsoleStarted());
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Appbar(
-        title: bot.name,
-        enableImplyLeading: true,
-        actions: [
-          IconButton(
-            tooltip: 'Bot settings',
-            icon: const Icon(CupertinoIcons.chevron_left_slash_chevron_right),
-            onPressed: () => Navigator.pushNamed(context, BotSettingsView.route, arguments: bot)
-          )
-        ],
-      ),
-      body: CustomScrollView(
-        shrinkWrap: false,
-        slivers: [
+    return BlocProvider(
+      create: (context) => bloc,
+      child: Scaffold(
+        appBar: Appbar(
+          title: bot.name,
+          enableImplyLeading: true,
+          actions: [
+            IconButton(
+                tooltip: 'Bot settings',
+                icon: const Icon(CupertinoIcons.chevron_left_slash_chevron_right),
+                onPressed: () => Navigator.pushNamed(context, BotSettingsView.route, arguments: bot)
+            )
+          ],
+        ),
+        body: CustomScrollView(
+          shrinkWrap: false,
+          slivers: [
 
-          const SliverAppBar(
-            snap: true,
-            floating: true,
-            pinned: false,
-            automaticallyImplyLeading: false,
-            flexibleSpace: ChatFooter(),
-          ),
-
-
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return ConsoleMessageBox(message: messages[index]);
-              },
-              childCount: messages.length,
+            const SliverAppBar(
+              snap: true,
+              floating: true,
+              pinned: false,
+              automaticallyImplyLeading: false,
+              flexibleSpace: ChatFooter(),
             ),
-          ),
-          // Stack(
-          //   children: <Widget>[
-          //     GestureDetector(
-          //         onPanDown: (_) => FocusScope.of(context).unfocus(),
-          //         child: ListView(
-          //           reverse: true,
-          //           shrinkWrap: true,
-          //           children: true
-          //               ? messages.map((message) => ConsoleMessageBox(message: message)).toList()
-          //               : const [ ConsoleEmptyChat() ],
-          //         )
-          //     ),
-          //   ],
-          // ),
 
 
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return ConsoleMessageBox(message: messages[index]);
+                },
+                childCount: messages.length,
+              ),
+            ),
+            // Stack(
+            //   children: <Widget>[
+            //     GestureDetector(
+            //         onPanDown: (_) => FocusScope.of(context).unfocus(),
+            //         child: ListView(
+            //           reverse: true,
+            //           shrinkWrap: true,
+            //           children: true
+            //               ? messages.map((message) => ConsoleMessageBox(message: message)).toList()
+            //               : const [ ConsoleEmptyChat() ],
+            //         )
+            //     ),
+            //   ],
+            // ),
 
-          // SliverAppBar(
-          //   snap: false,
-          //   floating: true,
-          //   pinned: true,
-          //   automaticallyImplyLeading: false,
-          //   flexibleSpace: const ChatFooter(),
-          // )
-
-
-        ],
+          ],
+        ),
+        bottomNavigationBar: const ChatFooter(),
       ),
-      bottomNavigationBar: const ChatFooter(),
     );
   }
 

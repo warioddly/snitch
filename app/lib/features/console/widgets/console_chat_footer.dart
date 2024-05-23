@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
+import 'package:snitch/features/console/bloc/console_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
@@ -18,6 +21,9 @@ class _ChatFooterState extends State<ChatFooter> {
 
   @override
   Widget build(BuildContext context) {
+
+    final bloc = context.read<UserBotBloc>();
+
     return ContentBox(
       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
       child: Row(
@@ -38,8 +44,9 @@ class _ChatFooterState extends State<ChatFooter> {
                     icon: const Icon(CupertinoIcons.paperplane),
                     color: const Color(0xFFA3A3A8),
                     onPressed: () {
-                      textController.clear();
                       FocusScope.of(context).unfocus();
+                      bloc.add(UserBotMessageSent(textController.text));
+                      textController.clear();
                     },
                   ),
                 ),

@@ -7,8 +7,8 @@ import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
 import 'package:snitch/features/console/view/console_view.dart';
-import 'package:snitch/features/profile/view/profile_settings_view.dart';
-import 'package:snitch/features/profile/view/profile_theme_settings_view.dart';
+import 'package:snitch/features/user/view/user_settings_view.dart';
+import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
@@ -28,7 +28,7 @@ class AppRoutes {
       return TipDetailView(tip: tip);
     },
 
-    ProfileSettingsView.route: (context) => const ProfileSettingsView(),
+    UserSettingsView.route: (context) => const UserSettingsView(),
     ProfileThemeSettingsView.route: (context) => const ProfileThemeSettingsView(),
 
     ConsoleView.route: (context) {
