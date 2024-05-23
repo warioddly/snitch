@@ -4,7 +4,7 @@ part of "tips.dart";
 const TipModel _tip_how_to_install_bot_to_my_pc = TipModel(
     title: "How to get install bot to my PC?",
     description: "Here you will find how to get a token for a bot 🤖",
-    category: TipCategory.learn,
+    category: TipCategory.guide,
     markdown: '''
       # Markdown syntax guide
 

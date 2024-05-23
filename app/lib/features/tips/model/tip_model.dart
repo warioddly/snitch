@@ -2,7 +2,7 @@ import 'package:snitch/shared/model/base_model_interface.dart';
 
 
 enum TipCategory {
-  learn,
+  guide,
   feature,
   other,
   faq;
@@ -11,7 +11,7 @@ enum TipCategory {
 
 TipCategory _getCategory(String category) {
   return switch(category) {
-    "learn"   => TipCategory.learn,
+    "learn"   => TipCategory.guide,
     "feature" => TipCategory.feature,
     "faq"     => TipCategory.faq,
     _         => TipCategory.other,

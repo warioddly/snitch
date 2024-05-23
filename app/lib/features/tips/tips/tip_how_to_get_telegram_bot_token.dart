@@ -4,7 +4,7 @@ part of "tips.dart";
 const TipModel tip_how_to_get_telegram_bot_token = TipModel(
     title: "How to get a telegram bot token?",
     description: "Here you will find how to get a token for a bot 🤖",
-    category: TipCategory.learn,
+    category: TipCategory.guide,
     markdown: '''
 # How to get a telegram bot token 👾?
 
