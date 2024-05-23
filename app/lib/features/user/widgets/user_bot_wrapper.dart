@@ -34,7 +34,7 @@ class _UserBotWrapperState extends State<UserBotWrapper> {
         if (state is UserBotMessageReceivedState) {
           BotToast.showSimpleNotification(
             title: 'Message received',
-            subTitle: state.message.text,
+            subTitle: state.message.content,
           );
         }
 
