@@ -8,9 +8,41 @@ import 'package:path/path.dart';
 
 class BotConfig {
 
-  const BotConfig({required this.bot});
+
+  const BotConfig({
+    required this.bot,
+    required this.token,
+    required this.guildId,
+  });
+
 
   final BotModel bot;
+  final String token;
+  final int guildId;
+
+
+  factory BotConfig.fromJson(Map<String, dynamic> data) {
+    try {
+      return BotConfig(
+          bot: BotModel.fromJson(data['bot']),
+          token: data['token'],
+          guildId: data['guildId']
+      );
+    }
+    catch (e) {
+      throw Exception('Error parsing BotConfig: $e');
+    }
+  }
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'bot': bot.toJson(),
+      'token': token,
+      'guildId': guildId,
+    };
+  }
+
 
   static Future<BotConfig> init() async {
 
@@ -21,15 +53,7 @@ class BotConfig {
       throw Exception('Config is null');
     }
 
-    final bot = BotModel.fromJson(config);
-
-    if (bot.owner == null) {
-      print('Bot owner is not set');
-      throw Exception('Bot owner is not set');
-    }
-
-    return BotConfig(bot: bot);
-
+    return BotConfig.fromJson(config);
   }
 
 

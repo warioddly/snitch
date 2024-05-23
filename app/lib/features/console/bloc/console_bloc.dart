@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nyxx/nyxx.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
 
 part 'console_event.dart';
 part 'console_state.dart';

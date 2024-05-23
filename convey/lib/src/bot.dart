@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:convey/src/bot_model.dart';
-import 'package:convey/core/services/bot_config.dart';
+import 'package:convey/src/bot_config.dart';
 import 'package:convey/src/runner.dart';
 import 'package:nyxx/nyxx.dart';
 
@@ -9,33 +9,55 @@ class Bot {
 
   Bot({required this.config});
 
+
   final BotConfig config;
   late final NyxxGateway client;
+  late final Guild guild;
+  late final GuildTextChannel channel;
   final Cmd cmd = Cmd();
 
 
   void start() async {
 
-    final client = await Nyxx.connectGateway(token, GatewayIntents.all);
-
+    client = await Nyxx.connectGateway(config.token, GatewayIntents.all);
     final botUser = await client.users.fetchCurrentUser();
 
-    client.onMessageCreate.listen((event) async {
-      if (event.message.author.id == botUser.id) {
-        return;
-      }
-      final message = event.message;
+    client.onReady.listen((event) async {
 
-      print(message);
+      print('Bot is ready to receive messages! 🚀');
 
-      if (message.content.startsWith('!')) {
-        _onCommand(message);
-      } else {
-        _onMessage(message);
-      }
+      guild = await client.guilds.fetch(Snowflake(config.guildId));
+
+      client.channels.cache.forEach((Snowflake id, Channel channel) async {
+        if (channel is GuildTextChannel) {
+          print('Bot is connected to channel: ${channel.name}');
+          this.channel = channel;
+          _ping();
+        }
+      });
+
+      client.onMessageCreate.listen((event) async {
+
+        if (event.message.author.id == botUser.id) {
+          return;
+        }
+
+        final message = event.message;
+
+        print(message);
+        if (message.content.isEmpty) {
+          return;
+        }
+
+        if (message.content.startsWith('!')) {
+          _onCommand(message);
+        } else {
+          _onMessage(message);
+        }
+
+      });
+
     });
-
-    print('Bot is ready to receive messages! 🚀');
 
   }
 
@@ -62,6 +84,12 @@ class Bot {
     print('Command received: ${message.content}');
 
     try {
+
+      if (message.content.trim() == '!config') {
+        _onConfig(message);
+        return;
+      }
+
       final result = await cmd.run(message.content);
       _sendMessage(message, result.first.stdout);
     } catch (e) {
@@ -73,19 +101,30 @@ class Bot {
 
   void _onConfig(Message message) {
     print('Config command received: ${message.content}');
-    _sendMessage(message, jsonEncode({
-      'bot': bot.toJson(),
-      'config': message.content
-    }));
+    _sendMessage(message, jsonEncode(config.toJson()));
   }
 
   
   void _sendMessage(Message message, String text) {
-    final builder = MessageBuilder(content: jsonEncode({
-      'bot': bot.toJson(),
-      'message': text
-    }));
+    final builder = MessageBuilder(
+        content: jsonEncode({
+          'bot': bot.toJson(),
+          'message': text
+        }),
+        replyId: message.id,
+    );
+
     message.channel.sendMessage(builder);
+  }
+
+
+  void _ping() async {
+    await channel.sendMessage(MessageBuilder(
+      content: jsonEncode({
+        'bot': bot.toJson(),
+        'message': "!ping"
+      }),
+    ));
   }
 
 
@@ -96,7 +135,5 @@ class Bot {
 
 
   BotModel get bot => config.bot;
-
-  String get token => config.bot.token;
 
 }

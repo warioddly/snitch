@@ -7,7 +7,6 @@ import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/widgets/bottom_navigation.dart';
 import 'package:snitch/features/user/view/user_settings_view.dart';
 import 'package:snitch/features/tips/view/tips_view.dart';
-import 'package:snitch/features/user/view/user_settings_view.dart';
 import 'package:snitch/features/user/widgets/user_bot_wrapper.dart';
 
 

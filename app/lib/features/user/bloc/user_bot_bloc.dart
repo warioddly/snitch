@@ -22,7 +22,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
   Future<void> _onStarted(UserBotStarted event, Emitter<UserBotState> emit) async {
 
     try {
-      emit(UserBotLoading());
+      // emit(UserBotLoading());
 
       client = await Nyxx.connectGateway(_token, GatewayIntents.all);
       final user = await client.users.fetchCurrentUser();
@@ -37,7 +37,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
       });
 
-      emit(UserBotLoaded());
+      // emit(UserBotLoaded());
     }
     catch (e) {
       debugPrint(e.toString());

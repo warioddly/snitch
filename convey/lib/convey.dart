@@ -1,5 +1,5 @@
 import 'package:convey/src/bot.dart';
-import 'package:convey/core/services/bot_config.dart';
+import 'package:convey/src/bot_config.dart';
 
 
 Future<void> runConvey() async {
