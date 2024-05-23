@@ -104,7 +104,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                         enableFeedback: true,
                         icon: const Icon(CupertinoIcons.info),
                         onPressed: () {
-                          Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_telegram_bot_token);
+                          Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
                         }
                     )
                 ),
@@ -145,7 +145,6 @@ class _BotCreateViewState extends State<BotCreateView> {
                           name: _nameController.text,
                           description: _descriptionController.text,
                           token: _tokenController.text,
-                          status: "active",
                           image: faker.image.image(),
                           createdAt: DateTime.now(),
                           updatedAt: DateTime.now(),

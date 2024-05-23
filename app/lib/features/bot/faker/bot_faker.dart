@@ -12,7 +12,6 @@ class BotFaker {
         description: faker.lorem.sentence(),
         token: faker.guid.guid(),
         image: faker.image.image(),
-        status: faker.randomGenerator.boolean().toString(),
         createdAt: faker.date.dateTime(),
         updatedAt: faker.date.dateTime()
     );

@@ -1,11 +1,11 @@
-import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/user/model/discord_user_model.dart';
-import 'package:snitch/shared/model/base_model_interface.dart';
 
-class ConsoleMessageModel extends IBaseModel {
+import 'package:convey/src/models/bot_model.dart';
+import 'package:convey/src/models/discord_user_model.dart';
+
+class ConsoleMessageModel {
+
 
   ConsoleMessageModel({
-    super.id,
     required this.content,
     required this.createdAt,
     required this.bot,
@@ -21,7 +21,6 @@ class ConsoleMessageModel extends IBaseModel {
 
   factory ConsoleMessageModel.fromJson(Map<String, dynamic> data) {
     return ConsoleMessageModel(
-        id: data["id"],
         bot: BotModel.fromJson(data["bot"]),
         user: DiscordUserModel.fromJson(data["user"]),
         content: data["content"] ?? "",
@@ -30,11 +29,8 @@ class ConsoleMessageModel extends IBaseModel {
   }
 
 
-  @override
   Map<String, dynamic> toJson() {
     return {
-      if (id != null)
-        "id": id,
       "bot": bot.toJson(),
       "user": user.toJson(),
       "content": content,

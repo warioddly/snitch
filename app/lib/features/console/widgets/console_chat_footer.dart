@@ -44,7 +44,7 @@ class _ChatFooterState extends State<ChatFooter> {
                     color: const Color(0xFFA3A3A8),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      bloc.add(UserBotMessageSent(textController.text));
+                      bloc.add(UserBotMessageSend(textController.text));
                       textController.clear();
                     },
                   ),

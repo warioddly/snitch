@@ -17,17 +17,27 @@ final class UserBotStopped extends UserBotEvent {
 final class UserBotMessageReceived extends UserBotEvent {
   const UserBotMessageReceived(this.message);
 
-  final Message message;
+  final ConsoleMessageModel message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+
+final class UserBotMessageSend extends UserBotEvent {
+  const UserBotMessageSend(this.message);
+
+  final String message;
 
   @override
   List<Object> get props => [message];
 }
 
 final class UserBotMessageSent extends UserBotEvent {
-  const UserBotMessageSent(this.content);
+  const UserBotMessageSent(this.message);
 
-  final String content;
+  final ConsoleMessageModel message;
 
   @override
-  List<Object> get props => [content];
+  List<Object> get props => [message];
 }

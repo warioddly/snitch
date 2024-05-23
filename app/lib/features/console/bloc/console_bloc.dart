@@ -21,7 +21,7 @@ class ConsoleBloc extends Bloc<ConsoleEvent, ConsoleState> {
   //
   // Future<void> _onStarted(ConsoleStarted event, Emitter<ConsoleState> emit) async {
   //
-  //   // final telegram = Telegram(bot.token);
+  //   // final discord = discord(bot.token);
   //   teledart = TeleDart(bot.token, Event(bot.name));
   //   teledart
   //     ..start()

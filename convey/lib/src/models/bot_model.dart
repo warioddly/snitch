@@ -5,18 +5,18 @@ class BotModel {
   const BotModel({
     required this.id,
     required this.name,
+    required this.token,
     required this.description,
     required this.owner,
-    required this.status,
     required this.createdAt,
     required this.updatedAt,
   });
 
   final int id;
   final String name;
+  final String token;
   final String? owner;
   final String description;
-  final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -28,7 +28,7 @@ class BotModel {
           name: data['name'] ?? 'Bot',
           owner: data['owner'] ?? 'Owner',
           description: data['description'],
-          status: data['status'],
+          token: data['token'],
           createdAt: DateTime.parse(data['createdAt']),
           updatedAt: DateTime.parse(data['updatedAt'])
       );
@@ -43,8 +43,8 @@ class BotModel {
       'id': id,
       'name': name,
       'owner': owner,
+      'token': token,
       'description': description,
-      'status': status,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

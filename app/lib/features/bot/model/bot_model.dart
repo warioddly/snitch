@@ -9,7 +9,6 @@ class BotModel extends IBaseModel {
     required this.name,
     required this.description,
     required this.token,
-    required this.status,
     required this.createdAt,
     required this.updatedAt,
     this.image,
@@ -20,7 +19,6 @@ class BotModel extends IBaseModel {
   final String description;
   final String? image;
   final String token;
-  final String status;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -31,8 +29,7 @@ class BotModel extends IBaseModel {
       name: data['name'],
       description: data['description'],
       image: data['image'],
-      token: data['token'],
-      status: data['status'],
+      token: data['token'] ?? '',
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt'])
     );
@@ -49,7 +46,6 @@ class BotModel extends IBaseModel {
       'description': description,
       'image': image,
       'token': token,
-      'status': status,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String()
     };
@@ -62,7 +58,6 @@ class BotModel extends IBaseModel {
     String? description,
     String? image,
     String? token,
-    String? status,
     DateTime? createdAt,
     DateTime? updatedAt
   }) {
@@ -72,7 +67,6 @@ class BotModel extends IBaseModel {
       description: description ?? this.description,
       image: image ?? this.image,
       token: token ?? this.token,
-      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt
     );

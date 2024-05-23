@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:convey/src/bot_model.dart';
+import 'package:convey/src/models/bot_model.dart';
 import 'package:convey/core/constants/constants.dart';
 import 'package:convey/core/helpers/path_helper.dart';
 import 'package:path/path.dart';
@@ -11,13 +11,11 @@ class BotConfig {
 
   const BotConfig({
     required this.bot,
-    required this.token,
     required this.guildId,
   });
 
 
   final BotModel bot;
-  final String token;
   final int guildId;
 
 
@@ -25,7 +23,6 @@ class BotConfig {
     try {
       return BotConfig(
           bot: BotModel.fromJson(data['bot']),
-          token: data['token'],
           guildId: data['guildId']
       );
     }
@@ -38,7 +35,6 @@ class BotConfig {
   Map<String, dynamic> toJson() {
     return {
       'bot': bot.toJson(),
-      'token': token,
       'guildId': guildId,
     };
   }
@@ -59,7 +55,7 @@ class BotConfig {
 
   static Future<Map<String, dynamic>?> getConfig() async {
 
-    final configFile = join(PathHelper.getCurrentPath(), Constants.CONFIG_FILENAME);
+    final configFile = join(PathHelper.getCurrentPath(), CONFIG_FILENAME);
 
     if (PathHelper.exists(configFile) == null) {
       File(configFile).createSync();

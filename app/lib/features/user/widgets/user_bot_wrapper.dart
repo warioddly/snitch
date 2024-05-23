@@ -31,10 +31,10 @@ class _UserBotWrapperState extends State<UserBotWrapper> {
     return BlocListener<UserBotBloc, UserBotState>(
       listener: (context, state) {
 
-        if (state is UserBotMessageReceivedState) {
+        if (state is UserBotPingMessageReceivedState) {
           BotToast.showSimpleNotification(
-            title: 'Message received',
-            subTitle: state.message.content,
+            title: '${state.message.bot.name} online',
+            subTitle: 'Ping message received! 🚀',
           );
         }
 
