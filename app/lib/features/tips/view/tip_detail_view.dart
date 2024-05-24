@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/features/tips/widgets/tip_mardown_renderer.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
-import 'package:snitch/shared/ui/layout/content_box.dart';
 
 class TipDetailView extends StatelessWidget {
 
@@ -32,11 +31,8 @@ class TipDetailView extends StatelessWidget {
               ),
             ];
           },
-          body: ContentBox(
-            padding: const EdgeInsets.all(16),
-            child: TipMarkdownRenderer(
-              source: tip.markdown,
-            ),
+          body: TipMarkdownRenderer(
+            source: tip.markdown,
           )
         )
       ),

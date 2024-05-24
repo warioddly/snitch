@@ -4,8 +4,16 @@ abstract class UserEvent extends Equatable {
   const UserEvent();
 }
 
-class UserCheckConfig extends UserEvent {
-  const UserCheckConfig();
+
+class UserGood extends UserEvent {
+  const UserGood();
+  @override
+  List<Object> get props => [];
+}
+
+
+class UserBad extends UserEvent {
+  const UserBad();
   @override
   List<Object> get props => [];
 }

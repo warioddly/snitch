@@ -7,7 +7,7 @@ import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
 import 'package:snitch/features/bot/widgets/bot_list_card.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/sliver_content_box.dart';
-import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
+import 'package:snitch/shared/ui/textfield/bordered_text_field.dart';
 
 class BotAllListView extends StatefulWidget {
 
@@ -67,7 +67,7 @@ class _BotAllListViewState extends State<BotAllListView> {
                   stretch: false,
                   snap: true,
                   automaticallyImplyLeading: false,
-                  flexibleSpace: StyledTextField(
+                  flexibleSpace: BorderedTextField(
                     controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Search Bots',

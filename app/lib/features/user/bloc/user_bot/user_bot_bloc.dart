@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:snitch/features/bot/faker/bot_faker.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
+import 'package:snitch/features/user/model/user_config_model.dart';
 
 part 'user_bot_event.dart';
 part 'user_bot_state.dart';
@@ -13,38 +14,38 @@ part 'user_bot_state.dart';
 class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
 
-  UserBotBloc() : super(UserBotInitialState()) {
-    on<UserBotStarted>(_onStarted);
-    on<UserBotMessageSend>(_onMessageSend);
-    on<UserBotMessageReceived>(_onMessageReceived);
+  UserBotBloc() : super(UserBotInitial()) {
+    on<UserBotStartEvent>(_onStarted);
+    on<UserBotMessageSendEvent>(_onMessageSend);
+    on<UserBotMessageReceivedEvent>(_onMessageReceived);
   }
 
 
-  final String _token =  "MTI0MzExNjM2NzkzMDk4NjU4Nw.Gg6VTO.jeBSmgTFvR6F_35d0pqzGYaR3Af3OI_u1YG-eU";
+  // guildId = 1243116555248734301;
+  // _token = MTI0MzExNjM2NzkzMDk4NjU4Nw.Gg6VTO.jeBSmgTFvR6F_35d0pqzGYaR3Af3OI_u1YG-eU;
+  // late final String _token;
   late final Discord discord;
   late final BotModel bot;
 
 
-  Future<void> _onStarted(UserBotStarted event, Emitter<UserBotState> emit) async {
+  Future<void> _onStarted(UserBotStartEvent event, Emitter<UserBotState> emit) async {
 
     try {
 
       bot = BotFaker.createBot();
 
       discord = Discord(
-          token: _token,
-          guildId: 1243116555248734301,
+          token: event.config.token,
+          guildId: event.config.guildId,
           onMessageCreate: _onMessage,
-          onReady: (ReadyEvent event) async {
-            debugPrint('User Bot is ready to receive messages! 🚀');
-          },
           onChannelReady: (channel) async {
-            debugPrint('User Bot is connected to channel: ${channel.name}');
             _sendMessage('!ping');
           },
       );
 
-      discord.start();
+      await discord.start();
+
+      emit(const UserBotStarted());
 
     }
     catch (e) {
@@ -54,15 +55,15 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
   }
 
 
-  Future<void> _onMessageReceived(UserBotMessageReceived event, Emitter<UserBotState> emit) async {
+  Future<void> _onMessageReceived(UserBotMessageReceivedEvent event, Emitter<UserBotState> emit) async {
     try {
 
       if (event.message.content == '!ping') {
-        emit(UserBotPingMessageReceivedState(event.message));
+        emit(UserBotPingMessageReceived(event.message));
         return;
       }
 
-      emit(UserBotMessageReceivedState(event.message));
+      emit(UserBotMessageReceived(event.message));
     }
     catch (e) {
       debugPrint(e.toString());
@@ -71,7 +72,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
   }
 
 
-  Future<void> _onMessageSend(UserBotMessageSend event, Emitter<UserBotState> emit) async {
+  Future<void> _onMessageSend(UserBotMessageSendEvent event, Emitter<UserBotState> emit) async {
     try {
       final message = ConsoleMessageModel.fromJson({
         'bot': bot.toJson(),
@@ -80,7 +81,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
         'createdAt': DateTime.now().toIso8601String(),
       });
       await _sendMessage(jsonEncode(message.toJson()));
-      emit(UserBotMessageSentState(message));
+      emit(UserBotMessageSent(message));
     }
     catch (e) {
       debugPrint(e.toString());
@@ -100,12 +101,12 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
         return;
       }
 
-      add(UserBotMessageReceived(ConsoleMessageModel.fromJson(jsonDecode(message.content))));
+      print('Message received: ${message.content}');
+      add(UserBotMessageReceivedEvent(ConsoleMessageModel.fromJson(jsonDecode(message.content))));
 
     }
-    catch (e, s) {
+    catch (e) {
       debugPrint(e.toString());
-      debugPrint(s.toString());
     }
 
   }

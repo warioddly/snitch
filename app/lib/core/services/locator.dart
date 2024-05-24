@@ -6,6 +6,7 @@ import 'package:snitch/features/bot/bloc/bot_search_bloc/bot_search_bloc.dart';
 import 'package:snitch/features/bot/repository/bot_local_repository.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
+import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
 import 'package:snitch/features/user/repository/user_local_repository.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 
@@ -35,8 +36,9 @@ void _botInstances() {
 
 void _userInstances() {
 
-  _locator.registerFactory<UserBloc>(() => UserBloc(repository: _locator.call()));
+  _locator.registerFactory<UserBloc>(() => UserBloc());
   _locator.registerFactory<UserBotBloc>(() => UserBotBloc());
+  _locator.registerFactory<UserConfigBloc>(() => UserConfigBloc(repository: _locator.call()));
   _locator.registerFactory<UserLocalRepository>(() => UserLocalRepository(db: _locator.get<DB>().db));
 
 }

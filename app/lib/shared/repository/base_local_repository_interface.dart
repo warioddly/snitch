@@ -9,11 +9,11 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
 
   final Database db;
 
-  Future<T> create(T model) {
+  Future<T?> create(T model) {
     throw UnimplementedError();
   }
 
-  Future<T> read(String id) {
+  Future<T?> read(int id) {
     throw UnimplementedError();
   }
 

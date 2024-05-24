@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/features/bot/view/bot_create_view.dart';
+import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 
 class EmptyHomePage extends StatelessWidget {
@@ -20,7 +21,6 @@ class EmptyHomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-
           const Logo(),
 
           Text(
@@ -34,7 +34,7 @@ class EmptyHomePage extends StatelessWidget {
           const SizedBox(height: 10),
 
           Text(
-            "Start chatting with ChattyAI now. You can ask me anything.",
+            "Start chatting with $APP_NAME now.",
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w400,
@@ -44,16 +44,11 @@ class EmptyHomePage extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          TextButton(
+          StyledTextButton(
             onPressed: () {
               Navigator.of(context).pushNamed(BotCreateView.route);
             },
-            child: Text(
-              "Create Bot",
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            text: 'Create Bot'
           )
 
         ],

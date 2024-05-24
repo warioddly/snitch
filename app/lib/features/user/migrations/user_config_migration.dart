@@ -19,12 +19,8 @@ class UserConfigMigration extends IBaseMigration {
       CREATE TABLE $table (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        description TEXT NOT NULL,
-        image TEXT,
         token TEXT NOT NULL,
-        status TEXT NOT NULL,
-        createdAt TEXT NOT NULL,
-        updatedAt TEXT NOT NULL
+        guildId INTEGER NOT NULL
       )
     ''');
 

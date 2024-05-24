@@ -4,40 +4,33 @@ sealed class UserBotState extends Equatable {
   const UserBotState();
 }
 
-final class UserBotInitialState extends UserBotState {
+final class UserBotInitial extends UserBotState {
   @override
   List<Object> get props => [];
 }
 
-final class UserBotLoadingState extends UserBotState {
+final class UserBotStarted extends UserBotState {
+  const UserBotStarted();
   @override
   List<Object> get props => [];
 }
 
-final class UserBotLoadedState extends UserBotState {
-  @override
-  List<Object> get props => [];
-}
-
-
-final class UserBotMessageReceivedState extends UserBotState {
-  const UserBotMessageReceivedState(this.message);
+final class UserBotMessageReceived extends UserBotState {
+  const UserBotMessageReceived(this.message);
   final ConsoleMessageModel message;
   @override
   List<Object> get props => [message];
 }
 
-
-final class UserBotMessageSentState extends UserBotState {
-  const UserBotMessageSentState(this.message);
+final class UserBotMessageSent extends UserBotState {
+  const UserBotMessageSent(this.message);
   final ConsoleMessageModel message;
   @override
   List<Object> get props => [message];
 }
 
-
-final class UserBotPingMessageReceivedState extends UserBotState {
-  const UserBotPingMessageReceivedState(this.message);
+final class UserBotPingMessageReceived extends UserBotState {
+  const UserBotPingMessageReceived(this.message);
   final ConsoleMessageModel message;
   @override
   List<Object> get props => [message];

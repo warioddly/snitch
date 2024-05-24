@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:convey/core/constants/constants.dart';
 import 'package:convey/src/models/bot_model.dart';
 import 'package:convey/src/bot_config.dart';
 import 'package:convey/src/models/console_message_model.dart';
@@ -63,7 +62,8 @@ class Bot {
       final result = await cmd.run(consoleMessage.content);
       _sendMessage(result.first.stdout, message);
 
-    } catch (e) {
+    }
+    catch (e) {
       _sendMessage(e.toString(), message);
     }
 
@@ -73,26 +73,26 @@ class Bot {
   Future<void> _sendMessage(String content, [Message? message]) async {
     try {
 
-      if (content.length >= MAX_MESSAGE_LENGTH) {
-
-        // Split the message into multiple messages with a maximum of 2000 characters each
-        final messages = <String>[];
-
-        for (var i = 0; i < content.length; i += MAX_MESSAGE_LENGTH) {
-          content = content.substring(i, i + MAX_MESSAGE_LENGTH > content.length ? content.length : i + MAX_MESSAGE_LENGTH);
-          messages.add(content);
-          i = 0;
-          print("messages[i].length part $content");
-          print("messages[i].length ${messages[i].length}");
-        }
-
-
-        for (final content in messages) {
-          await discord.sendMessage(_buildMessage(content));
-        }
-
-        return;
-      }
+      // if (content.length >= MAX_MESSAGE_LENGTH) {
+      //
+      //   // Split the message into multiple messages with a maximum of 2000 characters each
+      //   final messages = <String>[];
+      //
+      //   for (var i = 0; i < content.length; i += MAX_MESSAGE_LENGTH) {
+      //     content = content.substring(i, i + MAX_MESSAGE_LENGTH > content.length ? content.length : i + MAX_MESSAGE_LENGTH);
+      //     messages.add(content);
+      //     i = 0;
+      //     print("messages[i].length part $content");
+      //     print("messages[i].length ${messages[i].length}");
+      //   }
+      //
+      //
+      //   for (final content in messages) {
+      //     await discord.sendMessage(_buildMessage(content));
+      //   }
+      //
+      //   return;
+      // }
 
       await discord.sendMessage(_buildMessage(content));
 

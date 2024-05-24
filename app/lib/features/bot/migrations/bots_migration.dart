@@ -22,7 +22,6 @@ class BotMigration extends IBaseMigration {
         description TEXT NOT NULL,
         image TEXT,
         token TEXT NOT NULL,
-        status TEXT NOT NULL,
         createdAt TEXT NOT NULL,
         updatedAt TEXT NOT NULL
       )

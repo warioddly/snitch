@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
-import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
+import 'package:snitch/shared/ui/textfield/bordered_text_field.dart';
 
 class ChatFooter extends StatefulWidget {
 
@@ -29,7 +29,7 @@ class _ChatFooterState extends State<ChatFooter> {
         children: [
 
           Flexible(
-            child: StyledTextField(
+            child: BorderedTextField(
                 controller: textController,
                 decoration: InputDecoration(
                   hintText: 'Send a command',
@@ -44,7 +44,7 @@ class _ChatFooterState extends State<ChatFooter> {
                     color: const Color(0xFFA3A3A8),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
-                      bloc.add(UserBotMessageSend(textController.text));
+                      bloc.add(UserBotMessageSendEvent(textController.text));
                       textController.clear();
                     },
                   ),

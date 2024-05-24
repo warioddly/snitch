@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/database/migrations.dart';
+import 'package:snitch/core/services/db.dart';
 import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
@@ -54,7 +57,11 @@ class UserSettingsView extends StatelessWidget {
                 MenuListTileItem(
                     title: 'Delete Bot',
                     icon: CupertinoIcons.delete,
-                    onTap: () => debugPrint('Delete bot'),
+                    onTap: () async{
+
+                      await Migrations.down(GetIt.I.get<DB>().db);
+
+                    },
                     type: MenuListTileType.ERROR,
                     enableTrailing: false
                 ),

@@ -10,7 +10,7 @@ import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
-import 'package:snitch/shared/ui/images/logo.dart';
+import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
@@ -45,24 +45,25 @@ class _BotCreateViewState extends State<BotCreateView> {
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              const Logo(
-                width: 100,
-                height: 100,
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Text(
+                    'Create Your ${BOT_APP_NAME.toUpperCase()} Bot',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    )
+                ),
               ),
 
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 20),
 
               StyledTextField(
                 controller: _nameController,
                 decoration: InputDecoration(
                     hintText: 'Enter bot name*',
-                    suffixIconConstraints: const BoxConstraints(
-                        maxHeight: 42,
-                        maxWidth: 42
-                    ),
                     suffixIcon: IconButton(
                         visualDensity: VisualDensity.compact,
                         enableFeedback: true,
@@ -77,7 +78,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               ),
 
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
 
               StyledTextField(
@@ -88,17 +89,13 @@ class _BotCreateViewState extends State<BotCreateView> {
               ),
 
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
 
               StyledTextField(
-                controller: _tokenController..text = "7021758078:AAH1GzauHADSqHl1jiwAPDpGeRvBUse6-yQ",
+                controller: _tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
                 decoration: InputDecoration(
                     hintText: 'Enter bot token',
-                    suffixIconConstraints: const BoxConstraints(
-                        maxHeight: 42,
-                        maxWidth: 42
-                    ),
                     suffixIcon: IconButton(
                         visualDensity: VisualDensity.compact,
                         enableFeedback: true,
@@ -111,7 +108,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               ),
 
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
 
               BlocConsumer<BotActionBloc, BotActionState>(
@@ -124,6 +121,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                   }
 
                   if (state is BotActionError) {
+                    print(state.message);
                     BotToast.showSimpleNotification(
                       title: "Oops! Something went wrong",
                       backgroundColor: Colors.red,
@@ -132,7 +130,8 @@ class _BotCreateViewState extends State<BotCreateView> {
 
                 },
                 builder: (context, state) {
-                  return ElevatedButton(
+                  return StyledTextButton(
+                    loading: state is BotActionLoading,
                     onPressed: () {
 
                       if (state is BotActionLoading) {
@@ -154,32 +153,19 @@ class _BotCreateViewState extends State<BotCreateView> {
 
                       }
                     },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('Create Bot'),
-
-                        const SizedBox(width: 16),
-
-                        if (state is BotActionLoading)
-                          const SizedBox(
-                            width: 10,
-                            height: 10,
-                            child: CupertinoActivityIndicator()
-                          )
-
-                      ],
-                    ),
+                    text: 'Create Bot',
                   );
                 },
               ),
 
 
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  "${BOT_APP_NAME.toUpperCase()} v1.0.0",
-                  style: Theme.of(context).textTheme.bodySmall,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    "${BOT_APP_NAME.toUpperCase()} v1.0.0",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                 ),
               )
 

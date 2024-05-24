@@ -1,9 +1,9 @@
 import 'package:snitch/core/constants/db_constants.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/user/model/user_config_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
 
-class IUserLocalRepository<T> extends IBaseLocalRepository<BotModel> {
+class IUserLocalRepository<T> extends IBaseLocalRepository<UserConfigModel> {
   const IUserLocalRepository({required super.db});
 
   Future<T?> getConfigs() {
@@ -12,7 +12,7 @@ class IUserLocalRepository<T> extends IBaseLocalRepository<BotModel> {
 
 }
 
-class UserLocalRepository extends IUserLocalRepository<BotModel> {
+class UserLocalRepository extends IUserLocalRepository<UserConfigModel> {
 
   const UserLocalRepository({required super.db});
 
@@ -21,7 +21,7 @@ class UserLocalRepository extends IUserLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel> create(BotModel model) async {
+  Future<UserConfigModel?> create(UserConfigModel model) async {
     try {
       final id = await db.insert(table, model.toJson());
       return model.copyWith(id: id);
@@ -32,13 +32,13 @@ class UserLocalRepository extends IUserLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel> read(String id) async {
+  Future<UserConfigModel?> read(int id) async {
     try {
       final maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
       if (maps.isEmpty) {
         throw Exception('Record not found');
       }
-      return BotModel.fromJson(maps.first);
+      return UserConfigModel.fromJson(maps.first);
     } catch (e) {
       throw Exception(e);
     }
@@ -46,7 +46,7 @@ class UserLocalRepository extends IUserLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel> update(BotModel model) async {
+  Future<UserConfigModel> update(UserConfigModel model) async {
     try {
       int result = await db.update(table, model.toJson(), where: 'id = ?', whereArgs: [model.id]);
       if (result == 0) {
@@ -60,13 +60,13 @@ class UserLocalRepository extends IUserLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel?> getConfigs() async {
+  Future<UserConfigModel?> getConfigs() async {
     try {
       final maps = await db.query(table);
       if (maps.isEmpty) {
-        throw Exception('Record not found');
+        return null;
       }
-      return BotModel.fromJson(maps.first);
+      return UserConfigModel.fromJson(maps.first);
     } catch (e) {
       throw Exception(e);
     }

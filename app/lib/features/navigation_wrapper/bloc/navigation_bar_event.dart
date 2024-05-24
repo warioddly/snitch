@@ -1,10 +1,11 @@
 part of 'navigation_bar_bloc.dart';
 
 @immutable
-sealed class NavigationBarEvent {}
+sealed class NavigationBarEvent {
+  const NavigationBarEvent();
+}
 
 final class NavigationBarChanged extends NavigationBarEvent {
   final int index;
-
-  NavigationBarChanged(this.index);
+  const NavigationBarChanged(this.index);
 }

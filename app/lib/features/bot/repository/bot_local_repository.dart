@@ -14,7 +14,7 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel> create(BotModel model) async {
+  Future<BotModel?> create(BotModel model) async {
     try {
       final id = await db.insert(table, model.toJson());
       return model.copyWith(id: id);
@@ -47,7 +47,7 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
 
 
   @override
-  Future<BotModel> read(String id) async {
+  Future<BotModel?> read(int id) async {
     try {
       final maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
       if (maps.isEmpty) {

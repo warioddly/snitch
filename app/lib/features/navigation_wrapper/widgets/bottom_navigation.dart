@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-typedef BottomNavigationItem = (String, Widget, IconData);
+import 'package:snitch/features/navigation_wrapper/model/bottom_navigation_item.dart';
 
 class BottomNavigation extends StatelessWidget {
 
@@ -36,7 +35,7 @@ class BottomNavigation extends StatelessWidget {
 
   List<BottomNavigationBarItem> _generateItems(List<BottomNavigationItem> items) {
     return items.map((item) => BottomNavigationBarItem(
-        icon: Icon(item.$3),
+        icon: Icon(item.icon),
         label: ""
     )).toList();
   }

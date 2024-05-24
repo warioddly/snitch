@@ -12,6 +12,7 @@ class TipMarkdownRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Markdown(
+        padding: const EdgeInsets.all(25),
         data: source,
         selectable: true,
         imageDirectory: "/assets/images",
