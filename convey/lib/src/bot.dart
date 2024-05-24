@@ -4,6 +4,7 @@ import 'package:convey/src/models/bot_model.dart';
 import 'package:convey/src/bot_config.dart';
 import 'package:convey/src/models/console_message_model.dart';
 import 'package:convey/src/runner.dart';
+import 'package:discord/discord.dart';
 import 'package:nyxx/nyxx.dart';
 
 
@@ -14,26 +15,38 @@ class Bot {
 
   final Cmd cmd = Cmd();
   final BotConfig config;
-  late final NyxxGateway client;
-  late final Guild guild;
-  late final GuildTextChannel channel;
-  late final User user;
+  late final Discord discord;
 
 
   void start() async {
 
-    client = await Nyxx.connectGateway(config.bot.token, GatewayIntents.all);
-    user   = await client.users.fetchCurrentUser();
+    discord = Discord(
+        token: config.bot.token,
+        guildId: config.guildId,
+        onMessageCreate: _onMessage,
+        onReady: (ReadyEvent event) async {
+          print('Bot is ready to receive messages! 🚀');
+        },
+        onChannelReady: (channel) async {
+          print('Bot is connected to channel: ${channel.name}');
+          _sendMessage('!ping');
+        },
+    );
 
-    client.onReady.listen((event) async {
+    discord.start();
 
-      await _getChannel();
+    // client = await Nyxx.connectGateway(config.bot.token, GatewayIntents.all);
+    // user   = await client.users.fetchCurrentUser();
 
-      print('Bot is ready to receive messages! 🚀');
-
-      client.onMessageCreate.listen(_onMessage);
-
-    });
+    // client.onReady.listen((event) async {
+    //
+    //   await _getChannel();
+    //
+    //   print('Bot is ready to receive messages! 🚀');
+    //
+    //   client.onMessageCreate.listen(_onMessage);
+    //
+    // });
 
   }
 
@@ -46,7 +59,7 @@ class Bot {
 
       print('Message received: ${message.content}');
 
-      if (event.message.author.id == user.id) {
+      if (event.message.author.id == discord.user.id) {
         return;
       }
       else if (message.content.isEmpty) {
@@ -74,8 +87,6 @@ class Bot {
   Future<void> _sendMessage(String content, [Message? message, bool reply = false]) async {
     try {
 
-
-
       if (content.length >= MAX_MESSAGE_LENGTH) {
 
         // Split the message into multiple messages with a maximum of 2000 characters each
@@ -85,47 +96,25 @@ class Bot {
           content = content.substring(i, i + MAX_MESSAGE_LENGTH > content.length ? content.length : i + MAX_MESSAGE_LENGTH);
           messages.add(content);
           i = 0;
-          print("messages[i].length part ${content}");
+          print("messages[i].length part $content");
           print("messages[i].length ${messages[i].length}");
         }
 
 
         for (final content in messages) {
-          await channel.sendMessage(MessageBuilder(
-            content: _buildMessage(content),
-            replyId: reply ? null : message?.id,
-          ));
+          await discord.sendMessage(_buildMessage(content));
         }
 
         return;
       }
 
-      await channel.sendMessage(MessageBuilder(
-        content: _buildMessage(content),
-        replyId: reply ? null : message?.id,
-      ));
+      await discord.sendMessage(_buildMessage(content));
 
     }
     catch (e) {
       print('Error sending message: $e');
-      await channel.sendMessage(MessageBuilder(
-        content: _buildMessage('Error sending message: $e'),
-        replyId: reply ? null : message?.id,
-      ));
+      await discord.sendMessage(_buildMessage('Error sending message: $e'));
     }
-  }
-
-
-  Future<void> _getChannel() async {
-    guild = await client.guilds.fetch(Snowflake(config.guildId));
-
-    client.channels.cache.forEach((Snowflake id, Channel channel) async {
-      if (channel is GuildTextChannel) {
-        print('Bot is connected to channel: ${channel.name}');
-        this.channel = channel;
-        _sendMessage('!ping');
-      }
-    });
   }
 
 
@@ -133,19 +122,13 @@ class Bot {
     return jsonEncode({
       'bot': bot.toJson(),
       'user': {
-        'id': user.id.value,
-        'name': user.username,
-        'avatar': user.avatar.url.toString()
+        'id': discord.user.id.value,
+        'name': discord.user.username,
+        'avatar': discord.user.avatar.url.toString()
       },
       'content': content,
       'createdAt': DateTime.now().toIso8601String(),
     });
-  }
-
-
-  void stop() {
-    client.close();
-    print('Bot is stopping... 🛑');
   }
 
 

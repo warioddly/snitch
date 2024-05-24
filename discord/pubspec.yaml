@@ -1,4 +1,4 @@
-name: convey
+name: discord
 description: A sample command-line application with basic argument parsing.
 version: 0.0.1
 publish_to: none
@@ -9,13 +9,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  args: ^2.4.2
-  path: ^1.9.0
-  intl: ^0.19.0
-  process_run: ^0.14.2
   nyxx: ^6.2.1
-  discord:
-    path: ../discord
 
 dev_dependencies:
   lints: ^3.0.0
