@@ -29,6 +29,7 @@ class ConsoleMessageBoxHeader extends StatelessWidget {
                   message.user.avatar!,
                   width: 30,
                   height: 30,
+                  errorBuilder: (context, error, stackTrace) => const Logo(width: 30, height: 30),
                 )
               : const Logo(width: 30, height: 30),
         ),

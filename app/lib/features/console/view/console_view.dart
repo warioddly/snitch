@@ -5,6 +5,7 @@ import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/console/widgets/console_chat_footer.dart';
+import 'package:snitch/features/console/widgets/console_empty_chat.dart';
 import 'package:snitch/features/console/widgets/console_message_box.dart';
 import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
@@ -60,12 +61,7 @@ class _ConsoleViewState extends State<ConsoleView> {
         listener: (context, state) {
 
           if (state is UserBotMessageReceivedState) {
-            // BotToast.showSimpleNotification(
-            //   title: 'Message received',
-            //   subTitle: '${state.message.bot.name} online',
-            // );
             messages.add(state.message);
-
           }
 
           if (state is UserBotMessageSentState) {
@@ -80,50 +76,56 @@ class _ConsoleViewState extends State<ConsoleView> {
 
         },
         builder: (context, state) {
+          return Column(
+            children: [
 
-          return CustomScrollView(
-            shrinkWrap: false,
-            controller: _scrollController,
-            slivers: [
+              Expanded(
+                child: CustomScrollView(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  slivers: [
 
-              /// TODO: Implement Sliver Search Bar
-              // const SliverAppBar(
-              //   snap: true,
-              //   floating: true,
-              //   pinned: false,
-              //   automaticallyImplyLeading: false,
-              //   flexibleSpace: ChatFooter(),
-              // ),
+                    /// TODO: Implement Sliver Search Bar
+                    // const SliverAppBar(
+                    //   snap: true,
+                    //   floating: true,
+                    //   pinned: false,
+                    //   automaticallyImplyLeading: false,
+                    //   flexibleSpace: ChatFooter(),
+                    // ),
 
 
-              SliverList(
-                delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                    return ConsoleMessageBox(message: messages[index]);
-                  },
-                  childCount: messages.length,
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                        return ConsoleMessageBox(
+                          key: ValueKey(messages[index].id),
+                          message: messages[index],
+                        );
+                      },
+                        childCount: messages.length,
+                      ),
+                    ),
+
+
+                    if (messages.isEmpty)
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                          return const ConsoleEmptyChat();
+                        },
+                          childCount: 1,
+                        ),
+                      )
+
+                  ],
                 ),
               ),
 
-              // Stack(
-              //   children: <Widget>[
-              //     GestureDetector(
-              //         onPanDown: (_) => FocusScope.of(context).unfocus(),
-              //         child: ListView(
-              //           reverse: true,
-              //           shrinkWrap: true,
-              //           children: true
-              //               ? messages.map((message) => ConsoleMessageBox(message: message)).toList()
-              //               : const [ ConsoleEmptyChat() ],
-              //         )
-              //     ),
-              //   ],
-              // ),
+              const ChatFooter(),
 
             ],
           );
         },
       ),
-      bottomNavigationBar: const ChatFooter(),
     );
   }
 

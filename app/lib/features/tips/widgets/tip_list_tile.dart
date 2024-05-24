@@ -1,9 +1,6 @@
-
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
+import 'package:snitch/features/tips/view/tip_detail_view.dart';
 
 class TipListTile extends StatelessWidget {
 
@@ -22,22 +19,9 @@ class TipListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         onTap: () {
 
-          showCupertinoDialog(
-              context: context,
-              builder: (context) {
-                return CupertinoAlertDialog(
-                  title: Text(tip.title),
-                  content: Text(tip.description),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
-                );
-              }
+          Navigator.of(context).pushNamed(
+            TipDetailView.route,
+            arguments: tip,
           );
 
         },
