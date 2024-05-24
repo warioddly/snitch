@@ -18,7 +18,7 @@ class ConsoleMessageBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 35),
       decoration: BoxDecoration(
-        color: message.user.id == userBotBloc.user.id.value ? Colors.transparent : theme.colorScheme.secondary.withOpacity(0.1),
+        color: message.user.id == userBotBloc.user?.id ? Colors.transparent : theme.colorScheme.secondary.withOpacity(0.1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

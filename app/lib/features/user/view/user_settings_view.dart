@@ -29,13 +29,13 @@ class UserSettingsView extends StatelessWidget {
                   title: 'Preferences',
                   subtitle: "Change bot's preferences",
                   icon: CupertinoIcons.gear_alt,
-                  onTap: () => print('Preferences'),
+                  onTap: () => debugPrint('Preferences'),
                 ),
                 MenuListTileItem(
                   title: 'Languages',
                   subtitle: "App language settings",
                   icon: CupertinoIcons.globe,
-                  onTap: () => print('Preferences'),
+                  onTap: () => debugPrint('Preferences'),
                 ),
                 MenuListTileItem(
                   title: 'Theme',
@@ -49,12 +49,12 @@ class UserSettingsView extends StatelessWidget {
                   title: 'About',
                   subtitle: "View information about the app",
                   icon: CupertinoIcons.info,
-                  onTap: () => print('Information'),
+                  onTap: () => debugPrint('Information'),
                 ),
                 MenuListTileItem(
                     title: 'Delete Bot',
                     icon: CupertinoIcons.delete,
-                    onTap: () => print('Delete bot'),
+                    onTap: () => debugPrint('Delete bot'),
                     type: MenuListTileType.ERROR,
                     enableTrailing: false
                 ),

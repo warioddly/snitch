@@ -7,6 +7,7 @@ import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
 import 'package:snitch/features/console/view/console_view.dart';
+import 'package:snitch/features/onboarding/view/onboarding_view.dart';
 import 'package:snitch/features/user/view/user_settings_view.dart';
 import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
@@ -21,6 +22,7 @@ class AppRoutes {
   static Map<String, Widget Function(BuildContext)> routes = {
     NavigationWrapperView.route: (context) => const NavigationWrapperView(),
     HomeView.route: (context) => const HomeView(),
+    OnboardingView.route: (context) => const OnboardingView(),
 
     TipsView.route: (context) => const TipsView(),
     TipDetailView.route: (context) {

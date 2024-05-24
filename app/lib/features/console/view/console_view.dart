@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
-import 'package:snitch/features/console/bloc/console_bloc.dart';
-import 'package:snitch/features/console/faker/console_message_faker.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/console/widgets/console_chat_footer.dart';
 import 'package:snitch/features/console/widgets/console_message_box.dart';

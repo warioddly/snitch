@@ -1,3 +1,4 @@
+import 'package:discord/discord.dart';
 import 'package:nyxx/nyxx.dart';
 
 
@@ -24,10 +25,11 @@ class Discord {
   final DiscordClientReadyEvent?   onReady;
   final DiscordChannelReadyEvent?  onChannelReady;
 
-  late final NyxxGateway      _client;
-  late final GuildTextChannel _channel;
-  late final User  _user;
-  late final Guild _guild;
+  NyxxGateway?      _client;
+  GuildTextChannel? _channel;
+  User?  _user;
+  DiscordUserModel? _discordUser;
+  Guild? _guild;
 
 
   Future<void> start() async {
@@ -37,15 +39,23 @@ class Discord {
     }
 
     _client = await Nyxx.connectGateway(token, GatewayIntents.all);
-    _user   = await _client.users.fetchCurrentUser();
+    _user   = await _client?.users.fetchCurrentUser();
 
-    _client.onReady.listen((ReadyEvent event) async {
+
+    if (_user == null) {
+      throw Exception('User is null');
+    }
+
+    _discordUser = DiscordUserModel.fromUser(_user!);
+
+
+    _client?.onReady.listen((ReadyEvent event) async {
 
       await _getChannel();
 
       print('Discord is ready to receive messages! 🚀');
 
-      _client.onMessageCreate.listen(_onMessage);
+      _client?.onMessageCreate.listen(_onMessage);
 
       onReady?.call(event);
 
@@ -55,7 +65,9 @@ class Discord {
 
 
   Future<void> sendMessage(String content, [Message? message, bool reply = false]) async {
-    await _channel.sendMessage(MessageBuilder(content: content));
+    await _channel?.sendMessage(MessageBuilder(
+        content: content,
+    ));
   }
 
 
@@ -65,40 +77,39 @@ class Discord {
 
 
   Future<void> _getChannel() async {
-    _guild = await _client.guilds.fetch(Snowflake(guildId));
-    _client.channels.cache.forEach((Snowflake id, Channel channel) async {
+    _guild = await _client?.guilds.fetch(Snowflake(guildId));
+    _client?.channels.cache.forEach((Snowflake id, Channel channel) async {
       if (channel is GuildTextChannel) {
-        print('Bot is connected to channel: ${channel.name}');
+        print('${user?.name} is connected to channel: ${channel.name}');
         _channel = channel;
-        onChannelReady?.call(_channel);
+        onChannelReady?.call(channel);
       }
     });
   }
 
 
   void stop() {
-    _client.close();
-    print('Bot is stopping... 🛑');
+    _client?.close();
+    print('Discord is stopping... 🛑');
   }
 
 
-  void restart() {
+  Future<void> restart() async {
     stop();
-    start();
+    await start();
   }
 
 
-
-  NyxxGateway get client => _client;
-
-
-  GuildTextChannel get channel => _channel;
+  NyxxGateway? get client => _client;
 
 
-  User get user => _user;
+  GuildTextChannel? get channel => _channel;
 
 
-  Guild get guild => _guild;
+  DiscordUserModel? get user => _discordUser;
+
+
+  Guild? get guild => _guild;
 
   // String _buildMessage(String content) {
   //   return jsonEncode({

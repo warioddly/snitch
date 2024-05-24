@@ -18,8 +18,6 @@ class DB {
 
     final exists = await databaseExists(path);
 
-    print("exists $exists");
-
     if (!exists) {
       try {
         await Directory(dirname(path)).create(recursive: true);

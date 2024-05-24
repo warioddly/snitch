@@ -217,7 +217,7 @@ packages:
     source: hosted
     version: "2.0.2"
   nyxx:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: nyxx
       sha256: "81c34dfbcc1a7c336a19b24cb2f73455b56bf42aaabb38e6469ec4c5d3fb327f"

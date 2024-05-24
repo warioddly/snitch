@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:snitch/features/bot/migrations/bots_migration.dart';
 import 'package:snitch/features/tips/migration/tips_categories_migration.dart';
 import 'package:snitch/features/tips/migration/tips_migration.dart';
@@ -19,10 +20,10 @@ class Migrations {
     for (final migration in migrations) {
       if (!await migration.isMigrated(db)) {
         await migration.up(db);
-        print('Table ${migration.table} created');
+        debugPrint('Table ${migration.table} created');
       }
       else {
-        print('Table ${migration.table} already exists');
+        debugPrint('Table ${migration.table} already exists');
       }
     }
 

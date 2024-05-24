@@ -92,8 +92,6 @@ class BotLocalRepository implements IBotLocalRepository {
   @override
   Future<List<BotModel>> search(String query) async {
     try {
-      print(query);
-      // final maps = await db.query(table, where: 'name LIKE ?', whereArgs: ['%$query%']);
       final maps = await db.rawQuery("SELECT * FROM $table WHERE name LIKE '%$query%'");
       return maps.map((e) => BotModel.fromJson(e)).toList();
     }

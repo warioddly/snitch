@@ -1,9 +1,8 @@
 import 'dart:convert';
-
+import 'package:discord/discord.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:nyxx/nyxx.dart';
 import 'package:snitch/features/bot/faker/bot_faker.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
@@ -22,29 +21,30 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
 
   final String _token =  "MTI0MzExNjM2NzkzMDk4NjU4Nw.Gg6VTO.jeBSmgTFvR6F_35d0pqzGYaR3Af3OI_u1YG-eU";
-  late final NyxxGateway client;
-  late final User        user;
-  late final BotModel    bot;
-  PartialTextChannel?    _channel;
+  late final Discord discord;
+  late final BotModel bot;
 
 
   Future<void> _onStarted(UserBotStarted event, Emitter<UserBotState> emit) async {
 
     try {
 
-      bot    = BotFaker.createBot();
-      client = await Nyxx.connectGateway(_token, GatewayIntents.all);
-      user   = await client.users.fetchCurrentUser();
+      bot = BotFaker.createBot();
 
-      client.onReady.listen((event) async {
+      discord = Discord(
+          token: _token,
+          guildId: 1243116555248734301,
+          onMessageCreate: _onMessage,
+          onReady: (ReadyEvent event) async {
+            debugPrint('User Bot is ready to receive messages! 🚀');
+          },
+          onChannelReady: (channel) async {
+            debugPrint('User Bot is connected to channel: ${channel.name}');
+            _sendMessage('!ping');
+          },
+      );
 
-        await _getChannel();
-
-        debugPrint('User Bot is ready to receive messages! 🚀');
-
-        client.onMessageCreate.listen(_onMessage);
-
-      });
+      discord.start();
 
     }
     catch (e) {
@@ -55,7 +55,6 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
 
   Future<void> _onMessageReceived(UserBotMessageReceived event, Emitter<UserBotState> emit) async {
-
     try {
 
       if (event.message.content == '!ping') {
@@ -76,11 +75,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
     try {
       final message = ConsoleMessageModel.fromJson({
         'bot': bot.toJson(),
-        'user': {
-          'id': user.id.value,
-          'name': user.username,
-          'avatar': user.avatar.url.path,
-        },
+        'user': discord.user?.toJson(),
         'content': event.message,
         'createdAt': DateTime.now().toIso8601String(),
       });
@@ -93,19 +88,6 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
   }
 
 
-  Future<void> _getChannel() async {
-
-    await client.guilds.fetch(const Snowflake(1243116555248734301));
-
-    client.channels.cache.forEach((Snowflake id, Channel channel) async {
-      if (channel is GuildTextChannel) {
-        debugPrint('User Bot is connected to channel: ${channel.name}');
-        _channel = channel;
-      }
-    });
-  }
-
-
   Future<void> _onMessage(MessageCreateEvent event) async {
 
     try {
@@ -113,7 +95,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
       final message = event.message;
 
-      if (event.message.author.id == user.id || message.content.isEmpty) {
+      if (event.message.author.id.value == discord.user?.id || message.content.isEmpty) {
         debugPrint('Message received: ${message.content}');
         return;
       }
@@ -131,12 +113,14 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
   Future<void> _sendMessage(String content, [Message? message, bool reply = false]) async {
     try {
-      await _channel?.sendMessage(MessageBuilder(content: content, replyId: reply ? null : message?.id));
+      await discord.sendMessage(content, message, reply);
     }
     catch (e) {
       debugPrint(e.toString());
     }
   }
 
+
+  DiscordUserModel? get user => discord.user;
 
 }

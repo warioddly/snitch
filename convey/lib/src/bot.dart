@@ -5,7 +5,6 @@ import 'package:convey/src/bot_config.dart';
 import 'package:convey/src/models/console_message_model.dart';
 import 'package:convey/src/runner.dart';
 import 'package:discord/discord.dart';
-import 'package:nyxx/nyxx.dart';
 
 
 class Bot {
@@ -24,9 +23,9 @@ class Bot {
         token: config.bot.token,
         guildId: config.guildId,
         onMessageCreate: _onMessage,
-        onReady: (ReadyEvent event) async {
-          print('Bot is ready to receive messages! 🚀');
-        },
+        // onReady: (ReadyEvent event) async {
+        //   print('Bot is ready to receive messages! 🚀');
+        // },
         onChannelReady: (channel) async {
           print('Bot is connected to channel: ${channel.name}');
           _sendMessage('!ping');
@@ -34,19 +33,6 @@ class Bot {
     );
 
     discord.start();
-
-    // client = await Nyxx.connectGateway(config.bot.token, GatewayIntents.all);
-    // user   = await client.users.fetchCurrentUser();
-
-    // client.onReady.listen((event) async {
-    //
-    //   await _getChannel();
-    //
-    //   print('Bot is ready to receive messages! 🚀');
-    //
-    //   client.onMessageCreate.listen(_onMessage);
-    //
-    // });
 
   }
 
@@ -59,7 +45,7 @@ class Bot {
 
       print('Message received: ${message.content}');
 
-      if (event.message.author.id == discord.user.id) {
+      if (event.message.author.id.value == discord.user?.id) {
         return;
       }
       else if (message.content.isEmpty) {
@@ -84,7 +70,7 @@ class Bot {
   }
 
 
-  Future<void> _sendMessage(String content, [Message? message, bool reply = false]) async {
+  Future<void> _sendMessage(String content, [Message? message]) async {
     try {
 
       if (content.length >= MAX_MESSAGE_LENGTH) {
@@ -121,11 +107,7 @@ class Bot {
   String _buildMessage(String content) {
     return jsonEncode({
       'bot': bot.toJson(),
-      'user': {
-        'id': discord.user.id.value,
-        'name': discord.user.username,
-        'avatar': discord.user.avatar.url.toString()
-      },
+      'user': discord.user?.toJson(),
       'content': content,
       'createdAt': DateTime.now().toIso8601String(),
     });

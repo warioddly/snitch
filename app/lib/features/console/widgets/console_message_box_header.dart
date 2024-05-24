@@ -24,7 +24,7 @@ class ConsoleMessageBoxHeader extends StatelessWidget {
 
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
-          child: (message.user.avatar != null && userBotBloc.user.id.value != message.user.id)
+          child: (message.user.avatar != null && userBotBloc.user?.id != message.user.id)
               ? Image.network(
                   message.user.avatar!,
                   width: 30,

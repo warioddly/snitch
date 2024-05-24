@@ -23,7 +23,6 @@ class BotSearchBloc extends Bloc<BotSearchEvent, BotSearchState> {
     emit(BotSearchLoading());
     try {
       final bots = await repository.search(event.query);
-      print(bots.length);
       if (bots.isEmpty) {
         emit(BotSearchEmpty());
       } else {

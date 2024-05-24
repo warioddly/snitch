@@ -42,7 +42,8 @@ dependencies:
   meta: ^1.12.0
   flutter_markdown: ^0.7.1
   url_launcher: ^6.2.6
-  nyxx: ^6.2.1
+  discord:
+    path: ../discord
 
 dev_dependencies:
   flutter_test:

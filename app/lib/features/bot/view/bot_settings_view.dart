@@ -41,13 +41,13 @@ class BotSettingsView extends StatelessWidget {
                 title: 'Preferences',
                 subtitle: "Change bot's preferences",
                 icon: CupertinoIcons.gear_alt,
-                onTap: () => print('Preferences'),
+                onTap: () => debugPrint('Preferences'),
               ),
               MenuListTileItem(
                 title: 'Information & Stats',
                 subtitle: "View bot's information and statistics",
                 icon: CupertinoIcons.info,
-                onTap: () => print('Information'),
+                onTap: () => debugPrint('Information'),
               ),
               MenuListTileItem(
                   title: 'Delete Bot',
