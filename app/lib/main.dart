@@ -9,7 +9,7 @@ import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/core/services/locator.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
-import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 
 void main() async {

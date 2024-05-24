@@ -7,7 +7,7 @@ import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/console/widgets/console_chat_footer.dart';
 import 'package:snitch/features/console/widgets/console_empty_chat.dart';
 import 'package:snitch/features/console/widgets/console_message_box.dart';
-import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 
 class ConsoleView extends StatefulWidget {

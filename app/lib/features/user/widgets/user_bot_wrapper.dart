@@ -1,9 +1,7 @@
-
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 
 class UserBotWrapper extends StatefulWidget {
   const UserBotWrapper({super.key, required this.child});

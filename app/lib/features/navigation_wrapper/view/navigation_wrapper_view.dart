@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/bot/view/bot_home_view.dart';
-import 'package:snitch/features/home/bloc/navigation_bar_bloc.dart';
+import 'package:snitch/features/navigation_wrapper/bloc/navigation_bar_bloc.dart';
 import 'package:snitch/features/home/view/home_view.dart';
 import 'package:snitch/features/navigation_wrapper/widgets/bottom_navigation.dart';
 import 'package:snitch/features/user/view/user_settings_view.dart';
@@ -31,6 +31,14 @@ class _NavigationWrapperViewState extends State<NavigationWrapperView> {
 
   final bloc = NavigationBarBloc();
   final pageController = PageController(keepPage: true);
+
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {

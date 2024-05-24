@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:flutter/services.dart';
-import 'package:snitch/features/user/bloc/user_bot_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 
 class ConsoleMessageBoxHeader extends StatelessWidget {
