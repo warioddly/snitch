@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:snitch/core/constants/db_constants.dart';
+import 'package:snitch/core/database/migrations.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -25,12 +26,7 @@ class DB {
    }
 
     return openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async {
-
-      // if (!exists) {
-      //   await Migrations.up(db);
-      //   await Seeder.seed(db);
-      // }
-
+      await Migrations.up(db);
     });
 
   }

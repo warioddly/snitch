@@ -19,7 +19,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: ContentBox(
-        child: Placeholder(),
+        child: Text("Onboarding View")
       ),
     );
   }

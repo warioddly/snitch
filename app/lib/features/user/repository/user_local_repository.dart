@@ -3,14 +3,21 @@ import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
 
-class BotLocalRepository extends IBaseLocalRepository<BotModel> {
+class IUserLocalRepository<T> extends IBaseLocalRepository<BotModel> {
+  const IUserLocalRepository({required super.db});
 
+  Future<T?> getConfigs() {
+    throw UnimplementedError();
+  }
 
-  const BotLocalRepository({ required super.db });
+}
 
+class UserLocalRepository extends IUserLocalRepository<BotModel> {
+
+  const UserLocalRepository({required super.db});
 
   @override
-  String get table => DbConstants.BOT_TABLE_NAME;
+  String get table => DbConstants.USER_CONFIG_TABLE_NAME;
 
 
   @override
@@ -18,28 +25,6 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
     try {
       final id = await db.insert(table, model.toJson());
       return model.copyWith(id: id);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-
-  @override
-  Future<bool> delete(int id) async {
-    try {
-      final result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
-      return result > 0;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-
-  @override
-  Future<bool> deleteAll() async {
-    try {
-      final result = await db.delete(table);
-      return result > 0;
     } catch (e) {
       throw Exception(e);
     }
@@ -61,17 +46,6 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
 
 
   @override
-  Future<List<BotModel>> readAll() async {
-    try {
-      final maps = await db.query(table);
-      return maps.map((e) => BotModel.fromJson(e)).toList();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-
-  @override
   Future<BotModel> update(BotModel model) async {
     try {
       int result = await db.update(table, model.toJson(), where: 'id = ?', whereArgs: [model.id]);
@@ -86,15 +60,16 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
 
 
   @override
-  Future<List<BotModel>> search(String query) async {
+  Future<BotModel?> getConfigs() async {
     try {
-      final maps = await db.rawQuery("SELECT * FROM $table WHERE name LIKE '%$query%'");
-      return maps.map((e) => BotModel.fromJson(e)).toList();
-    }
-    catch (e) {
+      final maps = await db.query(table);
+      if (maps.isEmpty) {
+        throw Exception('Record not found');
+      }
+      return BotModel.fromJson(maps.first);
+    } catch (e) {
       throw Exception(e);
     }
   }
-
 
 }

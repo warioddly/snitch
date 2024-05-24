@@ -1,5 +1,5 @@
+import 'package:discord/discord.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/user/model/discord_user_model.dart';
 import 'package:snitch/shared/model/base_model_interface.dart';
 
 class ConsoleMessageModel extends IBaseModel {

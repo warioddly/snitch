@@ -1,16 +1,19 @@
 import 'package:snitch/shared/model/base_model_interface.dart';
+import 'package:sqflite/sqflite.dart';
 
 abstract class IBaseLocalRepository<T extends IBaseModel> {
 
-  const IBaseLocalRepository();
+  const IBaseLocalRepository({ required this.db });
 
   String get table => throw UnimplementedError();
 
-  Future<T> create(T model) async {
+  final Database db;
+
+  Future<T> create(T model) {
     throw UnimplementedError();
   }
 
-  Future<T> read(String id) async {
+  Future<T> read(String id) {
     throw UnimplementedError();
   }
 
@@ -23,11 +26,21 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
   }
 
   Future<bool> delete(int id) async {
-    throw UnimplementedError();
+    try {
+      final result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
+      return result > 0;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future<bool> deleteAll() async {
-    throw UnimplementedError();
+    try {
+      final result = await db.delete(table);
+      return result > 0;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future<List<T>> search(String query) async {
