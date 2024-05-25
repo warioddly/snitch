@@ -1,4 +1,5 @@
 library tips;
+import 'package:flutter/cupertino.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 
 part 'tip_how_to_get_discord_bot_token.dart';

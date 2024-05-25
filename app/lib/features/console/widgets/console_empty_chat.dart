@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/core/constants/constants.dart';
-import 'package:snitch/features/tips/widgets/tip_suggestion_list.dart';
+import 'package:snitch/features/tips/widgets/tip_console_suggestion_list.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 
 class ConsoleEmptyChat extends StatefulWidget {
@@ -35,7 +35,7 @@ class _ConsoleEmptyChatState extends State<ConsoleEmptyChat> {
 
             const SizedBox(height: 40),
 
-            const TipSuggestionList()
+            const TipConsoleSuggestionList()
 
           ],
         ),

@@ -7,9 +7,10 @@ class BorderedTextField extends StatelessWidget {
   final TextEditingController? controller;
   final InputDecoration? decoration;
 
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       decoration: decoration,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(

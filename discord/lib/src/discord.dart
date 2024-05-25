@@ -8,6 +8,8 @@ typedef DiscordClientReadyEvent = void Function(ReadyEvent event);
 
 typedef DiscordChannelReadyEvent = void Function(GuildTextChannel channel);
 
+typedef DiscordExceptionEvent = void Function(DiscordException error);
+
 
 class Discord {
 
@@ -16,7 +18,8 @@ class Discord {
     required this.guildId,
     this.onMessageCreate,
     this.onReady,
-    this.onChannelReady
+    this.onChannelReady,
+    this.onError
   });
 
   final String token;
@@ -24,6 +27,7 @@ class Discord {
   final DiscordMessageCreateEvent? onMessageCreate;
   final DiscordClientReadyEvent?   onReady;
   final DiscordChannelReadyEvent?  onChannelReady;
+  final DiscordExceptionEvent?  onError;
 
   NyxxGateway?      _client;
   GuildTextChannel? _channel;
@@ -34,40 +38,55 @@ class Discord {
 
   Future<void> start() async {
 
-    if (token.isEmpty) {
-      throw Exception('Token is empty');
-    }
+        try {
 
-    _client = await Nyxx.connectGateway(token, GatewayIntents.all);
-    _user   = await _client?.users.fetchCurrentUser();
+          if (token.isEmpty) {
+            throw DiscordTokenEmptyException();
+          }
 
-
-    if (_user == null) {
-      throw Exception('User is null');
-    }
-
-    _discordUser = DiscordUserModel.fromUser(_user!);
+          _client = await Nyxx.connectGateway(token, GatewayIntents.all);
+          _user   = await _client?.users.fetchCurrentUser();
 
 
-    _client?.onReady.listen((ReadyEvent event) async {
+          if (_user == null) {
+            throw DiscordUserNotFoundException();
+          }
 
-      await _getChannel();
+          _discordUser = DiscordUserModel.fromUser(_user!);
 
-      print('Discord is ready to receive messages! 🚀');
 
-      _client?.onMessageCreate.listen(_onMessage);
+          _client?.onReady.listen((ReadyEvent event) async {
 
-      onReady?.call(event);
+            await _getChannel();
 
-    });
+            print('Discord is ready to receive messages! 🚀');
+
+            _client?.onMessageCreate.listen(_onMessage);
+
+            onReady?.call(event);
+
+          });
+        }
+        on DiscordUserNotFoundException {
+          onError?.call(DiscordUserNotFoundException());
+        }
+        on DiscordTokenEmptyException {
+          onError?.call(DiscordTokenEmptyException());
+        }
+        catch (e) {
+          onError?.call(DiscordUnknownException(error: e));
+        }
 
   }
 
 
   Future<void> sendMessage(String content, [Message? message, bool reply = false]) async {
-    await _channel?.sendMessage(MessageBuilder(
-        content: content,
-    ));
+    try {
+      await _channel?.sendMessage(MessageBuilder(content: content));
+    }
+    catch (e) {
+      onError?.call(DiscordUnknownException(error: e));
+    }
   }
 
 
@@ -77,14 +96,19 @@ class Discord {
 
 
   Future<void> _getChannel() async {
-    _guild = await _client?.guilds.fetch(Snowflake(guildId));
-    _client?.channels.cache.forEach((Snowflake id, Channel channel) async {
-      if (channel is GuildTextChannel) {
-        print('${user?.name} is connected to channel: ${channel.name}');
-        _channel = channel;
-        onChannelReady?.call(channel);
-      }
-    });
+    try {
+      _guild = await _client?.guilds.fetch(Snowflake(guildId));
+      _client?.channels.cache.forEach((Snowflake id, Channel channel) async {
+        if (channel is GuildTextChannel) {
+          print('${user?.name} is connected to channel: ${channel.name}');
+          _channel = channel;
+          onChannelReady?.call(channel);
+        }
+      });
+    }
+    catch (e) {
+      onError?.call(DiscordUnknownException(error: e));
+    }
   }
 
 

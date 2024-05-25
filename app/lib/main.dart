@@ -9,6 +9,7 @@ import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/core/services/locator.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
+import 'package:snitch/features/wrapper/widgets/internet_connectivity_checker_widget.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
@@ -41,10 +42,13 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, SnitchThemeType>(
         builder: (context, state) {
           return MaterialApp(
-            title: 'Hello Snitch!',
             theme: SnitchTheme.getTheme(state),
             debugShowCheckedModeBanner: false,
-            builder: BotToastInit(),
+            builder: (context, child) {
+              return InternetConnectivityCheckerWidget(
+                child: BotToastInit()(context, child),
+              );
+            },
             navigatorObservers: [BotToastNavigatorObserver()],
             scrollBehavior: const MyScrollBehavior(),
             initialRoute: AppRoutes.initialRoute,

@@ -60,8 +60,6 @@ class _ConsoleViewState extends State<ConsoleView> {
       body: BlocConsumer<UserBotBloc, UserBotState>(
         listener: (context, state) {
 
-          print(state);
-
           if (state is UserBotMessageReceived) {
             messages.add(state.message);
           }

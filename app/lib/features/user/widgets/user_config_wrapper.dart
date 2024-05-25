@@ -46,7 +46,6 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
             }
 
             if (state is UserConfigError) {
-              print(state.message);
               BotToast.showSimpleNotification(
                   title: 'Oops! Something went wrong 😢',
                   subTitle: 'Please check your internet connection and try again.'

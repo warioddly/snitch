@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/features/onboarding/model/onboard_template_model.dart';
 import 'package:snitch/features/onboarding/widgets/onboard_page_template.dart';
-import 'package:snitch/features/onboarding/widgets/onboard_page_views.dart';
 import 'package:snitch/features/user/widgets/user_bot_create_onboard.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
@@ -38,7 +37,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             )
         ],
       ),
-      body: OnboardPageViews(
+      body: PageView(
           controller: pageController,
           physics: isLastPage ? const NeverScrollableScrollPhysics() : null,
           onPageChanged: (index) {

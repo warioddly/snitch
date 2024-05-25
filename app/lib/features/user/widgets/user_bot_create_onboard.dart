@@ -26,132 +26,168 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
   final guildController = TextEditingController();
   late final configBloc = context.read<UserConfigBloc>();
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return ContentBox(
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Text(
-                      'Create Your First Bot',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      )
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Text(
+                        'Create Your First Bot',
+                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        )
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                StyledTextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    hintText: 'Bot Name',
-                    suffixIcon: Icon(CupertinoIcons.ant),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                StyledTextField(
-                  controller: tokenController,
-                  decoration: InputDecoration(
-                      hintText: 'Bot Token',
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            enableFeedback: true,
-                            icon: const Icon(CupertinoIcons.doc_text),
-                            onPressed: () {
-                              FocusScope.of(context).unfocus();
-                              Clipboard.getData('text/plain').then((value) {
-                                tokenController.text = value?.text ?? '';
-                              });
-                            },
-                          ),
-                          IconButton(
-                            enableFeedback: true,
-                            icon: const Icon(CupertinoIcons.info),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
-                            },
-                          ),
-                        ],
-                      )
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                StyledTextField(
-                  controller: guildController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  decoration: InputDecoration(
-                      hintText: 'Guild ID',
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            enableFeedback: true,
-                            icon: const Icon(CupertinoIcons.doc_text),
-                            onPressed: () {
-                              FocusScope.of(context).unfocus();
-                              Clipboard.getData('text/plain').then((value) {
-                                guildController.text = value?.text ?? '';
-                              });
-                            },
-                          ),
-                          IconButton(
-                            enableFeedback: true,
-                            icon: const Icon(CupertinoIcons.info),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
-                            },
-                          ),
-                        ],
-                      )
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                Center(
-                  child: BlocBuilder<UserConfigBloc, UserConfigState>(
-                    builder: (context, state) {
-                      return StyledTextButton(
-                        loading: state is UserConfigCreating,
-                        onPressed: () async {
-
-                          if (state is UserConfigCreating) {
-                            BotToast.showText(text: 'Please wait');
-                            return;
-                          }
-
-                          final config = UserConfigModel(
-                            id: null,
-                            name: nameController.text,
-                            token: tokenController.text,
-                            guildId: int.parse(guildController.text),
-                          );
-
-                          configBloc.add(UserConfigCreateEvent(config));
-
-                        },
-                        text: 'Create Bot',
-                      );
+                  StyledTextField(
+                    controller: nameController,
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please specify the name of the bot";
+                      }
+                      return null;
                     },
+                    decoration: const InputDecoration(
+                      hintText: 'Bot Name',
+                      suffixIcon: Icon(CupertinoIcons.ant),
+                    ),
                   ),
-                )
 
-              ],
+                  const SizedBox(height: 20),
+
+                  StyledTextField(
+                    controller: tokenController,
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                          return "Please, provide your Discord BOT token";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Bot Token',
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              enableFeedback: true,
+                              icon: const Icon(CupertinoIcons.doc_text),
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                                Clipboard.getData('text/plain').then((value) {
+                                  tokenController.text = value?.text ?? '';
+                                });
+                              },
+                            ),
+                            IconButton(
+                              enableFeedback: true,
+                              icon: const Icon(CupertinoIcons.info),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                              },
+                            ),
+                          ],
+                        )
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  StyledTextField(
+                    controller: guildController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (String? value) {
+
+                      if (value != null) {
+
+                        if (value.isEmpty) {
+                          return "Please, provide your Guild ID";
+                        }
+
+                        if (int.tryParse(value) == null) {
+                          return "Guild ID should be number";
+                        }
+
+                      }
+
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Guild ID',
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              enableFeedback: true,
+                              icon: const Icon(CupertinoIcons.doc_text),
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                                Clipboard.getData('text/plain').then((value) {
+                                  guildController.text = value?.text ?? '';
+                                });
+                              },
+                            ),
+                            IconButton(
+                              enableFeedback: true,
+                              icon: const Icon(CupertinoIcons.info),
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                              },
+                            ),
+                          ],
+                        )
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Center(
+                    child: BlocBuilder<UserConfigBloc, UserConfigState>(
+                      builder: (context, state) {
+                        return StyledTextButton(
+                          loading: state is UserConfigCreating,
+                          onPressed: () async {
+
+                            if (!_formKey.currentState!.validate()) {
+                              return;
+                            }
+
+                            if (state is UserConfigCreating) {
+                              BotToast.showText(text: 'Please wait');
+                              return;
+                            }
+
+                            final config = UserConfigModel(
+                              id: null,
+                              name: nameController.text,
+                              token: tokenController.text,
+                              guildId: int.parse(guildController.text),
+                            );
+
+                            configBloc.add(UserConfigCreateEvent(config));
+
+                          },
+                          text: 'Create Bot',
+                        );
+                      },
+                    ),
+                  )
+
+                ],
+              ),
             ),
           ),
         )

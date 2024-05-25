@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/features/navigation_wrapper/model/bottom_navigation_item.dart';
+import 'package:snitch/features/wrapper/model/bottom_navigation_item.dart';
 
 class BottomNavigation extends StatelessWidget {
 

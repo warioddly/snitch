@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/widgets/tip_list_tile.dart';
 
-class TipSuggestionList extends StatelessWidget {
+class TipConsoleSuggestionList extends StatelessWidget {
 
-  const TipSuggestionList({super.key});
+  const TipConsoleSuggestionList({super.key});
 
   @override
   Widget build(BuildContext context) {

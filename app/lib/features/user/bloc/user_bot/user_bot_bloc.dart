@@ -50,6 +50,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
     }
     catch (e) {
       debugPrint(e.toString());
+      emit(UserBotError(error: e));
     }
 
   }

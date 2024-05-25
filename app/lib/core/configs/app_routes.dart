@@ -5,9 +5,10 @@ import 'package:snitch/features/bot/view/bot_create_view.dart';
 import 'package:snitch/features/bot/view/bot_home_view.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/home/view/home_view.dart';
-import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
+import 'package:snitch/features/wrapper/view/wrapper_view.dart';
 import 'package:snitch/features/console/view/console_view.dart';
 import 'package:snitch/features/onboarding/view/onboarding_view.dart';
+import 'package:snitch/features/tips/view/tips_category_view.dart';
 import 'package:snitch/features/user/view/user_settings_view.dart';
 import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
@@ -17,14 +18,19 @@ import 'package:snitch/features/tips/view/tips_view.dart';
 
 class AppRoutes {
 
-  static const String initialRoute = NavigationWrapperView.route;
+  static const String initialRoute = WrapperView.route;
 
   static Map<String, Widget Function(BuildContext)> routes = {
-    NavigationWrapperView.route: (context) => const NavigationWrapperView(),
+    
+    WrapperView.route: (context) => const WrapperView(),
     HomeView.route: (context) => const HomeView(),
     OnboardingView.route: (context) => const OnboardingView(),
 
     TipsView.route: (context) => const TipsView(),
+    TipsCategoryView.route: (context) {
+      final category = ModalRoute.of(context)!.settings.arguments as TipCategory;
+      return TipsCategoryView(category: category);
+    },
     TipDetailView.route: (context) {
       final tip = ModalRoute.of(context)!.settings.arguments as TipModel;
       return TipDetailView(tip: tip);

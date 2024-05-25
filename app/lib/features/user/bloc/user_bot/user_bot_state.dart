@@ -35,3 +35,10 @@ final class UserBotPingMessageReceived extends UserBotState {
   @override
   List<Object> get props => [message];
 }
+
+final class UserBotError extends UserBotState {
+  const UserBotError({required this.error});
+  final Object error;
+  @override
+  List<Object> get props => [error];
+}

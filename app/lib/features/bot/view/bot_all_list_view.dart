@@ -60,7 +60,7 @@ class _BotAllListViewState extends State<BotAllListView> {
               ),
 
               SliverContentBox(
-                padding: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 3),
+                padding: const EdgeInsets.only(left: 25, right: 25, top: 15, bottom: 7),
                 child: SliverAppBar(
                   pinned: false,
                   floating: true,
@@ -79,7 +79,11 @@ class _BotAllListViewState extends State<BotAllListView> {
                         color: const Color(0xFFA3A3A8),
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          bloc.add(BotSearchBotEvent(_searchController.text));
+
+                          if (_searchController.text.isNotEmpty) {
+                            bloc.add(BotSearchBotEvent(_searchController.text));
+                          }
+
                         },
                       ),
                     ),

@@ -7,7 +7,7 @@ import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/widgets/bot_delete_alert_dialog.dart';
 import 'package:snitch/features/bot/widgets/bot_mini_info_card.dart';
-import 'package:snitch/features/navigation_wrapper/view/navigation_wrapper_view.dart';
+import 'package:snitch/features/wrapper/view/wrapper_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
@@ -77,7 +77,7 @@ class BotSettingsView extends StatelessWidget {
 
                       context.read<BotsBloc>().add(const BotsReadEvent());
 
-                      Navigator.popUntil(context, (route) => route.settings.name == NavigationWrapperView.route);
+                      Navigator.popUntil(context, (route) => route.settings.name == WrapperView.route);
 
                     });
 

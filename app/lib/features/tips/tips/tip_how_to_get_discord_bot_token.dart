@@ -2,6 +2,7 @@ part of "tips.dart";
 
 
 const TipModel tip_how_to_get_discord_bot_token = TipModel(
+    icon: CupertinoIcons.ant_fill,
     title: "How to get a discord bot token?",
     description: "Here you will find how to get a token for a bot 🤖",
     category: TipCategory.guide,

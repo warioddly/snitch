@@ -62,6 +62,12 @@ class _BotCreateViewState extends State<BotCreateView> {
 
               StyledTextField(
                 controller: _nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Bot name is required';
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                     hintText: 'Enter bot name*',
                     suffixIcon: IconButton(
@@ -94,6 +100,12 @@ class _BotCreateViewState extends State<BotCreateView> {
 
               StyledTextField(
                 controller: _tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please, provide your Discord BOT token";
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                     hintText: 'Enter bot token',
                     suffixIcon: IconButton(
@@ -121,7 +133,6 @@ class _BotCreateViewState extends State<BotCreateView> {
                   }
 
                   if (state is BotActionError) {
-                    print(state.message);
                     BotToast.showSimpleNotification(
                       title: "Oops! Something went wrong",
                       backgroundColor: Colors.red,

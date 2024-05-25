@@ -17,7 +17,7 @@ class TipDetailView extends StatelessWidget {
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
+            return [
               SliverAppBar(
                 pinned: false,
                 floating: true,
