@@ -39,56 +39,54 @@ class _OnboardingViewState extends State<OnboardingView> {
         ],
       ),
       body: OnboardPageViews(
-        controller: pageController,
-        physics: isLastPage ? const NeverScrollableScrollPhysics() : null,
-        onPageChanged: (index) {
-          if (index == _lastPage) {
-            setState(() {
-              isLastPage = true;
-            });
-          }
-        },
-        children:  [
+          controller: pageController,
+          physics: isLastPage ? const NeverScrollableScrollPhysics() : null,
+          onPageChanged: (index) {
+            if (index == _lastPage) {
+              setState(() {
+                isLastPage = true;
+              });
+            }
+          },
+          children:  [
 
-          OnboardPageTemplate(
-            key: UniqueKey(),
-            template: OnboardTemplateModel(
-              title: 'Unlock the Power Of Snitch',
-              description: 'Chat with Chat with the smartest Snitch Experience smartest Snitch Experience',
-              image: 'assets/images/logo.png',
-              button: StyledTextButton(
-                onPressed: () => _jumpToPage(1),
-                text: 'Get Started'
-              )
-            )
-          ),
-          OnboardPageTemplate(
-            key: UniqueKey(),
-            template: OnboardTemplateModel(
-              title: 'Chat With Your PC',
-              description: 'Boost your mind power with Snitch',
-              image: 'assets/images/logo.png',
-              button: StyledTextButton(
-                  onPressed: () => _jumpToPage(2),
-                text: 'Next',
-              )
-            )
-          ),
-          OnboardPageTemplate(
-            template: OnboardTemplateModel(
-              title: 'Boost Your Mind Power',
-              description: 'Boost your mind power with Snitch',
-              image: 'assets/images/logo.png',
-              button: StyledTextButton(
-                onPressed: () => _jumpToPage(3),
-                text: 'Let\'s Create Bot',
-              )
-            )
-          ),
+            OnboardPageTemplate(
+                template: OnboardTemplateModel(
+                    title: 'Unlock the Power Of Snitch',
+                    description: 'Chat with Chat with the smartest Snitch Experience smartest Snitch Experience',
+                    image: 'assets/images/logo.png',
+                    button: StyledTextButton(
+                        onPressed: () => _jumpToPage(1),
+                        text: 'Get Started'
+                    )
+                )
+            ),
+            OnboardPageTemplate(
+                template: OnboardTemplateModel(
+                    title: 'Chat With Your PC',
+                    description: 'Boost your mind power with Snitch',
+                    image: 'assets/images/logo.png',
+                    button: StyledTextButton(
+                      onPressed: () => _jumpToPage(2),
+                      text: 'Next',
+                    )
+                )
+            ),
+            OnboardPageTemplate(
+                template: OnboardTemplateModel(
+                    title: 'Boost Your Mind Power',
+                    description: 'Boost your mind power with Snitch',
+                    image: 'assets/images/logo.png',
+                    button: StyledTextButton(
+                      onPressed: () => _jumpToPage(3),
+                      text: 'Let\'s Create Bot',
+                    )
+                )
+            ),
 
-          const UserBotCreateOnboard(),
+            const UserBotCreateOnboard(),
 
-        ]
+          ]
       ),
     );
   }
