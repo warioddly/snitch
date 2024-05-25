@@ -36,7 +36,7 @@ class ConsoleBloc extends Bloc<ConsoleEvent, ConsoleState> {
   // Future<void> _onMessageReceived(ConsoleMessageReceived event, Emitter<ConsoleState> emit) async {
   //   print('Message received: ${event.message.text}');
   // }
-  //
+
   // Future<void> _onMessageSent(ConsoleMessageSent event, Emitter<ConsoleState> emit) async {
   //   if (chatId == -1) {
   //     print('No chatId');

@@ -27,9 +27,7 @@ class TipsView extends StatelessWidget {
 
           const SliverAppBar(
             automaticallyImplyLeading: false,
-            flexibleSpace: Flexible(
-                child: TipCategoriesChipFilter()
-            ),
+            flexibleSpace: TipCategoriesChipFilter()
           ),
 
           SliverContentBox(
