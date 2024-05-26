@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snitch/features/bot/bloc/bot_search_bloc/bot_search_bloc.dart';
 import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
-import 'package:snitch/features/bot/widgets/bot_list_card.dart';
+import 'package:snitch/features/bot/widgets/bot_list_context_menu_wrapper_card.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/sliver_content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
@@ -98,12 +98,11 @@ class _BotAllListViewState extends State<BotAllListView> {
                     return SliverList(
                       delegate: SliverChildListDelegate(
                           [
-
                             if (state is BotSearchError)
                               Text(state.message),
 
                             if (state is BotSearchBots)
-                              ...state.bots.map((bot) => BotListCard(bot: bot)),
+                              ...state.bots.map((bot) => BotListContextMenuWrapperCard(bot: bot)),
 
                             if (state is BotSearchEmpty)
                               const BotEmptyWidget(),

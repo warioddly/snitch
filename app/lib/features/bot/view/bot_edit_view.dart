@@ -15,18 +15,19 @@ import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
 
-class BotCreateView extends StatefulWidget {
+class BotEditView extends StatefulWidget {
 
-  const BotCreateView({super.key});
+  const BotEditView({super.key, required this.bot});
 
-  static const String route = '/bot-create';
+  static const String route = '/bot-edit';
+
+  final BotModel bot;
 
   @override
-  State<BotCreateView> createState() => _BotCreateViewState();
+  State<BotEditView> createState() => _BotEditViewState();
 }
 
-class _BotCreateViewState extends State<BotCreateView> {
-
+class _BotEditViewState extends State<BotEditView> {
 
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -37,8 +38,8 @@ class _BotCreateViewState extends State<BotCreateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Appbar(
-        title: 'Create Bot',
+      appBar: Appbar(
+        title: 'Edit ${widget.bot.name}',
         enableImplyLeading: true,
       ),
       body: ContentBox(
@@ -52,7 +53,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: Text(
-                    'Create Your ${BOT_APP_NAME.toUpperCase()} Bot',
+                    'Edit Your ${BOT_APP_NAME.toUpperCase()} Bot',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     )
@@ -62,7 +63,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               const SizedBox(height: 20),
 
               StyledTextField(
-                controller: _nameController,
+                controller: _nameController..text = widget.bot.name,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Bot name is required';
@@ -89,7 +90,7 @@ class _BotCreateViewState extends State<BotCreateView> {
 
 
               StyledTextField(
-                controller: _descriptionController,
+                controller: _descriptionController..text = widget.bot.description,
                 decoration: const InputDecoration(
                   hintText: 'Enter bot description',
                 ),
@@ -100,7 +101,7 @@ class _BotCreateViewState extends State<BotCreateView> {
 
 
               StyledTextField(
-                controller: _tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
+                controller: _tokenController..text = widget.bot.token,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Please, provide your Discord BOT token";
@@ -152,20 +153,20 @@ class _BotCreateViewState extends State<BotCreateView> {
 
                       if (_formKey.currentState!.validate()) {
 
-                        final bot = BotModel(
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          token: _tokenController.text,
-                          image: faker.image.image(),
-                          createdAt: DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        );
+                        // final bot = BotModel(
+                        //   name: _nameController.text,
+                        //   description: _descriptionController.text,
+                        //   token: _tokenController.text,
+                        //   image: faker.image.image(),
+                        //   createdAt: DateTime.now(),
+                        //   updatedAt: DateTime.now(),
+                        // );
 
-                        context.read<BotActionBloc>().add(BotActionCreateEvent(bot: bot));
+                        // context.read<BotActionBloc>().add(BotActionCreateEvent(bot: bot));
 
                       }
                     },
-                    text: 'Create Bot',
+                    text: 'Save',
                   );
                 },
               ),

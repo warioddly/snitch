@@ -102,7 +102,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
         return;
       }
 
-      print('Message received: ${message.content}');
+      debugPrint('Message received: ${message.content}');
       add(UserBotMessageReceivedEvent(ConsoleMessageModel.fromJson(jsonDecode(message.content))));
 
     }

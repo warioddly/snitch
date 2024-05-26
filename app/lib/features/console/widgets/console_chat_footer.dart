@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/commands/widgets/commands_bottom_sheet.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
-import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/bordered_text_field.dart';
 
 class ChatFooter extends StatefulWidget {
@@ -23,8 +22,9 @@ class _ChatFooterState extends State<ChatFooter> {
 
     final bloc = context.read<UserBotBloc>();
 
-    return ContentBox(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
       child: Row(
         children: [
 

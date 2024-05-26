@@ -10,32 +10,22 @@ class TipListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: const Color(0xFF232627),
+    return ListTile(
+      enableFeedback: true,
+      title: Text(
+          tip.title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w200,
+          )
       ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(15),
-        onTap: () {
-
-          Navigator.of(context).pushNamed(
-            TipDetailView.route,
-            arguments: tip,
-          );
-
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Text(
-            tip.title,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w200,
-            )
-          ),
-        ),
-      ),
+      titleAlignment: ListTileTitleAlignment.center,
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          TipDetailView.route,
+          arguments: tip,
+        );
+      },
     );
   }
 }

@@ -22,10 +22,10 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Material(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
-      
+
           Expanded(
             child: widget.child,
           ),
@@ -48,7 +48,7 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       decoration: const BoxDecoration(
                         color: Colors.green,
                       ),
@@ -67,7 +67,7 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
                 return Container(
                   width: double.infinity,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   decoration: const BoxDecoration(
                     color: Colors.red,
                   ),

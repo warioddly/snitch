@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/core/utils/date_utils.dart' as du;
+import 'package:snitch/shared/ui/images/logo.dart';
 
 class BotMiniInfoCard extends StatelessWidget {
 
@@ -23,6 +24,7 @@ class BotMiniInfoCard extends StatelessWidget {
             width: 106,
             height: 106,
             fit: BoxFit.cover,
+            errorBuilder: (context, object, stacktrace) => const Logo(width: 106, height: 106),
           ),
         ),
 
