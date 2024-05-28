@@ -11,6 +11,12 @@ final class UserBotStartEvent extends UserBotEvent {
   List<Object> get props => [];
 }
 
+final class UserBotRestartEvent extends UserBotEvent {
+  const UserBotRestartEvent(this.config);
+  final UserConfigModel config;
+  @override
+  List<Object> get props => [];
+}
 
 final class UserBotMessageSendEvent extends UserBotEvent {
   const UserBotMessageSendEvent(this.message);
@@ -18,7 +24,6 @@ final class UserBotMessageSendEvent extends UserBotEvent {
   @override
   List<Object> get props => [message];
 }
-
 
 final class UserBotMessageReceivedEvent extends UserBotEvent {
   const UserBotMessageReceivedEvent(this.message);

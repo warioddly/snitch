@@ -16,6 +16,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
   UserBotBloc() : super(UserBotInitial()) {
     on<UserBotStartEvent>(_onStarted);
+    on<UserBotRestartEvent>(_onRestarted);
     on<UserBotMessageSendEvent>(_onMessageSend);
     on<UserBotMessageReceivedEvent>(_onMessageReceived);
   }
@@ -23,29 +24,81 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
   // guildId = 1243116555248734301;
   // _token = MTI0MzExNjM2NzkzMDk4NjU4Nw.Gg6VTO.jeBSmgTFvR6F_35d0pqzGYaR3Af3OI_u1YG-eU;
-  // late final String _token;
-  late final Discord discord;
-  late final BotModel bot;
+  Discord?  _discord;
+  BotModel? _bot;
+
+
+  DiscordUserModel? get user => _discord?.user;
 
 
   Future<void> _onStarted(UserBotStartEvent event, Emitter<UserBotState> emit) async {
 
     try {
 
-      bot = BotFaker.createBot();
+      emit(const UserBotStarting());
 
-      discord = Discord(
+      _bot = BotFaker.createBot();
+
+      _discord = Discord(
           token: event.config.token,
           guildId: event.config.guildId,
           onMessageCreate: _onMessage,
           onChannelReady: (channel) async {
             _sendMessage('!ping');
           },
+          onError: (e) {
+
+            if (e is DiscordUserNotFoundException) {
+
+            }
+
+          }
       );
 
-      await discord.start();
+      await _discord?.start();
 
       emit(const UserBotStarted());
+
+    }
+    catch (e) {
+      debugPrint(e.toString());
+      emit(UserBotError(error: e));
+    }
+
+  }
+
+
+  Future<void> _onRestarted(UserBotRestartEvent event, Emitter<UserBotState> emit) async {
+
+    try {
+
+      emit(const UserBotRestarting());
+
+      _bot = BotFaker.createBot();
+
+      if (_discord != null) {
+        await _discord?.client?.close();
+      }
+
+      _discord = Discord(
+          token: event.config.token,
+          guildId: event.config.guildId,
+          onMessageCreate: _onMessage,
+          onChannelReady: (channel) async {
+            _sendMessage('!ping');
+          },
+          onError: (e) {
+
+            if (e is DiscordUserNotFoundException) {
+
+            }
+
+          }
+      );
+
+      await _discord?.start();
+
+      emit(const UserBotRestarted());
 
     }
     catch (e) {
@@ -75,9 +128,14 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
   Future<void> _onMessageSend(UserBotMessageSendEvent event, Emitter<UserBotState> emit) async {
     try {
+
+      if (_discord == null) {
+        throw 'Discord is not initialized';
+      }
+
       final message = ConsoleMessageModel.fromJson({
-        'bot': bot.toJson(),
-        'user': discord.user?.toJson(),
+        'bot': _bot?.toJson(),
+        'user': _discord?.user?.toJson(),
         'content': event.message,
         'createdAt': DateTime.now().toIso8601String(),
       });
@@ -95,9 +153,13 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
     try {
       debugPrint('User Bot Message Received: ${event.message.content}');
 
+      if (_discord == null) {
+        throw 'Discord is not initialized';
+      }
+
       final message = event.message;
 
-      if (event.message.author.id.value == discord.user?.id || message.content.isEmpty) {
+      if (event.message.author.id.value == _discord?.user?.id || message.content.isEmpty) {
         debugPrint('Message received: ${message.content}');
         return;
       }
@@ -115,14 +177,12 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
 
   Future<void> _sendMessage(String content, [Message? message, bool reply = false]) async {
     try {
-      await discord.sendMessage(content, message, reply);
+      await _discord?.sendMessage(content, message, reply);
     }
     catch (e) {
       debugPrint(e.toString());
     }
   }
 
-
-  DiscordUserModel? get user => discord.user;
 
 }

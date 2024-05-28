@@ -25,12 +25,14 @@ class BotListContextMenuWrapperCard extends StatelessWidget {
             },
           ),
 
-          // CupertinoContextMenuAction(
-          //   child: const Text('Delete'),
-          //   onPressed: () {
-          //     // Navigator.of(context).pushNamed('/delete', arguments: bot);
-          //   },
-          // ),
+          CupertinoContextMenuAction(
+            child: const Text('Delete'),
+            onPressed: () {
+
+
+
+            },
+          ),
 
         ],
         builder: (BuildContext context, Animation<double> animation) => BotListTile(bot: bot),

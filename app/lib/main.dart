@@ -7,12 +7,10 @@ import 'package:snitch/core/configs/app_routes.dart';
 import 'package:snitch/core/configs/scroll_behavior.dart';
 import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/core/services/locator.dart';
-import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/wrapper/widgets/internet_connectivity_checker_widget.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
-import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 
 void main() async {
@@ -33,10 +31,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => GetIt.I.get<UserBloc>()),
-        BlocProvider(create: (context) => GetIt.I.get<UserConfigBloc>()),
         BlocProvider(create: (context) => GetIt.I.get<UserBotBloc>()),
         BlocProvider(create: (context) => GetIt.I.get<BotsBloc>()),
-        BlocProvider(create: (context) => GetIt.I.get<BotActionBloc>()),
         BlocProvider(create: (context) => GetIt.I.get<ThemeCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, SnitchThemeType>(

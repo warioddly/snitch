@@ -8,7 +8,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc() : super(UserInitial()) {
     on<UserGood>((event, emit) {emit(UserConfigsGood());});
-    on<UserBad> ((event, emit) {emit(UserConfigsBad()); });
+    on<UserBad> ((event, emit) {emit(UserConfigsBad() );});
   }
 
 }

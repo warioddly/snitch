@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
+import 'package:snitch/features/user/bloc/user/user_bloc.dart';
+import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
 import 'package:snitch/features/user/model/user_config_model.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
@@ -24,9 +27,8 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
   final nameController  = TextEditingController();
   final tokenController = TextEditingController();
   final guildController = TextEditingController();
-  late final configBloc = context.read<UserConfigBloc>();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final formKey         = GlobalKey<FormState>();
+  final configBloc      = GetIt.I.get<UserConfigBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
         child: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +47,7 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                     child: Text(
                         'Create Your First Bot',
                         style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w700
                         )
                     ),
                   ),
@@ -72,7 +74,7 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                     controller: tokenController,
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                          return "Please, provide your Discord BOT token";
+                        return "Please, provide your Discord BOT token";
                       }
                       return null;
                     },
@@ -95,7 +97,9 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                               enableFeedback: true,
                               icon: const Icon(CupertinoIcons.info),
                               onPressed: () {
-                                Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                                Navigator.of(context).pushNamed(
+                                    TipDetailView.route,
+                                    arguments: tip_how_to_get_discord_bot_token);
                               },
                             ),
                           ],
@@ -110,9 +114,7 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     validator: (String? value) {
-
                       if (value != null) {
-
                         if (value.isEmpty) {
                           return "Please, provide your Guild ID";
                         }
@@ -120,7 +122,6 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                         if (int.tryParse(value) == null) {
                           return "Guild ID should be number";
                         }
-
                       }
 
                       return null;
@@ -144,7 +145,9 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                               enableFeedback: true,
                               icon: const Icon(CupertinoIcons.info),
                               onPressed: () {
-                                Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                                Navigator.of(context).pushNamed(
+                                    TipDetailView.route,
+                                    arguments: tip_how_to_get_discord_bot_token);
                               },
                             ),
                           ],
@@ -155,36 +158,60 @@ class _UserBotCreateOnboardState extends State<UserBotCreateOnboard> {
                   const SizedBox(height: 20),
 
                   Center(
-                    child: BlocBuilder<UserConfigBloc, UserConfigState>(
-                      builder: (context, state) {
-                        return StyledTextButton(
-                          loading: state is UserConfigCreating,
-                          onPressed: () async {
+                    child: BlocConsumer<UserConfigBloc, UserConfigState>(
+                      bloc: configBloc,
+                      listener: (context, state) {
 
-                            if (!_formKey.currentState!.validate()) {
-                              return;
+                        if (state is UserConfigCreateError) {
+
+                          BotToast.showSimpleNotification(
+                              title: state.message,
+                              subTitle: 'Please check your data and try again.',
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 5)
+                          );
+                        }
+
+                        if (state is UserConfigCreated) {
+                          context.read<UserBotBloc>().add(UserBotStartEvent(state.configs));
+                        }
+
+                      },
+                      builder: (context, configState) {
+                        return BlocConsumer<UserBotBloc, UserBotState>(
+                          listener: (context, state) {
+
+                            if (state is UserBotStarted) {
+                              context.read<UserBloc>().add(const UserGood());
                             }
-
-                            if (state is UserConfigCreating) {
-                              BotToast.showText(text: 'Please wait');
-                              return;
-                            }
-
-                            final config = UserConfigModel(
-                              id: null,
-                              name: nameController.text,
-                              token: tokenController.text,
-                              guildId: int.parse(guildController.text),
-                            );
-
-                            configBloc.add(UserConfigCreateEvent(config));
 
                           },
-                          text: 'Create Bot',
+                          builder: (context, botState) {
+                            return StyledTextButton(
+                              loading: (configState is UserConfigCreating || botState is UserBotStarting),
+                              onPressed: () async {
+
+                                if (!formKey.currentState!.validate()) {
+                                  return;
+                                }
+
+                                final config = UserConfigModel(
+                                  id: null,
+                                  name: nameController.text,
+                                  token: tokenController.text,
+                                  guildId: int.parse(guildController.text),
+                                );
+
+                                configBloc.add(UserConfigCreateEvent(config));
+
+                              },
+                              text: 'Create Bot',
+                            );
+                          }
                         );
                       },
                     ),
-                  )
+                  ),
 
                 ],
               ),

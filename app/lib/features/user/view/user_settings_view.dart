@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/core/database/migrations.dart';
 import 'package:snitch/core/services/db.dart';
+import 'package:snitch/features/user/view/user_bot_edit_view.dart';
 import 'package:snitch/features/user/view/user_theme_settings_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
@@ -20,64 +20,58 @@ class UserSettingsView extends StatelessWidget {
     return Scaffold(
       appBar: const Appbar(
         title: 'Profile Settings',
-        enableImplyLeading: true,
+        enableImplyLeading: false,
       ),
       body: ContentBox(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
 
-            ...[
-                MenuListTileItem(
-                  title: 'Preferences',
-                  subtitle: "Change bot's preferences",
-                  icon: CupertinoIcons.gear_alt,
-                  onTap: () => debugPrint('Preferences'),
-                ),
-                MenuListTileItem(
-                  title: 'Languages',
-                  subtitle: "App language settings",
-                  icon: CupertinoIcons.globe,
-                  onTap: () => debugPrint('Preferences'),
-                ),
-                MenuListTileItem(
-                  title: 'Theme',
-                  subtitle: "Change the app's theme",
-                  icon: CupertinoIcons.paintbrush,
-                  onTap: () {
-                    Navigator.pushNamed(context, ProfileThemeSettingsView.route);
-                  }
-                ),
-                MenuListTileItem(
-                  title: 'About',
-                  subtitle: "View information about the app",
-                  icon: CupertinoIcons.info,
-                  onTap: () => debugPrint('Information'),
-                ),
-                MenuListTileItem(
-                    title: 'Delete Bot',
-                    icon: CupertinoIcons.delete,
-                    onTap: () async{
+              ...[
+                  MenuListTileItem(
+                    title: 'Preferences',
+                    subtitle: "Change bot's preferences",
+                    icon: CupertinoIcons.gear_alt,
+                      onTap: () {
+                        Navigator.pushNamed(context, UserBotUpdateSettingView.route);
+                      }
+                  ),
+                  MenuListTileItem(
+                    title: 'Languages',
+                    subtitle: "App language settings",
+                    icon: CupertinoIcons.globe,
+                    onTap: () => debugPrint('Preferences'),
+                  ),
+                  MenuListTileItem(
+                    title: 'Theme',
+                    subtitle: "Change the app's theme",
+                    icon: CupertinoIcons.paintbrush,
+                    onTap: () {
+                      Navigator.pushNamed(context, UserThemeSettingsView.route);
+                    }
+                  ),
+                  MenuListTileItem(
+                    title: 'About',
+                    subtitle: "View information about the app",
+                    icon: CupertinoIcons.info,
+                    onTap: () => debugPrint('Information'),
+                  ),
+                  MenuListTileItem(
+                      title: 'Delete Bot',
+                      icon: CupertinoIcons.delete,
+                      onTap: () async{
 
-                      await Migrations.down(GetIt.I.get<DB>().db);
+                        await Migrations.down(GetIt.I.get<DB>().db);
 
-                    },
-                    type: MenuListTileType.ERROR,
-                    enableTrailing: false
-                ),
-            ].map((item) => MenuListTile(item: item)),
+                      },
+                      type: MenuListTileType.ERROR,
+                      enableTrailing: false
+                  ),
+              ].map((item) => MenuListTile(item: item)),
 
-            const Spacer(),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                "${APP_NAME.toUpperCase()} v1.0.0",
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            )
-
-          ],
+            ],
+          ),
         ),
       )
     );

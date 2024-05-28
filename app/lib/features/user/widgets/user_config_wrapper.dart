@@ -1,15 +1,16 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
 
 
 class UserConfigWrapper extends StatefulWidget {
-  const UserConfigWrapper({super.key, required this.child});
+  const UserConfigWrapper({super.key, required this.builder});
 
-  final Widget child;
+  final BlocWidgetBuilder<UserState> builder;
 
   @override
   State<UserConfigWrapper> createState() => _UserConfigWrapperState();
@@ -17,15 +18,16 @@ class UserConfigWrapper extends StatefulWidget {
 
 class _UserConfigWrapperState extends State<UserConfigWrapper> {
 
-  UserBotBloc get botBloc => context.read<UserBotBloc>();
+  UserBotBloc get botBloc  => context.read<UserBotBloc>();
+  UserBloc    get userBloc => context.read<UserBloc>();
 
-  UserBloc get userBloc => context.read<UserBloc>();
+  final configBloc = GetIt.I.get<UserConfigBloc>();
 
 
   @override
   void initState() {
     super.initState();
-    context.read<UserConfigBloc>().add(const UserConfigReadEvent());
+    configBloc.add(const UserConfigReadEvent());
   }
 
 
@@ -35,6 +37,7 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
       listeners: [
 
         BlocListener<UserConfigBloc, UserConfigState>(
+          bloc: configBloc,
           listener: (context, state) {
 
             if (state is UserConfigReaded) {
@@ -51,6 +54,7 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
                   subTitle: 'Please check your internet connection and try again.'
               );
             }
+
           },
         ),
 
@@ -72,7 +76,9 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
         ),
 
       ],
-      child: widget.child,
+      child: BlocBuilder<UserBloc, UserState>(
+        builder: widget.builder,
+      ),
     );
   }
 

@@ -1,11 +1,10 @@
 import 'package:nyxx/nyxx.dart';
 
 
-
 class DiscordUserModel {
 
 
-  DiscordUserModel({
+  const DiscordUserModel({
     required this.id,
     required this.name,
     required this.avatar,

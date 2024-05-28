@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:flutter/services.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
+import 'package:snitch/shared/ui/images/asset.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 
 class ConsoleMessageBoxHeader extends StatelessWidget {
@@ -25,11 +26,10 @@ class ConsoleMessageBoxHeader extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: (userBotBloc.user?.id != message.user.id)
-              ? Image.network(
+              ? Asset(
                   message.user.avatar,
                   width: 30,
                   height: 30,
-                  errorBuilder: (context, error, stackTrace) => const Logo(width: 30, height: 30),
                 )
               : const Logo(width: 30, height: 30),
         ),

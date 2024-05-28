@@ -8,11 +8,11 @@ import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
 
-class ProfileThemeSettingsView extends StatelessWidget {
+class UserThemeSettingsView extends StatelessWidget {
 
-  const ProfileThemeSettingsView({super.key});
+  const UserThemeSettingsView({super.key});
 
-  static const String route = '/profile-theme-settings';
+  static const String route = '/user-theme-settings';
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:discord/discord.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
@@ -14,22 +15,12 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
     on<BotActionUpdateEvent>(_onUpdate);
     on<BotActionDeleteEvent>(_onDelete);
     on<BotActionInitialEvent>(_onInitial);
-    // on<BotActionReadEvent>(_onRead);
   }
 
 
   final BotLocalRepository repository;
+  final discordValidator = const DiscordValidator();
 
-
-  // void _onRead(BotActionReadEvent event, Emitter<BotActionState> emit) async {
-  //   emit(BotLoading());
-  //   try {
-  //     BotModel bot = await repository.read(event.id);
-  //     emit(BotLoaded(bot));
-  //   } catch (e) {
-  //     emit(BotError(e.toString()));
-  //   }
-  // }
 
   void _onInitial(BotActionInitialEvent event, Emitter<BotActionState> emit) async {
     emit(const BotActionInitial());
@@ -37,9 +28,22 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
 
   void _onCreate(BotActionCreateEvent event, Emitter<BotActionState> emit) async {
-    emit(BotActionLoading());
+
     try {
+      emit(BotActionLoading());
+
+      final result = await discordValidator.checkToken(event.bot.token);
+
+      if (result is! DiscordValidatorStatusSuccess) {
+        throw result.message;
+      }
+
+      if (await repository.hasToken(event.bot.token)) {
+        throw 'Token already exists';
+      }
+
       final bot = await repository.create(event.bot);
+
       emit(BotActionSuccess(bot: bot));
     } catch (e) {
       emit(BotActionError(message: e.toString()));
@@ -48,8 +52,22 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
 
   void _onUpdate(BotActionUpdateEvent event, Emitter<BotActionState> emit) async {
-    emit(BotActionLoading());
     try {
+      emit(BotActionLoading());
+
+      final result = await discordValidator.checkToken(event.bot.token);
+
+      if (result is! DiscordValidatorStatusSuccess) {
+        throw result.message;
+      }
+
+
+
+      if (await repository.hasToken(event.bot.token, event.bot.id)) {
+        throw 'This token already in use by another bot';
+      }
+
+
       final bot = await repository.update(event.bot);
       emit(BotActionSuccess(bot: bot));
     } catch (e) {
@@ -59,14 +77,17 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
 
   void _onDelete(BotActionDeleteEvent event, Emitter<BotActionState> emit) async {
-    emit(BotActionLoading());
     try {
+      emit(BotActionLoading());
+
       bool result = await repository.delete(event.id);
+
       if (result) {
         emit(BotActionDeleted(result));
       } else {
         emit(const BotActionError(message: 'Record not found'));
       }
+
     } catch (e) {
       emit(BotActionError(message: e.toString()));
     }

@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
 import 'package:snitch/core/services/faker.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
@@ -28,11 +29,12 @@ class BotCreateView extends StatefulWidget {
 class _BotCreateViewState extends State<BotCreateView> {
 
 
-  final _nameController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _tokenController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
+  final nameController        = TextEditingController();
+  final descriptionController = TextEditingController();
+  final tokenController       = TextEditingController();
+  final formKey               = GlobalKey<FormState>();
+  final actionBotBloc          = GetIt.I.get<BotActionBloc>();
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class _BotCreateViewState extends State<BotCreateView> {
       ),
       body: ContentBox(
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +64,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               const SizedBox(height: 20),
 
               StyledTextField(
-                controller: _nameController,
+                controller: nameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Bot name is required';
@@ -76,7 +78,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                         enableFeedback: true,
                         icon: const Icon(CupertinoIcons.wand_stars),
                         onPressed: () {
-                          _nameController
+                          nameController
                             ..clear()
                             ..text = 'Bot ${faker.animal.name()}';
                         }
@@ -84,23 +86,19 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
-
               const SizedBox(height: 20),
 
-
               StyledTextField(
-                controller: _descriptionController,
+                controller: descriptionController,
                 decoration: const InputDecoration(
                   hintText: 'Enter bot description',
                 ),
               ),
 
-
               const SizedBox(height: 20),
 
-
               StyledTextField(
-                controller: _tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
+                controller: tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Please, provide your Discord BOT token";
@@ -120,12 +118,10 @@ class _BotCreateViewState extends State<BotCreateView> {
                 ),
               ),
 
-
               const SizedBox(height: 20),
 
-
               BlocConsumer<BotActionBloc, BotActionState>(
-                bloc: context.read<BotActionBloc>()..add(const BotActionInitialEvent()),
+                bloc: actionBotBloc..add(const BotActionInitialEvent()),
                 listener: (context, state) {
 
                   if (state is BotActionSuccess) {
@@ -136,6 +132,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                   if (state is BotActionError) {
                     BotToast.showSimpleNotification(
                       title: "Oops! Something went wrong",
+                      subTitle: state.message,
                       backgroundColor: Colors.red,
                     );
                   }
@@ -150,18 +147,18 @@ class _BotCreateViewState extends State<BotCreateView> {
                         return;
                       }
 
-                      if (_formKey.currentState!.validate()) {
+                      if (formKey.currentState!.validate()) {
 
                         final bot = BotModel(
-                          name: _nameController.text,
-                          description: _descriptionController.text,
-                          token: _tokenController.text,
+                          name: nameController.text,
+                          description: descriptionController.text,
+                          token: tokenController.text,
                           image: faker.image.image(),
                           createdAt: DateTime.now(),
                           updatedAt: DateTime.now(),
                         );
 
-                        context.read<BotActionBloc>().add(BotActionCreateEvent(bot: bot));
+                        actionBotBloc.add(BotActionCreateEvent(bot: bot));
 
                       }
                     },
@@ -169,7 +166,6 @@ class _BotCreateViewState extends State<BotCreateView> {
                   );
                 },
               ),
-
 
               const BotConveyInfo()
 

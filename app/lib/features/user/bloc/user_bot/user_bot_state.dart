@@ -9,11 +9,32 @@ final class UserBotInitial extends UserBotState {
   List<Object> get props => [];
 }
 
+
 final class UserBotStarted extends UserBotState {
   const UserBotStarted();
   @override
   List<Object> get props => [];
 }
+
+final class UserBotStarting extends UserBotState {
+  const UserBotStarting();
+  @override
+  List<Object> get props => [];
+}
+
+
+final class UserBotRestarted extends UserBotState {
+  const UserBotRestarted();
+  @override
+  List<Object> get props => [];
+}
+
+final class UserBotRestarting extends UserBotState {
+  const UserBotRestarting();
+  @override
+  List<Object> get props => [];
+}
+
 
 final class UserBotMessageReceived extends UserBotState {
   const UserBotMessageReceived(this.message);

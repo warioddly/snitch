@@ -2,8 +2,15 @@ import 'package:snitch/core/constants/db_constants.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
+abstract class IBotLocalRepository<T> extends IBaseLocalRepository<BotModel> {
+  const IBotLocalRepository({required super.db});
 
-class BotLocalRepository extends IBaseLocalRepository<BotModel> {
+  Future<bool> hasToken(String token, [int? id]);
+
+}
+
+
+class BotLocalRepository extends IBotLocalRepository<BotModel> {
 
 
   const BotLocalRepository({ required super.db });
@@ -92,6 +99,21 @@ class BotLocalRepository extends IBaseLocalRepository<BotModel> {
       return maps.map((e) => BotModel.fromJson(e)).toList();
     }
     catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
+  @override
+  Future<bool> hasToken(String token, [int? id]) async {
+    try {
+      if (id != null) {
+        final maps = await db.query(table, where: 'token = ? AND id != ?', whereArgs: [token, id]);
+        return maps.isNotEmpty;
+      }
+      final maps = await db.query(table, where: 'token = ?', whereArgs: [token]);
+      return maps.isNotEmpty;
+    } catch (e) {
       throw Exception(e);
     }
   }

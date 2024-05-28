@@ -6,6 +6,7 @@ import 'package:snitch/features/bot/view/bot_edit_view.dart';
 import 'package:snitch/features/bot/view/bot_home_view.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/home/view/home_view.dart';
+import 'package:snitch/features/user/view/user_bot_edit_view.dart';
 import 'package:snitch/features/wrapper/view/wrapper_view.dart';
 import 'package:snitch/features/console/view/console_view.dart';
 import 'package:snitch/features/onboarding/view/onboarding_view.dart';
@@ -38,7 +39,8 @@ class AppRoutes {
     },
 
     UserSettingsView.route: (context) => const UserSettingsView(),
-    ProfileThemeSettingsView.route: (context) => const ProfileThemeSettingsView(),
+    UserBotUpdateSettingView.route: (context) => const UserBotUpdateSettingView(),
+    UserThemeSettingsView.route: (context) => const UserThemeSettingsView(),
 
     ConsoleView.route: (context) {
       final bot = ModalRoute.of(context)!.settings.arguments as BotModel;

@@ -55,6 +55,13 @@ class StyledTextField extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(13)
         ),
+        focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color(0xFFFFFFFF),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(13)
+        ),
         hintStyle: theme.textTheme.bodySmall?.copyWith(
           color: const Color(0xFFA3A3A8),
           fontWeight: FontWeight.w400,

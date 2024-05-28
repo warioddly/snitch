@@ -72,4 +72,15 @@ class BotModel extends IBaseModel {
     );
   }
 
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    description,
+    image,
+    token,
+    createdAt,
+    updatedAt
+  ];
+
 }

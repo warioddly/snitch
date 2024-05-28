@@ -4,7 +4,7 @@ import 'package:snitch/shared/model/base_model_interface.dart';
 
 class ConsoleMessageModel extends IBaseModel {
 
-  ConsoleMessageModel({
+  const ConsoleMessageModel({
     super.id,
     required this.content,
     required this.createdAt,
@@ -41,6 +41,9 @@ class ConsoleMessageModel extends IBaseModel {
       "createdAt": createdAt.toIso8601String(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, bot, user, content, createdAt];
 
 
 }

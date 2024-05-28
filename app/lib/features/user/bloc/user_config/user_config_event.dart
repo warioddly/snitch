@@ -16,3 +16,10 @@ final class UserConfigCreateEvent extends UserConfigEvent {
   @override
   List<Object?> get props => [];
 }
+
+final class UserConfigUpdateEvent extends UserConfigEvent {
+  const UserConfigUpdateEvent(this.config);
+  final UserConfigModel config;
+  @override
+  List<Object?> get props => [];
+}

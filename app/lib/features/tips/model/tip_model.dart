@@ -65,5 +65,8 @@ class TipModel extends IBaseModel {
     };
   }
 
+  @override
+  List<Object?> get props => [id, icon, title, description, markdown, category];
+
 
 }

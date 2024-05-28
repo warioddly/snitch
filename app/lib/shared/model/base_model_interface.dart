@@ -1,5 +1,7 @@
 
-abstract class IBaseModel {
+import 'package:equatable/equatable.dart';
+
+abstract class IBaseModel extends Equatable {
 
   const IBaseModel({required this.id});
 

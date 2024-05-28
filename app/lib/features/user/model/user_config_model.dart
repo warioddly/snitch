@@ -23,7 +23,6 @@ class UserConfigModel extends IBaseModel {
   }
 
 
-
   UserConfigModel copyWith({int? id, String? name, String? token, int? guildId}) {
     return UserConfigModel(
       id: id ?? this.id,
@@ -43,5 +42,15 @@ class UserConfigModel extends IBaseModel {
       'guildId': guildId,
     };
   }
+
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    token,
+    guildId,
+  ];
+
 
 }
