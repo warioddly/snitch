@@ -1,111 +1,64 @@
 import 'dart:async';
+import 'package:discord/discord.dart';
 import 'package:nyxx/nyxx.dart';
 
-
-sealed class DiscordValidatorStatus {
-  const DiscordValidatorStatus();
-}
-
-final class DiscordValidatorStatusSuccess extends DiscordValidatorStatus {
-  const DiscordValidatorStatusSuccess();
-}
-
-final class DiscordValidatorStatusTokenEmpty extends DiscordValidatorStatus {
-  const DiscordValidatorStatusTokenEmpty();
-}
-
-final class DiscordValidatorStatusTokenInvalid extends DiscordValidatorStatus {
-  const DiscordValidatorStatusTokenInvalid();
-}
-
-final class DiscordValidatorStatusGuildNotFound extends DiscordValidatorStatus {
-  const DiscordValidatorStatusGuildNotFound();
-}
-
-final class DiscordValidatorStatusUnknownError extends DiscordValidatorStatus {
-  const DiscordValidatorStatusUnknownError(this.message);
-  final Object? message;
-}
-
-extension DiscordValidatorStatusError on DiscordValidatorStatus {
-  String get message {
-    if (this is DiscordValidatorStatusTokenEmpty) {
-      return 'Token is empty';
-    }
-    else if (this is DiscordValidatorStatusTokenInvalid) {
-      return 'Token is invalid';
-    }
-    else if (this is DiscordValidatorStatusGuildNotFound) {
-      return 'Guild not found';
-    }
-    else if (this is DiscordValidatorStatusUnknownError) {
-      return 'Unknown error';
-    }
-    else {
-      return 'Unknown error';
-    }
-  }
-}
+class DiscordValidate {
 
 
-
-class DiscordValidator {
-
-
-  const DiscordValidator();
+  const DiscordValidate();
 
 
-  Future<DiscordValidatorStatus> checkToken(String token) async {
+  Future<DiscordStatus> checkToken(String token) async {
       try {
         final response = await _checkToken(token);
         return response.$1;
       }
       catch (e) {
-        return DiscordValidatorStatusUnknownError(e);
+        return DiscordUnknownStatus(message: e);
       }
   }
 
 
-  Future<(DiscordValidatorStatus, NyxxGateway? client)> _checkToken(String token) async {
+  Future<(DiscordStatus, NyxxGateway? client)> _checkToken(String token) async {
 
       try {
 
         if (token.isEmpty) {
-          return (DiscordValidatorStatusTokenEmpty(), null);
+          return (DiscordEmptyTokenStatus(), null);
         }
 
         final client = await Nyxx.connectGateway(token, GatewayIntents.all);
 
-        return (DiscordValidatorStatusSuccess(), client);
+        return (DiscordTokenSuccessStatus(), client);
       }
       on NyxxException catch (_) {
-        return (DiscordValidatorStatusTokenInvalid(), null);
+        return (DiscordTokenInvalidStatus(), null);
       }
       catch (e) {
-        return (DiscordValidatorStatusUnknownError(e), null);
+        return (DiscordUnknownStatus(message: e), null);
       }
 
   }
 
 
-  Future<DiscordValidatorStatus> check(String token, int guildId) async {
+  Future<DiscordStatus> check(String token, int guildId) async {
       try {
 
         final tokenStatus = await _checkToken(token);
 
-        if (tokenStatus.$1 is! DiscordValidatorStatusSuccess) {
+        if (tokenStatus.$1 is! DiscordTokenSuccessStatus) {
           return tokenStatus.$1;
         }
 
         await tokenStatus.$2?.guilds.fetch(Snowflake(guildId));
 
-        return DiscordValidatorStatusSuccess();
+        return DiscordTokenSuccessStatus();
       }
       on NyxxException catch (_) {
-        return DiscordValidatorStatusGuildNotFound();
+        return DiscordGuildNotFoundStatus();
       }
       catch (e) {
-        return DiscordValidatorStatusUnknownError(e);
+        return DiscordUnknownStatus(message: e);
       }
   }
 

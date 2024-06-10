@@ -22,13 +22,13 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
   }
 
 
-  // guildId = 1243116555248734301;
-  // _token = MTI0MzExNjM2NzkzMDk4NjU4Nw.Gg6VTO.jeBSmgTFvR6F_35d0pqzGYaR3Af3OI_u1YG-eU;
   Discord?  _discord;
   BotModel? _bot;
 
 
   DiscordUserModel? get user => _discord?.user;
+
+  BotModel? get bot => _bot;
 
 
   Future<void> _onStarted(UserBotStartEvent event, Emitter<UserBotState> emit) async {
@@ -46,13 +46,6 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
           onChannelReady: (channel) async {
             _sendMessage('!ping');
           },
-          onError: (e) {
-
-            if (e is DiscordUserNotFoundException) {
-
-            }
-
-          }
       );
 
       await _discord?.start();
@@ -89,7 +82,7 @@ class UserBotBloc extends Bloc<UserBotEvent, UserBotState> {
           },
           onError: (e) {
 
-            if (e is DiscordUserNotFoundException) {
+            if (e is DiscordTokenSuccessStatus) {
 
             }
 

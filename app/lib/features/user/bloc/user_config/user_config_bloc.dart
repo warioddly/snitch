@@ -18,7 +18,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
 
   final UserLocalRepository repository;
-  final discordValidator = const DiscordValidator();
+  final discordValidator = const DiscordValidate();
 
 
   Future<void> _read(UserConfigReadEvent event, emit) async {
@@ -51,7 +51,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
         final result = await discordValidator.check(config.token, config.guildId);
 
-        if (result is! DiscordValidatorStatusSuccess) {
+        if (result is! DiscordTokenSuccessStatus) {
           throw result.message;
         }
 
@@ -82,7 +82,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
         final result = await discordValidator.check(config.token, config.guildId);
 
-        if (result is! DiscordValidatorStatusSuccess) {
+        if (result is! DiscordTokenSuccessStatus) {
           throw result.message;
         }
 

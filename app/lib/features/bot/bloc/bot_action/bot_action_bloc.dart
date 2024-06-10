@@ -19,7 +19,7 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
 
   final BotLocalRepository repository;
-  final discordValidator = const DiscordValidator();
+  final discordValidator = const DiscordValidate();
 
 
   void _onInitial(BotActionInitialEvent event, Emitter<BotActionState> emit) async {
@@ -34,7 +34,7 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
       final result = await discordValidator.checkToken(event.bot.token);
 
-      if (result is! DiscordValidatorStatusSuccess) {
+      if (result is! DiscordTokenSuccessStatus) {
         throw result.message;
       }
 
@@ -57,10 +57,9 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
       final result = await discordValidator.checkToken(event.bot.token);
 
-      if (result is! DiscordValidatorStatusSuccess) {
+      if (result is! DiscordTokenSuccessStatus) {
         throw result.message;
       }
-
 
 
       if (await repository.hasToken(event.bot.token, event.bot.id)) {

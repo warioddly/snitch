@@ -8,7 +8,7 @@ typedef DiscordClientReadyEvent = void Function(ReadyEvent event);
 
 typedef DiscordChannelReadyEvent = void Function(GuildTextChannel channel);
 
-typedef DiscordExceptionEvent = void Function(DiscordException error);
+typedef DiscordExceptionEvent = void Function(DiscordStatus status);
 
 
 class Discord {
@@ -27,21 +27,20 @@ class Discord {
   final DiscordMessageCreateEvent? onMessageCreate;
   final DiscordClientReadyEvent?   onReady;
   final DiscordChannelReadyEvent?  onChannelReady;
-  final DiscordExceptionEvent?  onError;
+  final DiscordExceptionEvent?     onError;
 
   NyxxGateway?      _client;
   GuildTextChannel? _channel;
-  User?  _user;
+  User?             _user;
   DiscordUserModel? _discordUser;
-  Guild? _guild;
-
+  Guild?            _guild;
 
   Future<void> start() async {
 
         try {
 
           if (token.isEmpty) {
-            throw DiscordTokenEmptyException();
+            throw DiscordEmptyTokenStatus();
           }
 
           _client = await Nyxx.connectGateway(token, GatewayIntents.all);
@@ -49,7 +48,7 @@ class Discord {
 
 
           if (_user == null) {
-            throw DiscordUserNotFoundException();
+            throw DiscordUserNotFoundStatus();
           }
 
           _discordUser = DiscordUserModel.fromUser(_user!);
@@ -67,14 +66,14 @@ class Discord {
 
           });
         }
-        on DiscordUserNotFoundException {
-          onError?.call(DiscordUserNotFoundException());
+        on DiscordUserNotFoundStatus {
+          onError?.call(DiscordUserNotFoundStatus());
         }
-        on DiscordTokenEmptyException {
-          onError?.call(DiscordTokenEmptyException());
+        on DiscordEmptyTokenStatus {
+          onError?.call(DiscordEmptyTokenStatus());
         }
         catch (e) {
-          onError?.call(DiscordUnknownException(error: e));
+          onError?.call(DiscordUnknownStatus(message: e));
         }
 
   }
@@ -85,7 +84,7 @@ class Discord {
       await _channel?.sendMessage(MessageBuilder(content: content));
     }
     catch (e) {
-      onError?.call(DiscordUnknownException(error: e));
+      onError?.call(DiscordUnknownStatus(message: e));
     }
   }
 
@@ -107,7 +106,7 @@ class Discord {
       });
     }
     catch (e) {
-      onError?.call(DiscordUnknownException(error: e));
+      onError?.call(DiscordUnknownStatus(message: e));
     }
   }
 
