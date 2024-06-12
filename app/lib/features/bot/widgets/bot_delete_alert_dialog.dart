@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 
@@ -25,7 +26,7 @@ class BotDeleteAlertDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).maybePop(),
+          onPressed: context.goBack,
           child: const Text(
             "Cancel",
           ),
@@ -33,7 +34,7 @@ class BotDeleteAlertDialog extends StatelessWidget {
         TextButton(
           onPressed: () {
             GetIt.I.get<BotActionBloc>().add(BotActionDeleteEvent(id: bot.id!));
-            Navigator.of(context).maybePop(true);
+            context.goBack(true);
           },
           child: const Text(
             "Delete",

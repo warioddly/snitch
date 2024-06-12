@@ -1,6 +1,5 @@
 part of 'navigation_bar_bloc.dart';
 
-@immutable
 sealed class NavigationBarEvent {
   const NavigationBarEvent();
 }

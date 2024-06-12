@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/core/utils/date_utils.dart' as du;
 import 'package:snitch/features/console/view/console_view.dart';
@@ -31,9 +32,7 @@ class BotListTile extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      onTap: () {
-        Navigator.of(context).pushNamed(ConsoleView.route, arguments: bot);
-      },
+      onTap: () => context.go(ConsoleView.route, arguments: bot),
     );
   }
 

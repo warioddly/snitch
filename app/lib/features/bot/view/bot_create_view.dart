@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/core/services/faker.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:snitch/features/bot/widgets/bot_convey_info.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/button/paste_icon_button.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
@@ -33,7 +35,7 @@ class _BotCreateViewState extends State<BotCreateView> {
   final descriptionController = TextEditingController();
   final tokenController       = TextEditingController();
   final formKey               = GlobalKey<FormState>();
-  final actionBotBloc          = GetIt.I.get<BotActionBloc>();
+  final actionBotBloc         = GetIt.I.get<BotActionBloc>();
  
 
   @override
@@ -98,7 +100,7 @@ class _BotCreateViewState extends State<BotCreateView> {
               const SizedBox(height: 20),
 
               StyledTextField(
-                controller: tokenController..text = "MTI0MzExNDg2OTk0Nzg5MTcxMg.GgdI8l.HMDyb_6bl00msg6kZgKvZABSY20bJ-3L3tmO5E",
+                controller: tokenController,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
                     return "Please, provide your Discord BOT token";
@@ -107,13 +109,17 @@ class _BotCreateViewState extends State<BotCreateView> {
                 },
                 decoration: InputDecoration(
                     hintText: 'Enter bot token',
-                    suffixIcon: IconButton(
-                        visualDensity: VisualDensity.compact,
-                        enableFeedback: true,
-                        icon: const Icon(CupertinoIcons.info),
-                        onPressed: () {
-                          Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
-                        }
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PasteIconButton(controller: tokenController),
+                        IconButton(
+                            icon: const Icon(CupertinoIcons.info),
+                            onPressed: () {
+                              context.go(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                            }
+                        )
+                      ],
                     )
                 ),
               ),
@@ -126,7 +132,7 @@ class _BotCreateViewState extends State<BotCreateView> {
 
                   if (state is BotActionSuccess) {
                     context.read<BotsBloc>().add(const BotsReadEvent());
-                    Navigator.pop(context);
+                    context.goBack();
                   }
 
                   if (state is BotActionError) {
@@ -143,9 +149,7 @@ class _BotCreateViewState extends State<BotCreateView> {
                     loading: state is BotActionLoading,
                     onPressed: () {
 
-                      if (state is BotActionLoading) {
-                        return;
-                      }
+                      FocusManager.instance.primaryFocus?.unfocus();
 
                       if (formKey.currentState!.validate()) {
 

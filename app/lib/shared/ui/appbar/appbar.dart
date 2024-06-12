@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 
 class Appbar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -25,7 +26,7 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
           style: theme.textTheme.titleLarge
       ) : null,
       actions: actions,
-      leading: leadingTo != null || Navigator.canPop(context) && enableImplyLeading ? IconButton(
+      leading: leadingTo != null || context.canGoBack() && enableImplyLeading ? IconButton(
         style: ButtonStyle(
           shape: WidgetStateProperty.all<OutlinedBorder>(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(14)))),
           backgroundColor: WidgetStateProperty.all<Color>(
@@ -38,10 +39,11 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onPressed: () {
 
-          if (Navigator.canPop(context)) {
-            Navigator.of(context).maybePop();
-          } else if (leadingTo != null) {
-            Navigator.of(context).pushNamed(leadingTo!);
+          if (context.canGoBack()) {
+            context.goBack();
+          }
+          else if (leadingTo != null) {
+            context.go(leadingTo!);
           }
 
         },

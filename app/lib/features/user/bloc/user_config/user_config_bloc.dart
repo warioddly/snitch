@@ -28,7 +28,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
       final configs = await repository.getConfigs();
 
       if (configs == null) {
-        emit(const UserConfigEmpty());
+        emit(UserConfigEmpty());
       }
       else {
         emit(UserConfigReaded(configs));
@@ -45,7 +45,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   Future<void> _create(UserConfigCreateEvent event, emit) async {
 
       try {
-        emit(const UserConfigCreating());
+        emit(UserConfigCreating());
 
         final config = event.config;
 
@@ -76,7 +76,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   Future<void> _update(UserConfigUpdateEvent event, emit) async {
 
       try {
-        emit(const UserConfigUpdating());
+        emit(UserConfigUpdating());
 
         final config = event.config;
 

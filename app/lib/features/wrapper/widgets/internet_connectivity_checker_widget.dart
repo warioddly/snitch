@@ -21,7 +21,6 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       body: Column(
         children: [
@@ -45,18 +44,7 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
                     maintainAnimation: true,
                     maintainState: true,
                     visible: _visible,
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                      ),
-                      child: Text(
-                          "You are now connected to the internet",
-                          style: theme.textTheme.bodySmall
-                      ),
-                    )
+                    child: content("You are now connected to the internet", Colors.green),
                 );
               }
 
@@ -64,18 +52,8 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
                 if (mounted) {
                   _visible = true;
                 }
-                return Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                  ),
-                  child: Text(
-                      "You are now disconnected from the internet",
-                    style: theme.textTheme.bodySmall
-                  ),
-                );
+
+                return content("You are now disconnected from the internet", Colors.red);
               }
 
               initialized = true;
@@ -86,6 +64,22 @@ class _InternetConnectivityCheckerWidgetState extends State<InternetConnectivity
           )
 
         ],
+      ),
+    );
+  }
+
+  Container content(String text, Color color) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: color,
+      ),
+      child: Text(
+          text,
+          style: theme.textTheme.bodySmall
       ),
     );
   }

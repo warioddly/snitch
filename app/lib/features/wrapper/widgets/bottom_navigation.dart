@@ -3,16 +3,16 @@ import 'package:snitch/features/wrapper/model/bottom_navigation_item.dart';
 
 class BottomNavigation extends StatelessWidget {
 
-  const BottomNavigation({super.key, this.items, this.onTap, this.index = 0});
+  const BottomNavigation({super.key, this.items = const [], this.onTap, this.index = 0});
 
   final int index;
-  final List<BottomNavigationItem>? items;
+  final List<BottomNavigationItem> items;
   final Function(int)? onTap;
 
   @override
   Widget build(BuildContext context) {
 
-    if (items == null) {
+    if (items.isEmpty) {
       return const SizedBox();
     }
 
@@ -28,7 +28,7 @@ class BottomNavigation extends StatelessWidget {
       child: BottomNavigationBar(
         currentIndex: index,
         onTap: onTap,
-        items: _generateItems(items!),
+        items: _generateItems(items),
       ),
     );
   }

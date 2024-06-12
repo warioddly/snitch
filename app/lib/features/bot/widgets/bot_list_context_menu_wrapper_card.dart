@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_edit_view.dart';
 import 'package:snitch/features/bot/widgets/bot_list_tile.dart';
@@ -20,18 +21,12 @@ class BotListContextMenuWrapperCard extends StatelessWidget {
 
           CupertinoContextMenuAction(
             child: const Text('Edit'),
-            onPressed: () {
-              Navigator.pushNamed(context, BotEditView.route, arguments: bot);
-            },
+            onPressed: () => context.go(BotEditView.route, arguments: bot),
           ),
 
           CupertinoContextMenuAction(
             child: const Text('Delete'),
-            onPressed: () {
-
-
-
-            },
+            onPressed: () => throw UnimplementedError(),
           ),
 
         ],

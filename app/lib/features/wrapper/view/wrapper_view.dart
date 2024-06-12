@@ -51,44 +51,36 @@ class _WrapperViewState extends State<WrapperView> {
 
         if (state is UserConfigsGood) {
           FlutterNativeSplash.remove();
-          return BlocProvider(
-            create: (_) => navigationBloc,
-            child: BlocBuilder<NavigationBarBloc, int>(
-              builder: (context, state) {
-                return SafeArea(
-                  child: Scaffold(
-                    bottomNavigationBar: BottomNavigation(
-                      items: _items,
-                      index: state,
-                      onTap: (index) {
+          return SafeArea(
+            child: Scaffold(
+              bottomNavigationBar: BlocBuilder<NavigationBarBloc, int>(
+                bloc: navigationBloc,
+                builder: (context, state) {
+                  return BottomNavigation(
+                    items: _items,
+                    index: state,
+                    onTap: (index) {
 
-                        if (index == navigationBloc.state) {
-                          return;
-                        }
+                      if (index == state) {
+                        return;
+                      }
 
-                        pageController.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
+                      pageController.animateToPage(
+                        index,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.ease,
+                      );
 
-                        navigationBloc.add(NavigationBarChanged(index));
-                      },
-                    ),
-                    body: Column(
-                        children: [
-                          Expanded(
-                              child: PageView(
-                                controller: pageController,
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: _items.map((item) => item.view).toList(),
-                              )
-                          ),
-                        ]
-                    ),
-                  ),
-                );
-              },
+                      navigationBloc.add(NavigationBarChanged(index));
+                    },
+                  );
+                },
+              ),
+              body: PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: _items.map((item) => item.view).toList(),
+              ),
             ),
           );
         }

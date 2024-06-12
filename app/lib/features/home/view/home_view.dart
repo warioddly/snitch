@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/view/bot_all_list_view.dart';
 import 'package:snitch/features/bot/widgets/bot_appbar_create_button.dart';
@@ -50,8 +51,7 @@ class _HomeViewState extends State<HomeView> {
                           text: "Bots",
                           rightText: "View all bots",
                           onTapRightText: () {
-                            debugPrint("View all bots");
-                            Navigator.pushNamed(context, BotAllListView.route);
+                            context.go(BotAllListView.route);
                           },
                         ),
 

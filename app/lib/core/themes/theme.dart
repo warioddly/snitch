@@ -46,6 +46,11 @@ class SnitchTheme {
         color: Color(0xFFBDBDBD),
         size: 20,
       ),
+      iconButtonTheme: const IconButtonThemeData(
+        style: ButtonStyle(
+          enableFeedback: true,
+        ),
+      ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFFFCFCFD),
         selectedItemColor: Color(0xFFBDBDBD),
@@ -175,6 +180,12 @@ class SnitchTheme {
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),
       ),
+      iconButtonTheme: const IconButtonThemeData(
+        style: ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          enableFeedback: true,
+        )
+      )
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 
@@ -20,14 +21,7 @@ class TipListCard extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () {
-
-            Navigator.of(context).pushNamed(
-              TipDetailView.route,
-              arguments: tip,
-            );
-
-          },
+          onTap: () => context.go(TipDetailView.route, arguments: tip),
           child: Padding(
               padding: const EdgeInsets.all(18),
               child: Column(

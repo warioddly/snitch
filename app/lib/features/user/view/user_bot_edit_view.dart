@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
 import 'package:snitch/features/user/model/user_config_model.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/button/paste_icon_button.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
@@ -28,7 +30,7 @@ class UserBotUpdateSettingView extends StatefulWidget {
 
 class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
 
-  final nameController  = TextEditingController();
+  // final nameController  = TextEditingController();
   final tokenController = TextEditingController();
   final guildController = TextEditingController();
   final formKey         = GlobalKey<FormState>();
@@ -36,14 +38,13 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
 
   UserConfigModel? configs;
 
-
   UserBotBloc get botBloc  => context.read<UserBotBloc>();
 
 
   @override
   void initState() {
     super.initState();
-    configBloc.add(const UserConfigReadEvent());
+    configBloc.add(UserConfigReadEvent());
   }
 
 
@@ -74,21 +75,21 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
-
-                    StyledTextField(
-                      controller: nameController..text = configs?.name ?? "",
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please specify the name of the bot";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Bot Name',
-                        suffixIcon: Icon(CupertinoIcons.ant),
-                      ),
-                    ),
+                    // const SizedBox(height: 20),
+                    //
+                    // StyledTextField(
+                    //   controller: nameController..text = configs?.name ?? "",
+                    //   validator: (String? value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return "Please specify the name of the bot";
+                    //     }
+                    //     return null;
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //     hintText: 'Bot Name',
+                    //     suffixIcon: Icon(CupertinoIcons.ant),
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 20),
 
@@ -105,21 +106,12 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                           suffixIcon: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                enableFeedback: true,
-                                icon: const Icon(CupertinoIcons.doc_text),
-                                onPressed: () {
-                                  FocusScope.of(context).unfocus();
-                                  Clipboard.getData('text/plain').then((value) {
-                                    tokenController.text = value?.text ?? '';
-                                  });
-                                },
-                              ),
+                              PasteIconButton(controller: guildController),
                               IconButton(
                                 enableFeedback: true,
                                 icon: const Icon(CupertinoIcons.info),
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                                  context.go(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
                                 },
                               ),
                             ],
@@ -154,21 +146,12 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                           suffixIcon: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                enableFeedback: true,
-                                icon: const Icon(CupertinoIcons.doc_text),
-                                onPressed: () {
-                                  FocusScope.of(context).unfocus();
-                                  Clipboard.getData('text/plain').then((value) {
-                                    guildController.text = value?.text ?? '';
-                                  });
-                                },
-                              ),
+                              PasteIconButton(controller: guildController),
                               IconButton(
                                 enableFeedback: true,
                                 icon: const Icon(CupertinoIcons.info),
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                                  context.go(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
                                 },
                               ),
                             ],
@@ -208,7 +191,7 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                               listener: (context, state) {
 
                                 if (state is UserBotRestarted) {
-                                  // context.read<UserBloc>().add(const UserGood());
+
                                   BotToast.showSimpleNotification(
                                       title: 'Bot updated successfully',
                                       subTitle: 'Your bot is now ready to use.',
@@ -216,7 +199,7 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                                       duration: const Duration(seconds: 5)
                                   );
 
-                                  Navigator.maybePop(context);
+                                  context.goBack();
                                 }
 
                               },
@@ -225,13 +208,15 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
                                   loading: (configState is UserConfigUpdating || botState is UserBotRestarting),
                                   onPressed: () async {
 
+                                    FocusManager.instance.primaryFocus?.unfocus();
+
                                     if (!formKey.currentState!.validate()) {
                                       return;
                                     }
 
                                     final config = UserConfigModel(
                                       id: configs?.id,
-                                      name: nameController.text,
+                                      name: configs?.name ?? "Unknown",
                                       token: tokenController.text,
                                       guildId: int.parse(guildController.text),
                                     );

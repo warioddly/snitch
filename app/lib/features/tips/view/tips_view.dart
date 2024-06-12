@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/core/extensions/string_extension.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
@@ -93,12 +94,7 @@ class _TipsViewState extends State<TipsView> {
                           child: Headline(
                               text: category.name.toCapitalize(),
                               rightText: 'View all',
-                              onTapRightText: () {
-                                Navigator.of(context).pushNamed(
-                                  TipsCategoryView.route,
-                                  arguments: category,
-                                );
-                              }
+                              onTapRightText: () => context.go(TipsCategoryView.route, arguments: category),
                           ),
                         ),
 

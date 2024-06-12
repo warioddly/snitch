@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_settings_view.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
@@ -28,19 +29,9 @@ class _ConsoleViewState extends State<ConsoleView> {
 
   BotModel get bot => widget.bot;
 
-  // late final ConsoleBloc bloc;
-
   List<ConsoleMessageModel> messages = [];
 
   final _scrollController = ScrollController();
-
-
-  @override
-  void initState() {
-    super.initState();
-    // bloc = ConsoleBloc(bot: bot)
-    //   ..add(ConsoleStarted());
-  }
 
 
   @override
@@ -53,7 +44,7 @@ class _ConsoleViewState extends State<ConsoleView> {
           IconButton(
               tooltip: 'Bot settings',
               icon: const Icon(CupertinoIcons.chevron_left_slash_chevron_right),
-              onPressed: () => Navigator.pushNamed(context, BotSettingsView.route, arguments: bot)
+              onPressed: () => context.go(BotSettingsView.route, arguments: bot)
           )
         ],
       ),
@@ -110,8 +101,8 @@ class _ConsoleViewState extends State<ConsoleView> {
                     if (messages.isEmpty)
                       SliverList(
                         delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                          return const ConsoleEmptyChat();
-                        },
+                            return const ConsoleEmptyChat();
+                          },
                           childCount: 1,
                         ),
                       )

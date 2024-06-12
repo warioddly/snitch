@@ -27,7 +27,7 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
   @override
   void initState() {
     super.initState();
-    configBloc.add(const UserConfigReadEvent());
+    configBloc.add(UserConfigReadEvent());
   }
 
 

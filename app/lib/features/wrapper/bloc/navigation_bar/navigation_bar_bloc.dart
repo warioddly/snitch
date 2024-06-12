@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'navigation_bar_event.dart';
 part 'navigation_bar_state.dart';

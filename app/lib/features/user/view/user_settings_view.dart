@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snitch/core/database/migrations.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/core/services/db.dart';
 import 'package:snitch/features/user/view/user_bot_edit_view.dart';
 import 'package:snitch/features/user/view/user_theme_settings_view.dart';
@@ -33,9 +34,7 @@ class UserSettingsView extends StatelessWidget {
                     title: 'Preferences',
                     subtitle: "Change bot's preferences",
                     icon: CupertinoIcons.gear_alt,
-                      onTap: () {
-                        Navigator.pushNamed(context, UserBotUpdateSettingView.route);
-                      }
+                    onTap: () => context.go(UserBotUpdateSettingView.route),
                   ),
                   MenuListTileItem(
                     title: 'Languages',
@@ -47,9 +46,7 @@ class UserSettingsView extends StatelessWidget {
                     title: 'Theme',
                     subtitle: "Change the app's theme",
                     icon: CupertinoIcons.paintbrush,
-                    onTap: () {
-                      Navigator.pushNamed(context, UserThemeSettingsView.route);
-                    }
+                    onTap: () => context.go(UserThemeSettingsView.route),
                   ),
                   MenuListTileItem(
                     title: 'About',

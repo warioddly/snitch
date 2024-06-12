@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/model/bot_model.dart';
 import 'package:snitch/features/bot/view/bot_edit_view.dart';
@@ -42,9 +43,7 @@ class BotSettingsView extends StatelessWidget {
                 title: 'Preferences',
                 subtitle: "Change bot's preferences",
                 icon: CupertinoIcons.gear_alt,
-                onTap: () {
-                  Navigator.pushNamed(context, BotEditView.route, arguments: bot);
-                }
+                onTap: () => context.go(BotEditView.route, arguments: bot),
               ),
               // MenuListTileItem(
               //   title: 'Information & Stats',
@@ -80,7 +79,7 @@ class BotSettingsView extends StatelessWidget {
 
                       context.read<BotsBloc>().add(const BotsReadEvent());
 
-                      Navigator.popUntil(context, (route) => route.settings.name == WrapperView.route);
+                      context.goBackUntil((route) => route.settings.name == WrapperView.route);
 
                     });
 

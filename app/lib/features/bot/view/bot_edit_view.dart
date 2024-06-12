@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/extensions/build_context_extenstion.dart';
 import 'package:snitch/core/services/faker.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:snitch/features/tips/tips/tips.dart';
 import 'package:snitch/features/tips/view/tip_detail_view.dart';
 import 'package:snitch/features/wrapper/view/wrapper_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
+import 'package:snitch/shared/ui/button/paste_icon_button.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/textfield/styled_text_field.dart';
@@ -110,13 +112,17 @@ class _BotEditViewState extends State<BotEditView> {
                   },
                   decoration: InputDecoration(
                       hintText: 'Enter bot token',
-                      suffixIcon: IconButton(
-                          visualDensity: VisualDensity.compact,
-                          enableFeedback: true,
-                          icon: const Icon(CupertinoIcons.info),
-                          onPressed: () {
-                            Navigator.pushNamed(context, TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
-                          }
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PasteIconButton(controller: tokenController),
+                          IconButton(
+                              icon: const Icon(CupertinoIcons.info),
+                              onPressed: () {
+                                context.go(TipDetailView.route, arguments: tip_how_to_get_discord_bot_token);
+                              }
+                          )
+                        ],
                       )
                   ),
                 ),
@@ -129,7 +135,7 @@ class _BotEditViewState extends State<BotEditView> {
 
                     if (state is BotActionSuccess) {
                       context.read<BotsBloc>().add(const BotsReadEvent());
-                      Navigator.popUntil(context, (route) => route.settings.name == WrapperView.route);
+                      context.goBackUntil((route) => route.settings.name == WrapperView.route);
                     }
 
                     if (state is BotActionError) {
@@ -145,6 +151,8 @@ class _BotEditViewState extends State<BotEditView> {
                     return StyledTextButton(
                       loading: state is BotActionLoading,
                       onPressed: () {
+
+                        FocusManager.instance.primaryFocus?.unfocus();
 
                         if (formKey.currentState!.validate()) {
 
