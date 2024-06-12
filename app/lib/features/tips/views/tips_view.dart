@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/core/extensions/string_extension.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/utils/extensions/string_extension.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
-import 'package:snitch/features/tips/view/tips_category_view.dart';
+import 'package:snitch/features/tips/views/tips_category_view.dart';
 import 'package:snitch/features/tips/widgets/tip_card.dart';
 import 'package:snitch/features/tips/widgets/tip_categories_filter_chip.dart';
 import 'package:snitch/features/tips/widgets/tip_category_empty_widget.dart';

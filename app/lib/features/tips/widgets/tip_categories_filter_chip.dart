@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/core/extensions/string_extension.dart';
+import 'package:snitch/core/utils/extensions/string_extension.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 

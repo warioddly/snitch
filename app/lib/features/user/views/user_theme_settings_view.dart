@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:snitch/core/constants/constants.dart';
+import 'package:snitch/core/services/locator/locator.dart';
 import 'package:snitch/core/themes/theme.dart';
 import 'package:snitch/shared/bloc/ui/theme_cubit.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
@@ -17,7 +18,7 @@ class UserThemeSettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final theme = GetIt.I<ThemeCubit>();
+    final theme = getIt<ThemeCubit>();
 
     return Scaffold(
       appBar: const Appbar(

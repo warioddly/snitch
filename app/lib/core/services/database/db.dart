@@ -1,17 +1,18 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:snitch/core/constants/db_constants.dart';
-import 'package:snitch/core/database/migrations.dart';
+import 'package:snitch/core/services/database/migrations.dart';
 import 'package:sqflite/sqflite.dart';
 
 
 class DB {
 
-  final Database db;
+  late final Database _db;
 
-  const DB({required this.db});
+  Database get db => _db;
 
-  static Future<Database> init() async {
+  Future<DB> init() async {
 
     final databasesPath = await getDatabasesPath();
 
@@ -22,13 +23,14 @@ class DB {
     if (!exists) {
       try {
         await Directory(dirname(path)).create(recursive: true);
-      } catch (_) {}
+      } catch (_) {
+        debugPrint("Error creating database directory");
+      }
    }
 
-    return openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async {
-      await Migrations.up(db);
-    });
+    _db = await openDatabase(path, version: DbConstants.DB_VERSION, readOnly: false, onOpen: (db) async => await Migrations.up(db));
 
+    return this;
   }
 
 }

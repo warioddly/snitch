@@ -2,17 +2,18 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:snitch/core/constants/constants.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/core/services/faker.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/services/faker/faker.dart';
+import 'package:snitch/core/services/locator/locator.dart';
 import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 import 'package:snitch/features/bot/widgets/bot_convey_info.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
-import 'package:snitch/features/tips/view/tip_detail_view.dart';
-import 'package:snitch/features/wrapper/view/wrapper_view.dart';
+import 'package:snitch/features/tips/views/tip_detail_view.dart';
+import 'package:snitch/features/wrapper/views/wrapper_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/button/paste_icon_button.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
@@ -38,7 +39,7 @@ class _BotEditViewState extends State<BotEditView> {
   final descriptionController = TextEditingController();
   final tokenController       = TextEditingController();
   final formKey               = GlobalKey<FormState>();
-  final actionBotBloc         = GetIt.I.get<BotActionBloc>();
+  final actionBotBloc         = getIt<BotActionBloc>();
 
 
   @override

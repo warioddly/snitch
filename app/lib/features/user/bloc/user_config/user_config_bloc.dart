@@ -1,8 +1,8 @@
 import 'package:discord/discord.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snitch/features/user/model/user_config_model.dart';
-import 'package:snitch/features/user/repository/user_local_repository.dart';
+import 'package:snitch/features/user/models/user_config_model.dart';
+import 'package:snitch/features/user/repositories/user_local_repository.dart';
 
 part 'user_config_event.dart';
 part 'user_config_state.dart';

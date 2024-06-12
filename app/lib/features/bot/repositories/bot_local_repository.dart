@@ -1,5 +1,5 @@
 import 'package:snitch/core/constants/db_constants.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
 abstract class IBotLocalRepository<T> extends IBaseLocalRepository<BotModel> {

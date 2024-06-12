@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 import 'package:snitch/core/utils/date_utils.dart' as du;
 import 'package:snitch/shared/ui/images/asset.dart';
 

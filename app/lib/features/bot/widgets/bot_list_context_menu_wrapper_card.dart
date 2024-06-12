@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/bot/view/bot_edit_view.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
+import 'package:snitch/features/bot/views/bot_edit_view.dart';
 import 'package:snitch/features/bot/widgets/bot_list_tile.dart';
 
 class BotListContextMenuWrapperCard extends StatelessWidget {

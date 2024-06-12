@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/bot/view/bot_settings_view.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
+import 'package:snitch/features/bot/views/bot_settings_view.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/console/widgets/console_chat_footer.dart';
 import 'package:snitch/features/console/widgets/console_empty_chat.dart';

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:snitch/features/onboarding/model/onboard_template_model.dart';
+import 'package:snitch/features/onboarding/models/onboard_template_model.dart';
 
 
 class OnboardPageTemplate extends StatefulWidget {

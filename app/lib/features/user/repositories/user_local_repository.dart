@@ -1,5 +1,5 @@
 import 'package:snitch/core/constants/db_constants.dart';
-import 'package:snitch/features/user/model/user_config_model.dart';
+import 'package:snitch/features/user/models/user_config_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
 

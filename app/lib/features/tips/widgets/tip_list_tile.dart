@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
-import 'package:snitch/features/tips/view/tip_detail_view.dart';
+import 'package:snitch/features/tips/views/tip_detail_view.dart';
 
 class TipListTile extends StatelessWidget {
 

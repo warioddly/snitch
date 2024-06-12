@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:snitch/core/database/migrations.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/core/services/db.dart';
-import 'package:snitch/features/user/view/user_bot_edit_view.dart';
-import 'package:snitch/features/user/view/user_theme_settings_view.dart';
+
+import 'package:snitch/core/services/database/migrations.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/services/database/db.dart';
+import 'package:snitch/core/services/locator/locator.dart';
+import 'package:snitch/features/user/views/user_bot_edit_view.dart';
+import 'package:snitch/features/user/views/user_theme_settings_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/list/menu_list_tile.dart';
@@ -43,6 +44,12 @@ class UserSettingsView extends StatelessWidget {
                     onTap: () => debugPrint('Preferences'),
                   ),
                   MenuListTileItem(
+                    title: 'Commands',
+                    subtitle: "Add your customs commands",
+                    icon: CupertinoIcons.command,
+                    onTap: () => debugPrint('Preferences'),
+                  ),
+                  MenuListTileItem(
                     title: 'Theme',
                     subtitle: "Change the app's theme",
                     icon: CupertinoIcons.paintbrush,
@@ -59,7 +66,7 @@ class UserSettingsView extends StatelessWidget {
                       icon: CupertinoIcons.delete,
                       onTap: () async{
 
-                        await Migrations.down(GetIt.I.get<DB>().db);
+                        await Migrations.down(getIt<DB>().db);
 
                       },
                       type: MenuListTileType.ERROR,

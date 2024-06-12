@@ -1,7 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+
+import 'package:snitch/core/services/locator/locator.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
@@ -21,7 +22,7 @@ class _UserConfigWrapperState extends State<UserConfigWrapper> {
   UserBotBloc get botBloc  => context.read<UserBotBloc>();
   UserBloc    get userBloc => context.read<UserBloc>();
 
-  final configBloc = GetIt.I.get<UserConfigBloc>();
+  final configBloc = getIt<UserConfigBloc>();
 
 
   @override

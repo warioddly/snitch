@@ -1,4 +1,4 @@
-import 'package:snitch/core/services/faker.dart';
+import 'package:snitch/core/services/faker/faker.dart';
 import 'package:snitch/features/bot/faker/bot_faker.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
 import 'package:snitch/features/user/faker/discord_user_faker.dart';

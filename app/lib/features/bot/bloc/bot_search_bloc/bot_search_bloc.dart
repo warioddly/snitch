@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/bot/repository/bot_local_repository.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
+import 'package:snitch/features/bot/repositories/bot_local_repository.dart';
 
 part 'bot_search_event.dart';
 part 'bot_search_state.dart';

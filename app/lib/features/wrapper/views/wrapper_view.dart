@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:snitch/features/bot/view/bot_home_view.dart';
-import 'package:snitch/features/wrapper/bloc/navigation_bar/navigation_bar_bloc.dart';
-import 'package:snitch/features/home/view/home_view.dart';
-import 'package:snitch/features/wrapper/model/bottom_navigation_item.dart';
-import 'package:snitch/features/wrapper/widgets/bottom_navigation.dart';
-import 'package:snitch/features/onboarding/view/onboarding_view.dart';
-import 'package:snitch/features/user/bloc/user/user_bloc.dart';
-import 'package:snitch/features/user/view/user_settings_view.dart';
-import 'package:snitch/features/tips/view/tips_view.dart';
 import 'package:snitch/features/user/widgets/user_config_wrapper.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:snitch/features/onboarding/views/onboarding_view.dart';
+import 'package:snitch/features/wrapper/bloc/navigation_bar/navigation_bar_bloc.dart';
+import 'package:snitch/features/wrapper/models/bottom_navigation_item.dart';
+import 'package:snitch/features/wrapper/widgets/bottom_navigation.dart';
+import 'package:snitch/features/user/bloc/user/user_bloc.dart';
+import 'package:snitch/features/home/views/home_view.dart';
+import 'package:snitch/features/user/views/user_settings_view.dart';
+import 'package:snitch/features/tips/views/tips_view.dart';
+import 'package:snitch/features/bot/views/bot_home_view.dart';
 
 
 class WrapperView extends StatefulWidget {
@@ -51,36 +51,34 @@ class _WrapperViewState extends State<WrapperView> {
 
         if (state is UserConfigsGood) {
           FlutterNativeSplash.remove();
-          return SafeArea(
-            child: Scaffold(
-              bottomNavigationBar: BlocBuilder<NavigationBarBloc, int>(
-                bloc: navigationBloc,
-                builder: (context, state) {
-                  return BottomNavigation(
-                    items: _items,
-                    index: state,
-                    onTap: (index) {
+          return Scaffold(
+            bottomNavigationBar: BlocBuilder<NavigationBarBloc, int>(
+              bloc: navigationBloc,
+              builder: (context, state) {
+                return BottomNavigation(
+                  items: _items,
+                  index: state,
+                  onTap: (index) {
 
-                      if (index == state) {
-                        return;
-                      }
+                    if (index == state) {
+                      return;
+                    }
 
-                      pageController.animateToPage(
-                        index,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease,
-                      );
+                    pageController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
 
-                      navigationBloc.add(NavigationBarChanged(index));
-                    },
-                  );
-                },
-              ),
-              body: PageView(
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: _items.map((item) => item.view).toList(),
-              ),
+                    navigationBloc.add(NavigationBarChanged(index));
+                  },
+                );
+              },
+            ),
+            body: PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: _items.map((item) => item.view).toList(),
             ),
           );
         }

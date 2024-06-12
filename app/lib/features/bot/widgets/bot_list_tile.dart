@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 import 'package:snitch/core/utils/date_utils.dart' as du;
-import 'package:snitch/features/console/view/console_view.dart';
+import 'package:snitch/features/console/views/console_view.dart';
 import 'package:snitch/shared/ui/images/asset.dart';
 
 class BotListTile extends StatelessWidget {

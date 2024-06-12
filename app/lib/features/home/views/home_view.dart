@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
-import 'package:snitch/features/bot/view/bot_all_list_view.dart';
+import 'package:snitch/features/bot/views/bot_all_list_view.dart';
 import 'package:snitch/features/bot/widgets/bot_appbar_create_button.dart';
-import 'package:snitch/features/bot/widgets/bot_empty_widget.dart';
 import 'package:snitch/features/bot/widgets/bot_list_context_menu_wrapper_card.dart';
+import 'package:snitch/features/home/widgets/empty_home_page.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/layout/content_box.dart';
 import 'package:snitch/shared/ui/typography/headline.dart';
 
-class BotHomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
 
-  const BotHomeView({super.key});
+  const HomeView({super.key});
 
-  static const String route = '/bots';
+  static const String route = '/home';
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Appbar(
-        title: 'My Bots',
+        title: "Home",
         actions: [BotAppbarCreateButton()],
       ),
       body: ContentBox(
@@ -32,7 +39,7 @@ class BotHomeView extends StatelessWidget {
                 builder: (context, state) {
 
                   if (state is BotsEmpty) {
-                    return const BotEmptyWidget();
+                    return const EmptyHomePage();
                   }
 
                   if (state is BotsLoaded) {
@@ -43,18 +50,12 @@ class BotHomeView extends StatelessWidget {
                         Headline(
                           text: "Bots",
                           rightText: "View all bots",
-                          onTapRightText: () => context.go(BotAllListView.route),
+                          onTapRightText: () {
+                            context.go(BotAllListView.route);
+                          },
                         ),
 
-                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListContextMenuWrapperCard(bot: bot)),
-
-
-                        const Headline(
-                          text: "History",
-                          rightText: "View all history",
-                        ),
-
-                        ...state.bots.getRange(0, state.bots.length >= 5 ? 5 : state.bots.length).map((bot) => BotListContextMenuWrapperCard(bot: bot)),
+                        ...state.bots.map((bot) => BotListContextMenuWrapperCard(bot: bot))
 
                       ],
                     );

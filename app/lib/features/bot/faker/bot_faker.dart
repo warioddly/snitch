@@ -1,5 +1,5 @@
-import 'package:snitch/core/services/faker.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/core/services/faker/faker.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 
 
 class BotFaker {

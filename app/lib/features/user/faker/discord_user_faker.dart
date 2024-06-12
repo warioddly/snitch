@@ -1,5 +1,5 @@
 import 'package:discord/discord.dart';
-import 'package:snitch/core/services/faker.dart';
+import 'package:snitch/core/services/faker/faker.dart';
 
 class DiscordUserFaker {
 

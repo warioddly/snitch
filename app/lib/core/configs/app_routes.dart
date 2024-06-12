@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
-import 'package:snitch/features/bot/view/bot_all_list_view.dart';
-import 'package:snitch/features/bot/view/bot_create_view.dart';
-import 'package:snitch/features/bot/view/bot_edit_view.dart';
-import 'package:snitch/features/bot/view/bot_home_view.dart';
-import 'package:snitch/features/bot/view/bot_settings_view.dart';
-import 'package:snitch/features/home/view/home_view.dart';
-import 'package:snitch/features/user/view/user_bot_edit_view.dart';
-import 'package:snitch/features/wrapper/view/wrapper_view.dart';
-import 'package:snitch/features/console/view/console_view.dart';
-import 'package:snitch/features/onboarding/view/onboarding_view.dart';
-import 'package:snitch/features/tips/view/tips_category_view.dart';
-import 'package:snitch/features/user/view/user_settings_view.dart';
-import 'package:snitch/features/user/view/user_theme_settings_view.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
+import 'package:snitch/features/bot/views/bot_all_list_view.dart';
+import 'package:snitch/features/bot/views/bot_create_view.dart';
+import 'package:snitch/features/bot/views/bot_edit_view.dart';
+import 'package:snitch/features/bot/views/bot_home_view.dart';
+import 'package:snitch/features/bot/views/bot_settings_view.dart';
+import 'package:snitch/features/home/views/home_view.dart';
+import 'package:snitch/features/user/views/user_bot_edit_view.dart';
+import 'package:snitch/features/wrapper/views/wrapper_view.dart';
+import 'package:snitch/features/console/views/console_view.dart';
+import 'package:snitch/features/onboarding/views/onboarding_view.dart';
+import 'package:snitch/features/tips/views/tips_category_view.dart';
+import 'package:snitch/features/user/views/user_settings_view.dart';
+import 'package:snitch/features/user/views/user_theme_settings_view.dart';
 import 'package:snitch/features/tips/model/tip_model.dart';
-import 'package:snitch/features/tips/view/tip_detail_view.dart';
-import 'package:snitch/features/tips/view/tips_view.dart';
+import 'package:snitch/features/tips/views/tip_detail_view.dart';
+import 'package:snitch/features/tips/views/tips_view.dart';
 
 
 class AppRoutes {

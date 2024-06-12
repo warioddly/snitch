@@ -3,14 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:snitch/core/constants/constants.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/services/locator/locator.dart';
 import 'package:snitch/features/tips/tips/tips.dart';
-import 'package:snitch/features/tips/view/tip_detail_view.dart';
+import 'package:snitch/features/tips/views/tip_detail_view.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
-import 'package:snitch/features/user/model/user_config_model.dart';
+import 'package:snitch/features/user/models/user_config_model.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
 import 'package:snitch/shared/ui/button/paste_icon_button.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
@@ -34,7 +35,7 @@ class _UserBotUpdateSettingViewState extends State<UserBotUpdateSettingView> {
   final tokenController = TextEditingController();
   final guildController = TextEditingController();
   final formKey         = GlobalKey<FormState>();
-  final configBloc      = GetIt.I.get<UserConfigBloc>();
+  final configBloc      = getIt<UserConfigBloc>();
 
   UserConfigModel? configs;
 

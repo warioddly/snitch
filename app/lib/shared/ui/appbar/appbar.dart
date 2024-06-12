@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
 
 class Appbar extends StatelessWidget implements PreferredSizeWidget {
 

@@ -2,11 +2,11 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:snitch/core/configs/app_routes.dart';
 import 'package:snitch/core/configs/scroll_behavior.dart';
 import 'package:snitch/core/themes/theme.dart';
-import 'package:snitch/core/services/locator.dart';
+import 'package:snitch/core/services/locator/locator.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/wrapper/widgets/internet_connectivity_checker_widget.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
@@ -30,25 +30,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => GetIt.I.get<UserBloc>()),
-        BlocProvider(create: (context) => GetIt.I.get<UserBotBloc>()),
-        BlocProvider(create: (context) => GetIt.I.get<BotsBloc>()),
-        BlocProvider(create: (context) => GetIt.I.get<ThemeCubit>()),
+        BlocProvider(create: (context) => getIt<UserBloc>()),
+        BlocProvider(create: (context) => getIt<UserBotBloc>()),
+        BlocProvider(create: (context) => getIt<BotsBloc>()),
+        BlocProvider(create: (context) => getIt<ThemeCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, SnitchThemeType>(
         builder: (context, state) {
-          return MaterialApp(
-            theme: SnitchTheme.getTheme(state),
-            debugShowCheckedModeBanner: false,
-            builder: (context, child) {
-              return InternetConnectivityCheckerWidget(
-                child: BotToastInit()(context, child),
-              );
-            },
-            navigatorObservers: [BotToastNavigatorObserver()],
-            scrollBehavior: const MyScrollBehavior(),
-            initialRoute: AppRoutes.initialRoute,
-            routes: AppRoutes.routes
+          return SafeArea(
+            child: MaterialApp(
+                theme: SnitchTheme.getTheme(state),
+                debugShowCheckedModeBanner: false,
+                builder: (context, child) {
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling),
+                    child: InternetConnectivityCheckerWidget(
+                      child: BotToastInit()(context, child),
+                    ),
+                  );
+                },
+                navigatorObservers: [BotToastNavigatorObserver()],
+                scrollBehavior: const MyScrollBehavior(),
+                initialRoute: AppRoutes.initialRoute,
+                routes: AppRoutes.routes
+            ),
           );
         },
       ),

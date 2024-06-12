@@ -5,7 +5,7 @@ import 'package:convey/src/models/discord_user_model.dart';
 class ConsoleMessageModel {
 
 
-  ConsoleMessageModel({
+  const ConsoleMessageModel({
     required this.content,
     required this.createdAt,
     required this.bot,

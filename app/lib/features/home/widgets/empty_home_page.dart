@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snitch/core/constants/constants.dart';
-import 'package:snitch/core/extensions/build_context_extenstion.dart';
-import 'package:snitch/features/bot/view/bot_create_view.dart';
+import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
+import 'package:snitch/features/bot/views/bot_create_view.dart';
 import 'package:snitch/shared/ui/button/styled_text_button.dart';
 import 'package:snitch/shared/ui/images/logo.dart';
 

@@ -4,6 +4,7 @@ import 'package:convey/src/bot_config.dart';
 import 'package:convey/src/models/console_message_model.dart';
 import 'package:convey/src/runner.dart';
 import 'package:discord/discord.dart';
+import 'package:process_run/process_run.dart';
 
 
 class Bot {
@@ -59,8 +60,16 @@ class Bot {
         return;
       }
 
+
+      if (consoleMessage.content.startsWith("cd") && consoleMessage.content.split(" ").length == 2) {
+        final path = consoleMessage.content.split(" ")[1];
+        cmd.cd(path);
+        _sendMessage('Changed directory to $path', message);
+        return;
+      }
+
       final result = await cmd.run(consoleMessage.content);
-      _sendMessage(result.first.stdout, message);
+      _sendMessage(result.outText, message);
 
     }
     catch (e) {

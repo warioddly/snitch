@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:snitch/features/bot/faker/bot_faker.dart';
-import 'package:snitch/features/bot/model/bot_model.dart';
+import 'package:snitch/features/bot/models/bot_model.dart';
 import 'package:snitch/features/console/model/console_message_model.dart';
-import 'package:snitch/features/user/model/user_config_model.dart';
+import 'package:snitch/features/user/models/user_config_model.dart';
 
 part 'user_bot_event.dart';
 part 'user_bot_state.dart';
