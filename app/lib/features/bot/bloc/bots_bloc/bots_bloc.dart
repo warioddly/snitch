@@ -17,16 +17,16 @@ class BotsBloc extends Bloc<BotsEvent, BotsState> {
   final BotLocalRepository repository;
 
   void _onReadAll(BotsReadEvent event, Emitter<BotsState> emit) async {
-    emit(BotsLoading());
     try {
-      List<BotModel> bots = await repository.readAll();
 
-      if (bots.isEmpty) {
-        emit(const BotsEmpty());
-      }
-      else {
-        emit(BotsLoaded(bots));
-      }
+      emit(BotsLoading());
+
+      final result = await repository.readAll();
+
+      result.fold(
+        (l) => throw l,
+        (bots) => bots.isEmpty ? emit(const BotsEmpty()) : emit(BotsLoaded(bots))
+      );
 
     } catch (e) {
       emit(BotsError(e.toString()));
@@ -34,14 +34,18 @@ class BotsBloc extends Bloc<BotsEvent, BotsState> {
   }
 
   void _onDeleteAll(BotsDeleteEvent event, Emitter<BotsState> emit) async {
-    emit(BotsLoading());
     try {
-      bool result = await repository.deleteAll();
-      if (result) {
-        emit(BotsDeleted(result));
-      } else {
-        emit(const BotsError('Record not found'));
-      }
+
+      emit(BotsLoading());
+
+      final result = await repository.deleteAll();
+
+      result.fold(
+        (l) => throw l,
+        (deleted) => emit(BotsDeleted(deleted))
+      );
+
+
     } catch (e) {
       emit(BotsError(e.toString()));
     }

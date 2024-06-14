@@ -1,5 +1,7 @@
+import 'package:snitch/core/services/error/failure.dart';
 import 'package:snitch/shared/model/base_model_interface.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:either_dart/either.dart';
 
 abstract class IBaseLocalRepository<T extends IBaseModel> {
 
@@ -9,41 +11,41 @@ abstract class IBaseLocalRepository<T extends IBaseModel> {
 
   final Database db;
 
-  Future<T?> create(T model) {
+  Future<Either<Failure, T>> create(T model) {
     throw UnimplementedError();
   }
 
-  Future<T?> read(int id) {
+  Future<Either<Failure, T>> read(int id) {
     throw UnimplementedError();
   }
 
-  Future<List<T>> readAll() async {
+  Future<Either<Failure, List<T>>> readAll() async {
     throw UnimplementedError();
   }
 
-  Future<T> update(T model) async {
+  Future<Either<Failure, T>> update(T model) async {
     throw UnimplementedError();
   }
 
-  Future<bool> delete(int id) async {
+  Future<Either<Failure, bool>> delete(int id) async {
     try {
       final result = await db.delete(table, where: 'id = ?', whereArgs: [id]);
-      return result > 0;
-    } catch (e) {
-      throw Exception(e);
+      return Right(result > 0);
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 
-  Future<bool> deleteAll() async {
+  Future<Either<Failure, bool>> deleteAll() async {
     try {
       final result = await db.delete(table);
-      return result > 0;
-    } catch (e) {
-      throw Exception(e);
+      return Right(result > 0);
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 
-  Future<List<T>> search(String query) async {
+  Future<Either<Failure, List<T>>> search(String query) async {
     throw UnimplementedError();
   }
 

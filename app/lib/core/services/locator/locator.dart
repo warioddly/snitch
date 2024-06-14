@@ -4,6 +4,8 @@ import 'package:snitch/features/bot/bloc/bot_action/bot_action_bloc.dart';
 import 'package:snitch/features/bot/bloc/bots_bloc/bots_bloc.dart';
 import 'package:snitch/features/bot/bloc/bot_search_bloc/bot_search_bloc.dart';
 import 'package:snitch/features/bot/repositories/bot_local_repository.dart';
+import 'package:snitch/features/commands/bloc/command_bloc.dart';
+import 'package:snitch/features/commands/repositories/command_local_repository.dart';
 import 'package:snitch/features/user/bloc/user/user_bloc.dart';
 import 'package:snitch/features/user/bloc/user_bot/user_bot_bloc.dart';
 import 'package:snitch/features/user/bloc/user_config/user_config_bloc.dart';
@@ -49,6 +51,10 @@ Future<void> setupLocator() async {
   getItRegisterFactory<UserBloc>(() => UserBloc());
   getItRegisterFactory<UserBotBloc>(() => UserBotBloc());
   getItRegisterFactory<UserConfigBloc>(() => UserConfigBloc(repository: getIt()));
+
+
+  getItRegister<CommandLocalRepository>(CommandLocalRepository(db: getIt<DB>().db));
+  getItRegisterFactory<CommandBloc>(() => CommandBloc(repository: getIt()));
 
 
   debugPrint('Locator setup complete');

@@ -18,16 +18,17 @@ class BotSearchBloc extends Bloc<BotSearchEvent, BotSearchState> {
   final BotLocalRepository repository;
 
 
-
   void _onSearch(BotSearchBotEvent event, Emitter<BotSearchState> emit) async {
-    emit(BotSearchLoading());
     try {
-      final bots = await repository.search(event.query);
-      if (bots.isEmpty) {
-        emit(BotSearchEmpty());
-      } else {
-        emit(BotSearchBots(bots: bots));
-      }
+      emit(BotSearchLoading());
+
+      final result = await repository.search(event.query);
+
+      result.fold(
+        (l) => throw l,
+        (bots) => bots.isEmpty ? emit(BotSearchEmpty()) : emit(BotSearchBots(bots: bots))
+      );
+
     } catch (e) {
       emit(BotSearchError(message: e.toString()));
     }

@@ -5,6 +5,7 @@ import 'package:snitch/core/services/database/migrations.dart';
 import 'package:snitch/core/utils/extensions/build_context_extenstion.dart';
 import 'package:snitch/core/services/database/db.dart';
 import 'package:snitch/core/services/locator/locator.dart';
+import 'package:snitch/features/commands/views/command_view.dart';
 import 'package:snitch/features/user/views/user_bot_edit_view.dart';
 import 'package:snitch/features/user/views/user_theme_settings_view.dart';
 import 'package:snitch/shared/ui/appbar/appbar.dart';
@@ -47,7 +48,7 @@ class UserSettingsView extends StatelessWidget {
                     title: 'Commands',
                     subtitle: "Add your customs commands",
                     icon: CupertinoIcons.command,
-                    onTap: () => debugPrint('Preferences'),
+                    onTap: () => context.go(CommandView.route),
                   ),
                   MenuListTileItem(
                     title: 'Theme',

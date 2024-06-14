@@ -11,7 +11,7 @@ extension NavigatorExtenstion on BuildContext {
   }
 
   Future<bool> goBack<T extends Object?>([ T? result ]) async {
-    return await Navigator.maybePop(this);
+    return await Navigator.maybePop(this, result);
   }
 
   void goBackUntil(RoutePredicate predicate) {

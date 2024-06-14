@@ -27,21 +27,23 @@ class StyledTextButton extends StatelessWidget {
         },
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.all(const Color(0xFF1B1E20)),
-          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 16)),
+          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 17, vertical: 16)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
 
             Text(text),
 
-            const SizedBox(width: 10),
-
-            if (loading) const SizedBox(
-              width: 20,
-              height: 20,
-              child: CupertinoActivityIndicator(),
-            ),
+            if (loading) ...[
+              const SizedBox(width: 10),
+              const SizedBox(
+                width: 20,
+                height: 20,
+                child: CupertinoActivityIndicator(),
+              ),
+            ]
 
           ],
         )

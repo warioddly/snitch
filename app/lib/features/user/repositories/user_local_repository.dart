@@ -1,4 +1,6 @@
+import 'package:either_dart/either.dart';
 import 'package:snitch/core/constants/db_constants.dart';
+import 'package:snitch/core/services/error/failure.dart';
 import 'package:snitch/features/user/models/user_config_model.dart';
 import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 
@@ -6,7 +8,7 @@ import 'package:snitch/shared/repository/base_local_repository_interface.dart';
 class IUserLocalRepository<T> extends IBaseLocalRepository<UserConfigModel> {
   const IUserLocalRepository({required super.db});
 
-  Future<T?> getConfigs() {
+  Future<Either<Failure, T?>> getConfigs() {
     throw UnimplementedError();
   }
 
@@ -21,54 +23,54 @@ class UserLocalRepository extends IUserLocalRepository<UserConfigModel> {
 
 
   @override
-  Future<UserConfigModel?> create(UserConfigModel model) async {
+  Future<Either<Failure, UserConfigModel>> create(UserConfigModel model) async {
     try {
       final id = await db.insert(table, model.toJson());
-      return model.copyWith(id: id);
-    } catch (e) {
-      throw Exception(e);
+      return Right(model.copyWith(id: id));
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 
 
   @override
-  Future<UserConfigModel?> read(int id) async {
+  Future<Either<Failure, UserConfigModel>> read(int id) async {
     try {
       final maps = await db.query(table, where: 'id = ?', whereArgs: [id]);
       if (maps.isEmpty) {
         throw Exception('Record not found');
       }
-      return UserConfigModel.fromJson(maps.first);
-    } catch (e) {
-      throw Exception(e);
+      return Right(UserConfigModel.fromJson(maps.first));
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 
 
   @override
-  Future<UserConfigModel> update(UserConfigModel model) async {
+  Future<Either<Failure, UserConfigModel>> update(UserConfigModel model) async {
     try {
       int result = await db.update(table, model.toJson(), where: 'id = ?', whereArgs: [model.id]);
       if (result == 0) {
         throw Exception('Record not found');
       }
-      return model;
-    } catch (e) {
-      throw Exception(e);
+      return Right(model);
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 
 
   @override
-  Future<UserConfigModel?> getConfigs() async {
+  Future<Either<Failure, UserConfigModel?>> getConfigs() async {
     try {
       final maps = await db.query(table);
       if (maps.isEmpty) {
-        return null;
+        return const Right(null);
       }
-      return UserConfigModel.fromJson(maps.first);
-    } catch (e) {
-      throw Exception(e);
+      return Right(UserConfigModel.fromJson(maps.first));
+    } catch (e, s) {
+      return Left(Failure(e, s));
     }
   }
 

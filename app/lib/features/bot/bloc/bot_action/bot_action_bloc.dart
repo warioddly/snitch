@@ -19,7 +19,7 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
 
 
   final BotLocalRepository repository;
-  final discordValidator = const DiscordValidate();
+  final _discord = const DiscordValidate();
 
 
   void _onInitial(BotActionInitialEvent event, Emitter<BotActionState> emit) async {
@@ -32,19 +32,25 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
     try {
       emit(BotActionLoading());
 
-      final result = await discordValidator.checkToken(event.bot.token);
+      final checkResult = await _discord.checkToken(event.bot.token);
 
-      if (result is! DiscordTokenSuccessStatus) {
-        throw result.message;
+      if (checkResult is! DiscordTokenSuccessStatus) {
+        throw checkResult.message;
       }
 
-      if (await repository.hasToken(event.bot.token)) {
+      final duplicate = await repository.hasToken(event.bot.token, event.bot.id);
+
+      if (duplicate.isLeft) {
         throw 'Token already exists';
       }
 
-      final bot = await repository.create(event.bot);
+      final result = await repository.create(event.bot);
 
-      emit(BotActionSuccess(bot: bot));
+      result.fold(
+        (l) => throw l,
+        (bot) => emit(BotActionSuccess(bot: bot))
+      );
+
     } catch (e) {
       emit(BotActionError(message: e.toString()));
     }
@@ -55,20 +61,26 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
     try {
       emit(BotActionLoading());
 
-      final result = await discordValidator.checkToken(event.bot.token);
+      final checkResult = await _discord.checkToken(event.bot.token);
 
-      if (result is! DiscordTokenSuccessStatus) {
-        throw result.message;
+      if (checkResult is! DiscordTokenSuccessStatus) {
+        throw checkResult.message;
       }
 
+      final duplicate = await repository.hasToken(event.bot.token, event.bot.id);
 
-      if (await repository.hasToken(event.bot.token, event.bot.id)) {
+      if (duplicate.isLeft) {
         throw 'This token already in use by another bot';
       }
 
+      final result = await repository.update(event.bot);
 
-      final bot = await repository.update(event.bot);
-      emit(BotActionSuccess(bot: bot));
+      result.fold(
+        (l) => throw l,
+        (bot) => emit(BotActionSuccess(bot: bot))
+      );
+
+
     } catch (e) {
       emit(BotActionError(message: e.toString()));
     }
@@ -79,13 +91,12 @@ class BotActionBloc extends Bloc<BotActionEvent, BotActionState> {
     try {
       emit(BotActionLoading());
 
-      bool result = await repository.delete(event.id);
+      final result = await repository.delete(event.id);
 
-      if (result) {
-        emit(BotActionDeleted(result));
-      } else {
-        emit(const BotActionError(message: 'Record not found'));
-      }
+      result.fold(
+        (l) => throw l,
+        (result) => BotActionDeleted(result)
+      );
 
     } catch (e) {
       emit(BotActionError(message: e.toString()));

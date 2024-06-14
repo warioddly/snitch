@@ -5,6 +5,7 @@ import 'package:snitch/features/bot/views/bot_create_view.dart';
 import 'package:snitch/features/bot/views/bot_edit_view.dart';
 import 'package:snitch/features/bot/views/bot_home_view.dart';
 import 'package:snitch/features/bot/views/bot_settings_view.dart';
+import 'package:snitch/features/commands/views/command_view.dart';
 import 'package:snitch/features/home/views/home_view.dart';
 import 'package:snitch/features/user/views/user_bot_edit_view.dart';
 import 'package:snitch/features/wrapper/views/wrapper_view.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
     WrapperView.route: (context) => const WrapperView(),
     HomeView.route: (context) => const HomeView(),
     OnboardingView.route: (context) => const OnboardingView(),
+    CommandView.route: (context) => const CommandView(),
 
     TipsView.route: (context) => const TipsView(),
     TipsCategoryView.route: (context) {

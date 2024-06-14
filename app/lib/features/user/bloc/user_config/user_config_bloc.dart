@@ -18,21 +18,21 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
 
   final UserLocalRepository repository;
-  final discordValidator = const DiscordValidate();
+  final _discord = const DiscordValidate();
 
 
   Future<void> _read(UserConfigReadEvent event, emit) async {
 
     try {
 
-      final configs = await repository.getConfigs();
+      final result = await repository.getConfigs();
 
-      if (configs == null) {
-        emit(UserConfigEmpty());
-      }
-      else {
-        emit(UserConfigReaded(configs));
-      }
+      result.fold(
+        (l) => throw l,
+        (configs) => configs == null
+            ? emit(UserConfigEmpty())
+            : emit(UserConfigReaded(configs))
+      );
 
     }
     catch (e) {
@@ -49,22 +49,20 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
         final config = event.config;
 
-        final result = await discordValidator.check(config.token, config.guildId);
+        final checkResult = await _discord.check(config.token, config.guildId);
 
-        if (result is! DiscordTokenSuccessStatus) {
-          throw result.message;
+        if (checkResult is! DiscordTokenSuccessStatus) {
+          throw checkResult.message;
         }
 
         await repository.deleteAll();
 
-        final configs = await repository.create(event.config);
+        final result = await repository.create(event.config);
 
-        if (configs == null) {
-          throw 'Error while creating config';
-        }
-        else {
-          emit(UserConfigCreated(configs));
-        }
+        result.fold(
+            (l) => throw l,
+            (configs) => emit(UserConfigCreated(configs))
+        );
 
       }
       catch (e) {
@@ -80,15 +78,18 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
         final config = event.config;
 
-        final result = await discordValidator.check(config.token, config.guildId);
+        final checkResult = await _discord.check(config.token, config.guildId);
 
-        if (result is! DiscordTokenSuccessStatus) {
-          throw result.message;
+        if (checkResult is! DiscordTokenSuccessStatus) {
+          throw checkResult.message;
         }
 
-        final configs = await repository.update(event.config);
+        final result = await repository.update(event.config);
 
-        emit(UserConfigUpdated(configs));
+        result.fold(
+            (l) => throw l,
+            (configs) => emit(UserConfigUpdated(configs))
+        );
 
       }
       catch (e) {

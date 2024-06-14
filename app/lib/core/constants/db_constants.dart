@@ -10,6 +10,8 @@ class DbConstants {
 
   static const String USER_CONFIG_TABLE_NAME = 'user_configs';
 
+  static const String COMMANDS_TABLE_NAME = 'commands';
+
   static const String TIP_TABLE_NAME = 'tips';
 
   static const String TIP_CATEGORIES_TABLE_NAME = 'tip_categories';
