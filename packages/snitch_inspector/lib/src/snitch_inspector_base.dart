@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:path/path.dart' as p;
 import 'package:snitch/snitch.dart';
+import 'package:snitch_inspector/src/assets/index.dart';
+
 
 class SnitchInspector {
   SnitchInspector({
@@ -10,7 +11,7 @@ class SnitchInspector {
     InternetAddress? internetAddress,
     this.port = 4040,
   }) : _snitch = snitch,
-       internetAddress = internetAddress ?? InternetAddress.loopbackIPv4;
+       internetAddress = internetAddress ?? InternetAddress.anyIPv6;
 
   final Snitch _snitch;
   final InternetAddress internetAddress;
@@ -21,9 +22,11 @@ class SnitchInspector {
   Future<void> serve() async {
     _server = await HttpServer.bind(internetAddress, port);
 
-    final String address = internetAddress.address;
-
-    print('Server running at http://$address:$port/');
+    for (var interface in await NetworkInterface.list()) {
+      for (var addr in interface.addresses) {
+        print('Server running at http://${addr.address}:$port/');
+      }
+    }
 
     await for (HttpRequest request in _server!) {
       final path = request.uri.path;
@@ -34,12 +37,7 @@ class SnitchInspector {
         if (path == '/api/logs') {
           request.response.headers.contentType = ContentType.json;
 
-          final logs = [
-            {'level': 'info', 'message': 'Hello from API!'},
-            {'level': 'debug', 'message': 'Debugging info'},
-            {'level': 'warning', 'message': 'This is a warning'},
-            {'level': 'error', 'message': 'An error occurred'},
-          ];
+          final logs = _snitch.logs.map((log) => { "log": log.toString() }).toList();
 
           request.response.write(jsonEncode(logs));
         } else {
@@ -47,23 +45,8 @@ class SnitchInspector {
           request.response.write('API endpoint not found');
         }
       } else {
-        final buildDir = Directory('frontend/dist');
-        final filePath = path == '/' ? 'index.html' : path.substring(1);
-        final file = File(p.join(buildDir.path, filePath));
-
-        if (await file.exists()) {
-          request.response.headers.contentType = getContentType(file.path);
-          request.response.add(await file.readAsBytes());
-        } else {
-          final indexFile = File(p.join(buildDir.path, 'index.html'));
-          if (await indexFile.exists()) {
-            request.response.headers.contentType = ContentType.html;
-            request.response.add(await indexFile.readAsBytes());
-          } else {
-            request.response.statusCode = HttpStatus.notFound;
-            request.response.write('404 Not Found');
-          }
-        }
+        request.response.headers.contentType = ContentType.html;
+        request.response.write(indexHtml);
       }
 
       await request.response.close();
