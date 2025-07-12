@@ -15,7 +15,7 @@ abstract class Snitch {
       'No output adapters provided. '
       'Please provide at least one OutputAdapter to handle the logs.',
     );
-    return _Snitch(maxLogs: maxLogs, adapters: adapters);
+    return _Snitch(maxLogs: maxLogs, adapters: List.unmodifiable(adapters));
   }
 
   /// Log records are stored in memory.
@@ -41,16 +41,13 @@ abstract class Snitch {
 }
 
 class _Snitch implements Snitch {
-  _Snitch({required this.maxLogs, required List<OutputAdapter> adapters})
-    : _adapters = List.unmodifiable(adapters);
+  _Snitch({required this.maxLogs, required this.adapters});
 
   /// Maximum number of logs to keep in memory.
   final int maxLogs;
 
-  final List<OutputAdapter> _adapters;
-
   @override
-  List<OutputAdapter> get adapters => List.unmodifiable(_adapters);
+  final List<OutputAdapter> adapters;
 
   final List<LogRecord> _logs = [];
 
@@ -102,7 +99,7 @@ class _Snitch implements Snitch {
         _logStreamController?.add(log);
       }
 
-      for (final adapter in _adapters) {
+      for (final adapter in adapters) {
         adapter.log(log);
       }
     } catch (error, stacktrace) {
