@@ -58,6 +58,10 @@ class _Snitch implements Snitch {
 
   @override
   Stream<LogRecord> stream() {
+    if (_logStreamController != null) {
+      return _logStreamController!.stream.cast<LogRecord>().asBroadcastStream();
+    }
+
     closeStream();
     return (_logStreamController = StreamController<LogRecord>.broadcast())
         .stream;
