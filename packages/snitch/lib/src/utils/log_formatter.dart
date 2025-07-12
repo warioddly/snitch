@@ -10,11 +10,11 @@ final defaultPatterns = {
   InfoLevel:
       '${AnsiColors.blue}[{level}] ${AnsiColors.brightBlack}[{time}] ${AnsiColors.blue}{message}${AnsiColors.reset}',
   DebugLevel:
-      '${AnsiColors.blue}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}',
+      '${AnsiColors.blue}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}${AnsiColors.reset}',
   TraceLevel:
-      '${AnsiColors.brightBlack}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}',
+      '${AnsiColors.brightBlack}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}${AnsiColors.reset}',
   VerboseLevel:
-      '${AnsiColors.brightWhite}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}',
+      '${AnsiColors.brightWhite}[{level}] ${AnsiColors.brightBlack}[{time}]${AnsiColors.reset} {message}${AnsiColors.reset}',
 };
 
 final defaultPattern =
