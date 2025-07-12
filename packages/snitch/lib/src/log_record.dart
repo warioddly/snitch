@@ -20,4 +20,22 @@ class LogRecord {
   String toString() {
     return 'LogRecord(message: $message, time: $time, name: $name, error: $error, stackTrace: $stackTrace)';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LogRecord &&
+        other.message == message &&
+        other.name == name &&
+        other.error == error &&
+        other.stackTrace == stackTrace;
+  }
+
+  @override
+  int get hashCode {
+    return message.hashCode ^
+        name.hashCode ^
+        error.hashCode ^
+        stackTrace.hashCode;
+  }
+
 }

@@ -1,10 +1,11 @@
+import 'package:snitch/src/adapters/_output_adapter.dart';
+import 'package:snitch/src/adapters/console_output_adapter.dart';
 import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/output_adapter.dart';
 
 abstract class Snitch {
   factory Snitch({
     int maxLogs = 1000,
-    adapters = const <OutputAdapter>[ConsoleOutputAdapter()],
+    adapters = const <OutputAdapter>[ConsoleOutputAdapter.instance],
   }) => _Snitch(maxLogs: maxLogs, adapters: adapters);
 
   /// Log records are stored in memory.
@@ -20,6 +21,7 @@ abstract class Snitch {
     String name = '',
     Object? error,
     StackTrace? stackTrace,
+    Map<String, dynamic>? metadata,
   });
 }
 
@@ -53,6 +55,7 @@ class _Snitch implements Snitch {
     String name = '',
     Object? error,
     StackTrace? stackTrace,
+    Map<String, dynamic>? metadata,
   }) {
     final log = LogRecord(
       message: message,
