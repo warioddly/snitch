@@ -1,30 +1,33 @@
-[ERROR] [2025-07-12T21:32:39.467113] error
-[ERROR] [2025-07-12T21:32:40.473839] 1
-[ERROR] [2025-07-12T21:32:41.477489] 2
-[ERROR] [2025-07-12T21:32:44.489277] 4
-[ERROR] [2025-07-12T21:32:45.491839] 5
-[ERROR] [2025-07-12T21:32:45.494010] UnimplementedError: Oops, something went wrong
+[ERROR] [2025-07-12T22:04:56.241868] error
+[ERROR] [2025-07-12T22:04:57.252274] 1
+[ERROR] [2025-07-12T22:04:58.257328] 2
+[ERROR] [2025-07-12T22:05:01.265398] 4
+[ERROR] [2025-07-12T22:05:02.267877] 5
+[ERROR] [2025-07-12T22:05:02.269814] UnimplementedError: Oops, something went wrong
 ------------------STACK TRACE------------------
-#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:72:28)
+#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:75:28)
 <asynchronous suspension>
 
 -----------------------------------------------
 
-[TRACE] [2025-07-12T21:33:21.281842] message
-[INFO] [2025-07-12T21:33:21.285807] info
-[WARNING] [2025-07-12T21:33:21.285920] warning
-[ERROR] [2025-07-12T21:33:21.286174] error
-[DEBUG] [2025-07-12T21:33:21.286275] debug
-[VERBOSE] [2025-07-12T21:33:21.286345] verbose
-[ERROR] [2025-07-12T21:33:22.294918] 1
-[ERROR] [2025-07-12T21:33:23.304481] 2
-[INFO] [2025-07-12T21:33:25.315295] 3
-[ERROR] [2025-07-12T21:33:26.318627] 4
-[ERROR] [2025-07-12T21:33:27.321789] 5
-[ERROR] [2025-07-12T21:33:27.323647] UnimplementedError: Oops, something went wrong
+[ERROR] [2025-07-12T22:05:22.397920] error
+[ERROR] [2025-07-12T22:05:23.407476] 1
+[FATAL] [2025-07-12T22:05:23.408331] 2
+[ERROR] [2025-07-12T22:05:24.410982] 2
+[FATAL] [2025-07-12T22:05:26.421435] 1
+[ERROR] [2025-07-12T22:05:27.423895] 4
+[ERROR] [2025-07-12T22:05:28.425948] 5
+[ERROR] [2025-07-12T22:05:28.428141] UnimplementedError: Oops, something went wrong
 ------------------STACK TRACE------------------
-#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:72:28)
+#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:75:28)
 <asynchronous suspension>
 
 -----------------------------------------------
 
+[FATAL] [2025-07-12T22:05:45.204513] 2
+[FATAL] [2025-07-12T22:05:48.220015] 1
+[FATAL] [2025-07-12T22:06:15.241966] 2
+[FATAL] [2025-07-12T22:06:18.259638] 1
+[FATAL] [2025-07-12T22:07:01.801279] error
+[FATAL] [2025-07-12T22:07:02.808700] 2
+[FATAL] [2025-07-12T22:07:05.821629] 1

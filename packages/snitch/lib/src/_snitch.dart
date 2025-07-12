@@ -27,7 +27,7 @@ abstract class Snitch {
   /// Logs a message with optional parameters.
   void log(
     String message, {
-    Level level = const InfoLevel(),
+    Level level = const DebugLevel(),
     DateTime? time,
     String name = '',
     Object? error,
@@ -72,7 +72,7 @@ class _Snitch implements Snitch {
   @override
   void log(
     String message, {
-    Level level = const InfoLevel(),
+    Level level = const DebugLevel(),
     DateTime? time,
     String name = '',
     Object? error,

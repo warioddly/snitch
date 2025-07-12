@@ -2,14 +2,15 @@ import 'package:snitch/snitch.dart';
 import 'package:snitch/src/adapters/console_output_adapter.dart';
 import 'package:snitch/src/adapters/file_output_adapter.dart';
 import 'package:snitch/src/adapters/remote_output_adapter.dart';
+import 'package:snitch/src/formatters/_format_patterns.dart';
 import 'package:snitch/src/formatters/console_output_formatter.dart';
 import 'package:snitch/src/levels/level.dart';
-
+import 'package:snitch/src/utils/ansi_colors.dart';
 
 void main() async {
   final fileOutputAdapter = FileOutputAdapter(
     "logs.txt",
-    filter: (Level level) => level.level == ErrorLevel.value,
+    filter: (Level level) => level.level is ErrorLevel || level is FatalLevel,
   );
 
   final remoteOutputAdapter = RemoteOutputAdapter(
@@ -22,12 +23,14 @@ void main() async {
     adapters: <OutputAdapter>[
       ConsoleOutputAdapter(
         formatter: ConsoleOutputFormatter(
-          // patterns: {
-          //   ErrorLevel: '${AnsiColors.brightRed}{level} [{message}]${AnsiColors.reset}'
-          // },
+          patterns: {
+            ...defaultConsolePatterns,
+            FatalLevel:
+                '${AnsiColors.bgBrightRed}{level}${AnsiColors.reset} [{message}]',
+          },
         ),
       ),
-      // fileOutputAdapter,
+      fileOutputAdapter,
       // remoteOutputAdapter,
     ],
   );
@@ -36,7 +39,7 @@ void main() async {
     ..t("message")
     ..i("info")
     ..w("warning")
-    ..e("error")
+    ..f("error")
     ..d("debug")
     ..v("verbose");
 
@@ -48,6 +51,7 @@ void main() async {
 
   await delay();
   snitch.e("1");
+  snitch.f("2");
 
   await delay();
   snitch.e("2");
@@ -58,6 +62,7 @@ void main() async {
 
   await delay();
   snitch.i("3");
+  snitch.f("1");
 
   await delay();
   snitch.e("4");
@@ -76,3 +81,12 @@ void main() async {
 }
 
 Future<void> delay() => Future.delayed(Duration(seconds: 1));
+
+class FatalLevel extends Level {
+  const FatalLevel()
+    : super(level: 101, name: 'FATAL', description: 'Fatal Level');
+}
+
+extension on Snitch {
+  void f(String message) => log(message, level: const FatalLevel());
+}
