@@ -15,13 +15,6 @@ abstract class Level {
   }
 }
 
-class InfoLevel extends Level {
-  static const int value = 100;
-
-  const InfoLevel()
-    : super(level: value, name: "INFO", description: "Info level");
-}
-
 class ErrorLevel extends Level {
   static const int value = 1000;
 
@@ -34,6 +27,13 @@ class WarningLevel extends Level {
 
   const WarningLevel()
     : super(level: value, name: "WARNING", description: "Warning level");
+}
+
+class VerboseLevel extends Level {
+  static const int value = 500;
+
+  const VerboseLevel()
+    : super(level: value, name: "VERBOSE", description: "Verbose level");
 }
 
 class DebugLevel extends Level {
@@ -50,9 +50,9 @@ class TraceLevel extends Level {
     : super(level: value, name: "TRACE", description: "Trace level");
 }
 
-class VerboseLevel extends Level {
-  static const int value = 500;
+class InfoLevel extends Level {
+  static const int value = 100;
 
-  const VerboseLevel()
-    : super(level: value, name: "VERBOSE", description: "Verbose level");
+  const InfoLevel()
+    : super(level: value, name: "INFO", description: "Info level");
 }

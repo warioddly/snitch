@@ -1,8 +1,6 @@
-
 import 'package:snitch/src/levels/level.dart';
 
 class LogRecord {
-
   final String message;
   final DateTime? time;
   final String name;
@@ -10,7 +8,7 @@ class LogRecord {
   final StackTrace? stackTrace;
   final Level level;
 
-  LogRecord({
+  const LogRecord({
     required this.message,
     required this.time,
     required this.level,
@@ -21,9 +19,6 @@ class LogRecord {
 
   @override
   String toString() {
-    return 'LogRecord(message: $message, time: $time, name: $name, error: $error, stackTrace: $stackTrace)';
+    return '${name.isEmpty ? '' : '[$name] '}[$time] $message ${error ?? ''} ${stackTrace ?? ''}';
   }
-
-
-
 }

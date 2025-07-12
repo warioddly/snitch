@@ -1,17 +1,17 @@
 import 'dart:io';
 
 import 'package:snitch/snitch.dart' show OutputAdapter;
-import 'package:snitch/src/levels/utils.dart';
 import 'package:snitch/src/log_record.dart';
+import 'package:snitch/src/formatters/_output_formatter.dart';
+import 'package:snitch/src/formatters/file_output_formatter.dart';
 
-class FileOutputAdapter implements OutputAdapter {
+class FileOutputAdapter extends OutputAdapter {
   final String filePath;
   final IOSink _sink;
-  final LevelFilter filter;
 
-  FileOutputAdapter(this.filePath, {LevelFilter? filter})
-    : filter = filter ?? levelFilter,
-      _sink = File(filePath).openWrite(mode: FileMode.append);
+  FileOutputAdapter(this.filePath, {super.filter, OutputFormatter? formatter})
+    : _sink = File(filePath).openWrite(mode: FileMode.append),
+      super(formatter: formatter ?? FileOutputFormatter());
 
   @override
   void log(LogRecord logRecord) {
@@ -19,7 +19,7 @@ class FileOutputAdapter implements OutputAdapter {
       return;
     }
 
-    _sink.writeln(logRecord.toString());
+    _sink.writeln(formatter.format(logRecord));
   }
 
   Future<void> close() async {

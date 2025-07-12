@@ -2,12 +2,14 @@ import 'package:snitch/snitch.dart';
 import 'package:snitch/src/adapters/console_output_adapter.dart';
 import 'package:snitch/src/adapters/file_output_adapter.dart';
 import 'package:snitch/src/adapters/remote_output_adapter.dart';
+import 'package:snitch/src/formatters/console_output_formatter.dart';
 import 'package:snitch/src/levels/level.dart';
+
 
 void main() async {
   final fileOutputAdapter = FileOutputAdapter(
     "logs.txt",
-    filter: (Level level) => level.level == WarningLevel.value,
+    filter: (Level level) => level.level == ErrorLevel.value,
   );
 
   final remoteOutputAdapter = RemoteOutputAdapter(
@@ -18,9 +20,15 @@ void main() async {
   var snitch = Snitch(
     maxLogs: 20,
     adapters: <OutputAdapter>[
-      ConsoleOutputAdapter(),
-      fileOutputAdapter,
-      remoteOutputAdapter,
+      ConsoleOutputAdapter(
+        formatter: ConsoleOutputFormatter(
+          // patterns: {
+          //   ErrorLevel: '${AnsiColors.brightRed}{level} [{message}]${AnsiColors.reset}'
+          // },
+        ),
+      ),
+      // fileOutputAdapter,
+      // remoteOutputAdapter,
     ],
   );
 

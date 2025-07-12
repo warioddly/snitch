@@ -1,48 +1,30 @@
-LogRecord(message: warning, time: 2025-07-12 14:01:35.835485, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:02:28.058107, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:21:47.442438, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:21:55.379742, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:32:20.886682, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:36:10.080464, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:38:01.738592, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:39:12.117858, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:39:39.054748, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:40:43.209242, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:41:39.595686, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:42:24.454191, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:42:46.623982, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:43:08.718510, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:43:17.460574, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 14:46:28.310373, name: WARNING, error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:51:33.145523, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:51:40.992730, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:52:27.582927, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:52:37.913560, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:52:51.964196, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:53:22.587249, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:54:08.237885, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:55:00.651771, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:55:39.518521, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:55:56.792841, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:56:01.423329, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:56:19.510353, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:56:25.747594, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:57:20.896348, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:58:01.466213, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:59:36.638112, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 15:59:54.953752, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:00:07.119563, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:00:35.998869, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:01:11.805075, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:01:53.563656, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:02:17.664154, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:02:32.760979, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:02:56.344893, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:03:42.922466, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:04:14.386846, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:04:31.810818, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:04:41.156908, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:05:07.696161, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:06:34.001951, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:08:22.904753, name: , error: null, stackTrace: null)
-LogRecord(message: warning, time: 2025-07-12 16:09:03.317016, name: , error: null, stackTrace: null)
+[ERROR] [2025-07-12T21:32:39.467113] error
+[ERROR] [2025-07-12T21:32:40.473839] 1
+[ERROR] [2025-07-12T21:32:41.477489] 2
+[ERROR] [2025-07-12T21:32:44.489277] 4
+[ERROR] [2025-07-12T21:32:45.491839] 5
+[ERROR] [2025-07-12T21:32:45.494010] UnimplementedError: Oops, something went wrong
+------------------STACK TRACE------------------
+#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:72:28)
+<asynchronous suspension>
+
+-----------------------------------------------
+
+[TRACE] [2025-07-12T21:33:21.281842] message
+[INFO] [2025-07-12T21:33:21.285807] info
+[WARNING] [2025-07-12T21:33:21.285920] warning
+[ERROR] [2025-07-12T21:33:21.286174] error
+[DEBUG] [2025-07-12T21:33:21.286275] debug
+[VERBOSE] [2025-07-12T21:33:21.286345] verbose
+[ERROR] [2025-07-12T21:33:22.294918] 1
+[ERROR] [2025-07-12T21:33:23.304481] 2
+[INFO] [2025-07-12T21:33:25.315295] 3
+[ERROR] [2025-07-12T21:33:26.318627] 4
+[ERROR] [2025-07-12T21:33:27.321789] 5
+[ERROR] [2025-07-12T21:33:27.323647] UnimplementedError: Oops, something went wrong
+------------------STACK TRACE------------------
+#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:72:28)
+<asynchronous suspension>
+
+-----------------------------------------------
+

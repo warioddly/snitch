@@ -1,20 +1,18 @@
 import 'package:snitch/snitch.dart' show OutputAdapter;
 import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/utils/log_formatter.dart';
+import 'package:snitch/src/formatters/_output_formatter.dart';
+import 'package:snitch/src/formatters/console_output_formatter.dart';
 
-class ConsoleOutputAdapter implements OutputAdapter {
-
-  ConsoleOutputAdapter._([ConsoleFormatter? formatter])
-    : _formatter = formatter ?? ConsoleFormatter();
-
-  static final ConsoleOutputAdapter _instance = ConsoleOutputAdapter._();
-
-  factory ConsoleOutputAdapter() => _instance;
-
-  final ConsoleFormatter _formatter;
+class ConsoleOutputAdapter extends OutputAdapter {
+  ConsoleOutputAdapter({OutputFormatter? formatter, super.filter})
+    : super(formatter: formatter ?? ConsoleOutputFormatter());
 
   @override
   void log(LogRecord logRecord) {
-    print(_formatter.format(logRecord));
+    if (!filter.call(logRecord.level)) {
+      return;
+    }
+
+    print(formatter.format(logRecord));
   }
 }
