@@ -1,33 +1,20 @@
-[ERROR] [2025-07-12T22:04:56.241868] error
-[ERROR] [2025-07-12T22:04:57.252274] 1
-[ERROR] [2025-07-12T22:04:58.257328] 2
-[ERROR] [2025-07-12T22:05:01.265398] 4
-[ERROR] [2025-07-12T22:05:02.267877] 5
-[ERROR] [2025-07-12T22:05:02.269814] UnimplementedError: Oops, something went wrong
+[FATAL] [2025-07-12T22:26:10.531419] error
+[ERROR] [2025-07-12T22:26:11.541588] 1
+[FATAL] [2025-07-12T22:26:11.543442] 2
+[ERROR] [2025-07-12T22:26:12.546288] 2
+------------------STACK TRACE------------------
+#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:57:40)
+<asynchronous suspension>
+
+-----------------------------------------------
+
+[FATAL] [2025-07-12T22:26:14.556493] 1
+[ERROR] [2025-07-12T22:26:15.558878] 4
+[ERROR] [2025-07-12T22:26:16.561418] 5
+[ERROR] [2025-07-12T22:26:16.562296] UnimplementedError: Oops, something went wrong
 ------------------STACK TRACE------------------
 #0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:75:28)
 <asynchronous suspension>
 
 -----------------------------------------------
 
-[ERROR] [2025-07-12T22:05:22.397920] error
-[ERROR] [2025-07-12T22:05:23.407476] 1
-[FATAL] [2025-07-12T22:05:23.408331] 2
-[ERROR] [2025-07-12T22:05:24.410982] 2
-[FATAL] [2025-07-12T22:05:26.421435] 1
-[ERROR] [2025-07-12T22:05:27.423895] 4
-[ERROR] [2025-07-12T22:05:28.425948] 5
-[ERROR] [2025-07-12T22:05:28.428141] UnimplementedError: Oops, something went wrong
-------------------STACK TRACE------------------
-#0      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:75:28)
-<asynchronous suspension>
-
------------------------------------------------
-
-[FATAL] [2025-07-12T22:05:45.204513] 2
-[FATAL] [2025-07-12T22:05:48.220015] 1
-[FATAL] [2025-07-12T22:06:15.241966] 2
-[FATAL] [2025-07-12T22:06:18.259638] 1
-[FATAL] [2025-07-12T22:07:01.801279] error
-[FATAL] [2025-07-12T22:07:02.808700] 2
-[FATAL] [2025-07-12T22:07:05.821629] 1

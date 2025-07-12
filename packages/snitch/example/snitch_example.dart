@@ -10,7 +10,7 @@ import 'package:snitch/src/utils/ansi_colors.dart';
 void main() async {
   final fileOutputAdapter = FileOutputAdapter(
     "logs.txt",
-    filter: (Level level) => level.level is ErrorLevel || level is FatalLevel,
+    filter: (Level level) => level is ErrorLevel || level is FatalLevel,
   );
 
   final remoteOutputAdapter = RemoteOutputAdapter(
@@ -54,7 +54,7 @@ void main() async {
   snitch.f("2");
 
   await delay();
-  snitch.e("2");
+  snitch.e("2", stackTrace: StackTrace.current);
   await delay();
 
   snitch.closeStream();
