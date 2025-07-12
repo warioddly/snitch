@@ -1,15 +1,26 @@
-import 'package:snitch/snitch.dart' show OutputAdapter;
-import 'package:snitch/src/log_record.dart';
 import 'dart:io';
+
+import 'package:snitch/snitch.dart' show OutputAdapter;
+import 'package:snitch/src/levels/utils.dart';
+import 'package:snitch/src/log_record.dart';
 
 class FileOutputAdapter implements OutputAdapter {
   final String filePath;
   final IOSink _sink;
 
-  FileOutputAdapter(this.filePath) : _sink = File(filePath).openWrite(mode: FileMode.append);
+  final LevelFilter filter;
+
+  FileOutputAdapter(this.filePath, {LevelFilter? filter})
+    : filter = filter ?? levelFilter,
+      _sink = File(filePath).openWrite(mode: FileMode.append);
 
   @override
   void log(LogRecord logRecord) {
+
+    if (!filter.call(logRecord.level)) {
+      return;
+    }
+
     _sink.writeln(logRecord.toString());
   }
 

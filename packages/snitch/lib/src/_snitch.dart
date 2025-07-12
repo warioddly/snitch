@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:snitch/src/adapters/_output_adapter.dart';
 import 'package:snitch/src/adapters/console_output_adapter.dart';
+import 'package:snitch/src/levels/level.dart';
 import 'package:snitch/src/log_record.dart';
 
 abstract class Snitch {
@@ -17,12 +20,18 @@ abstract class Snitch {
   /// Logs a message with optional parameters.
   void log(
     String message, {
+    Level level = const InfoLevel(),
     DateTime? time,
     String name = '',
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   });
+
+  Stream<LogRecord> stream();
+
+  void closeStream();
+
 }
 
 class _Snitch implements Snitch {
@@ -48,31 +57,58 @@ class _Snitch implements Snitch {
   @override
   List<LogRecord> get logs => List.unmodifiable(_logs);
 
+
+  StreamController? _logStreamController;
+
+  @override
+  Stream<LogRecord> stream() {
+    closeStream();
+    return (_logStreamController = StreamController<LogRecord>.broadcast()).stream;
+  }
+
+  @override
+  void closeStream() {
+    _logStreamController?.close();
+    _logStreamController = null;
+  }
+
   @override
   void log(
     String message, {
+    Level level = const InfoLevel(),
     DateTime? time,
     String name = '',
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
-    final log = LogRecord(
-      message: message,
-      time: time ?? DateTime.now(),
-      name: name,
-      error: error,
-      stackTrace: stackTrace,
-    );
+    try {
+      final log = LogRecord(
+        message: message,
+        time: time ?? DateTime.now(),
+        name: name,
+        error: error,
+        stackTrace: stackTrace,
+        level: level,
+      );
 
-    if (_logs.length >= maxLogs) {
-      _logs.removeAt(0);
+      if (_logs.length >= maxLogs) {
+        _logs.removeAt(0);
+      }
+
+      _logs.add(log);
+
+      if (!(_logStreamController?.isClosed ?? true)) {
+        _logStreamController?.add(log);
+      }
+
+      for (final adapter in _adapters) {
+        adapter.log(log);
+      }
+    }
+    catch (error, stacktrace) {
+      print('$error $stacktrace');
     }
 
-    _logs.add(log);
-
-    for (final adapter in _adapters) {
-      adapter.log(log);
-    }
   }
 }
