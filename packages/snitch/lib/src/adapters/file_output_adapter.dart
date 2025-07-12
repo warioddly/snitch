@@ -7,7 +7,6 @@ import 'package:snitch/src/log_record.dart';
 class FileOutputAdapter implements OutputAdapter {
   final String filePath;
   final IOSink _sink;
-
   final LevelFilter filter;
 
   FileOutputAdapter(this.filePath, {LevelFilter? filter})
@@ -16,7 +15,6 @@ class FileOutputAdapter implements OutputAdapter {
 
   @override
   void log(LogRecord logRecord) {
-
     if (!filter.call(logRecord.level)) {
       return;
     }

@@ -1,40 +1,20 @@
 import 'package:snitch/snitch.dart' show OutputAdapter;
 import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/utils/ansi_colors.dart';
+import 'package:snitch/src/utils/log_formatter.dart';
 
 class ConsoleOutputAdapter implements OutputAdapter {
-  /// Singleton instance of ConsoleOutputAdapter.
-  const ConsoleOutputAdapter._();
 
-  static const instance = ConsoleOutputAdapter._();
+  ConsoleOutputAdapter._([ConsoleFormatter? formatter])
+    : _formatter = formatter ?? ConsoleFormatter();
 
-  factory ConsoleOutputAdapter() => instance;
+  static final ConsoleOutputAdapter _instance = ConsoleOutputAdapter._();
 
-  static final _buffer = StringBuffer();
+  factory ConsoleOutputAdapter() => _instance;
+
+  final ConsoleFormatter _formatter;
 
   @override
   void log(LogRecord logRecord) {
-
-    _buffer
-      ..clear()
-      ..write(AnsiColors.colorize('[${logRecord.name}] ', AnsiColors.red))
-      ..write(
-        AnsiColors.colorize(
-          '[${logRecord.time?.toIso8601String()}]',
-          AnsiColors.brightBlack,
-        ),
-      )
-      ..write(' ')
-      ..write(AnsiColors.colorize(logRecord.message, AnsiColors.green));
-
-    if (logRecord.stackTrace != null) {
-      _buffer
-        ..writeln('')
-        ..writeln(AnsiColors.colorize('------------------STACK TRACE------------------', AnsiColors.red))
-        ..writeln(AnsiColors.colorize(logRecord.stackTrace.toString(), AnsiColors.yellow))
-        ..writeln(AnsiColors.colorize('-----------------------------------------------', AnsiColors.red));
-    }
-
-    print(_buffer.toString());
+    print(_formatter.format(logRecord));
   }
 }

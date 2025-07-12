@@ -1,15 +1,22 @@
 import 'dart:async';
 
 import 'package:snitch/src/adapters/_output_adapter.dart';
-import 'package:snitch/src/adapters/console_output_adapter.dart';
 import 'package:snitch/src/levels/level.dart';
 import 'package:snitch/src/log_record.dart';
 
 abstract class Snitch {
   factory Snitch({
     int maxLogs = 1000,
-    adapters = const <OutputAdapter>[ConsoleOutputAdapter.instance],
-  }) => _Snitch(maxLogs: maxLogs, adapters: adapters);
+    List<OutputAdapter> adapters = const [],
+  }) {
+    assert(maxLogs > 0, 'maxLogs must be greater than 0.');
+    assert(
+      adapters.isNotEmpty,
+      'No output adapters provided. '
+      'Please provide at least one OutputAdapter to handle the logs.',
+    );
+    return _Snitch(maxLogs: maxLogs, adapters: adapters);
+  }
 
   /// Log records are stored in memory.
   List<LogRecord> get logs;
@@ -31,18 +38,11 @@ abstract class Snitch {
   Stream<LogRecord> stream();
 
   void closeStream();
-
 }
 
 class _Snitch implements Snitch {
   _Snitch({required this.maxLogs, required List<OutputAdapter> adapters})
-    : _adapters = List.unmodifiable(adapters),
-      assert(
-        adapters.isNotEmpty,
-        'No output adapters provided. '
-        'Please provide at least one OutputAdapter to handle the logs.',
-      ),
-      assert(maxLogs > 0, 'maxLogs must be greater than 0.');
+    : _adapters = List.unmodifiable(adapters);
 
   /// Maximum number of logs to keep in memory.
   final int maxLogs;
@@ -57,13 +57,13 @@ class _Snitch implements Snitch {
   @override
   List<LogRecord> get logs => List.unmodifiable(_logs);
 
-
   StreamController? _logStreamController;
 
   @override
   Stream<LogRecord> stream() {
     closeStream();
-    return (_logStreamController = StreamController<LogRecord>.broadcast()).stream;
+    return (_logStreamController = StreamController<LogRecord>.broadcast())
+        .stream;
   }
 
   @override
@@ -105,10 +105,8 @@ class _Snitch implements Snitch {
       for (final adapter in _adapters) {
         adapter.log(log);
       }
-    }
-    catch (error, stacktrace) {
+    } catch (error, stacktrace) {
       print('$error $stacktrace');
     }
-
   }
 }
