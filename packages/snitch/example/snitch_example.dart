@@ -45,7 +45,7 @@ void main() async {
           timeFormatter: (time) => time.formatTimeWithMicroseconds(),
           patterns: {
             ...defaultConsolePatterns,
-            FatalLevel: '${AnsiColors.bgBrightRed}{level}${AnsiColors.reset} [{message}]',
+            FatalLevel: '${AnsiColors.red}[ℹ️{level}]${AnsiColors.reset} {message}',
           },
         ),
       ),
