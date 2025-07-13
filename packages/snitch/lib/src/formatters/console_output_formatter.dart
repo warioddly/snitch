@@ -1,12 +1,20 @@
-import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/utils/ansi_colors.dart';
 import 'package:snitch/src/formatters/_format_patterns.dart';
 import 'package:snitch/src/formatters/_output_formatter.dart';
+import 'package:snitch/src/log_record.dart';
+import 'package:snitch/src/utils/ansi_colors.dart';
+
+typedef DateTimeFormatter = String Function(DateTime);
+
+String _defaultTimeFormatter(DateTime time) => time.toIso8601String();
 
 class ConsoleOutputFormatter extends OutputFormatter {
-  ConsoleOutputFormatter({Map<Type, String>? patterns = defaultConsolePatterns})
-    : super(patterns);
+  ConsoleOutputFormatter({
+    Map<Type, String>? patterns = defaultConsolePatterns,
+    DateTimeFormatter? timeFormatter,
+  }) : timeFormatter = timeFormatter ?? _defaultTimeFormatter,
+       super(patterns);
 
+  final DateTimeFormatter timeFormatter;
   static final _buffer = StringBuffer();
 
   @override
@@ -17,7 +25,7 @@ class ConsoleOutputFormatter extends OutputFormatter {
 
     String output = pattern
         .replaceAll('{level}', logRecord.level.name)
-        .replaceAll('{time}', logRecord.time?.toIso8601String() ?? '')
+        .replaceAll('{time}', timeFormatter(logRecord.time))
         .replaceAll('{message}', logRecord.message);
 
     _buffer.write(output);

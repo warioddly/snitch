@@ -2,7 +2,7 @@ import 'package:snitch/src/levels/level.dart';
 
 class LogRecord {
   final String message;
-  final DateTime? time;
+  final DateTime time;
   final String name;
   final Object? error;
   final StackTrace? stackTrace;

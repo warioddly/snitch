@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:snitch/snitch.dart' show OutputAdapter;
 import 'package:snitch/src/log_record.dart';
 import 'package:snitch/src/formatters/_output_formatter.dart';
@@ -13,6 +15,6 @@ class ConsoleOutputAdapter extends OutputAdapter {
       return;
     }
 
-    print(formatter.format(logRecord));
+    Zone.root.print(formatter.format(logRecord));
   }
 }

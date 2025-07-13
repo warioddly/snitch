@@ -40,6 +40,7 @@ extension SnitchLoggerExtension on Snitch {
     Map<String, dynamic>? metadata,
   }) => log(
     message,
+    level: const InfoLevel(),
     time: time,
     error: error,
     stackTrace: stackTrace,

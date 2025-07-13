@@ -37,7 +37,7 @@ abstract class Snitch {
 
   Stream<LogRecord> stream();
 
-  void closeStream();
+  Future<void> closeStream();
 }
 
 class _Snitch implements Snitch {
@@ -54,12 +54,12 @@ class _Snitch implements Snitch {
   @override
   List<LogRecord> get logs => List.unmodifiable(_logs);
 
-  StreamController? _logStreamController;
+  StreamController<LogRecord>? _logStreamController;
 
   @override
   Stream<LogRecord> stream() {
     if (_logStreamController != null) {
-      return _logStreamController!.stream.cast<LogRecord>().asBroadcastStream();
+      return _logStreamController!.stream.asBroadcastStream();
     }
 
     closeStream();
@@ -68,8 +68,8 @@ class _Snitch implements Snitch {
   }
 
   @override
-  void closeStream() {
-    _logStreamController?.close();
+  Future<void> closeStream() async {
+    await _logStreamController?.close();
     _logStreamController = null;
   }
 
