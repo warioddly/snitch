@@ -26,8 +26,29 @@ extension TimeFormatting on DateTime {
   String _threeDigits(int n) => n.toString().padLeft(3, '0');
 }
 
+Future<void> delay() => Future.delayed(Duration(milliseconds: 500));
+
+class FatalLevel extends Level {
+  const FatalLevel()
+    : super(level: 101, name: 'FATAL', description: 'Fatal Level');
+}
+
+extension on Snitch {
+  void f(String message) => log(message, level: const FatalLevel());
+}
+
 void main() async {
-  final fileOutputAdapter = FileOutputAdapter(
+  final consoleAdapter = ConsoleOutputAdapter(
+    formatter: ConsoleOutputFormatter(
+      timeFormatter: (time) => time.formatTimeWithMicroseconds(),
+      patterns: {
+        ...defaultConsolePatterns,
+        FatalLevel: '${AnsiColors.red}[ℹ️{level}]${AnsiColors.reset} {message}',
+      },
+    ),
+  );
+
+  final fileAdapter = FileOutputAdapter(
     "logs.txt",
     filter: (Level level) => level is ErrorLevel || level is FatalLevel,
   );
@@ -37,86 +58,47 @@ void main() async {
   //       level.level >= VerboseLevel.value && level.level <= WarningLevel.value,
   // );
 
-  var snitch = Snitch(
-    maxLogs: 20,
-    adapters: <OutputAdapter>[
-      ConsoleOutputAdapter(
-        formatter: ConsoleOutputFormatter(
-          timeFormatter: (time) => time.formatTimeWithMicroseconds(),
-          patterns: {
-            ...defaultConsolePatterns,
-            FatalLevel: '${AnsiColors.red}[ℹ️{level}]${AnsiColors.reset} {message}',
-          },
-        ),
-      ),
-      fileOutputAdapter,
-      // remoteOutputAdapter,
-    ],
+  final snitch = Snitch(maxLogs: 50, adapters: [consoleAdapter, fileAdapter]);
+
+  final subscription = snitch.stream().listen(
+    (log) => print('Stream event: $log'),
+    onDone: () => print('Stream closed'),
   );
 
-  var subscription = snitch.stream().listen(
-    (data) => print('Получено: $data'),
-    onError: print,
-    onDone: () => print('Поток закрыт'),
-  );
-
-  runZoned(
+  await runZonedGuarded(
     () async {
-      print('hello print!');
+      print('Application started');
 
       snitch
-        ..t("message")
-        ..i("info")
-        ..w("warning")
-        ..f("error")
-        ..d("debug")
-        ..v("verbose");
+        ..t('Trace message')
+        ..d('Debug message')
+        ..i('Info message')
+        ..w('Warning message')
+        ..e('Error message', stackTrace: StackTrace.current)
+        ..f('Fatal message');
 
       await delay();
-      snitch.e("1", stackTrace: StackTrace.current);
-      snitch.f("2");
 
       await snitch.closeStream();
       await subscription.cancel();
 
       await delay();
-      snitch.e("2");
-      await delay();
+
+      print('This print is captured by Snitch too!');
 
       await delay();
-      snitch.i("3");
-      snitch.f("1");
 
-      await delay();
-      snitch.e("4");
+      await fileAdapter.close();
 
-      await delay();
-      snitch.e("5");
-
-      snitch.e(
-        UnimplementedError("Oops, something went wrong").toString(),
-        stackTrace: StackTrace.current,
-      );
+      print('Done. Logs stored: ${snitch.logs.length}');
+    },
+    (error, stackTrace) {
+      snitch.e('Unhandled error:', error: error, stackTrace: stackTrace);
     },
     zoneSpecification: ZoneSpecification(
-      print: (Zone self, ZoneDelegate parent, Zone zone, line) {
+      print: (self, parent, zone, line) {
         snitch.i(line);
       },
     ),
   );
-
-  await fileOutputAdapter.close();
-
-  print('snitch.logs ${snitch.logs.length}');
-}
-
-Future<void> delay() => Future.delayed(Duration(seconds: 1));
-
-class FatalLevel extends Level {
-  const FatalLevel()
-    : super(level: 101, name: 'FATAL', description: 'Fatal Level');
-}
-
-extension on Snitch {
-  void f(String message) => log(message, level: const FatalLevel());
 }
