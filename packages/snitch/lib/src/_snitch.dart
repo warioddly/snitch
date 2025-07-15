@@ -84,6 +84,11 @@ class _Snitch implements Snitch {
     Map<String, dynamic>? metadata,
   }) {
     try {
+
+      if (_logs.length >= maxLogs) {
+        _logs.removeAt(0);
+      }
+
       final log = LogRecord(
         message: message,
         time: time ?? DateTime.now(),
@@ -92,10 +97,6 @@ class _Snitch implements Snitch {
         stackTrace: stackTrace,
         level: level,
       );
-
-      if (_logs.length >= maxLogs) {
-        _logs.removeAt(0);
-      }
 
       _logs.add(log);
 
