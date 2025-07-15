@@ -14,7 +14,7 @@ class FileOutputFormatter extends OutputFormatter {
 
     String output = pattern
         .replaceAll('{level}', logRecord.level.name)
-        .replaceAll('{time}', logRecord.time?.toIso8601String() ?? '')
+        .replaceAll('{time}', logRecord.time.toIso8601String())
         .replaceAll('{message}', logRecord.message);
 
     _buffer.write(output);

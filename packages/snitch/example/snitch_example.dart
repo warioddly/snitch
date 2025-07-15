@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:snitch/snitch.dart';
 import 'package:snitch/src/adapters/console_output_adapter.dart';
 import 'package:snitch/src/adapters/file_output_adapter.dart';
-import 'package:snitch/src/formatters/_format_patterns.dart';
+import 'package:snitch/src/formatters/_patterns.dart';
 import 'package:snitch/src/formatters/console_output_formatter.dart';
 import 'package:snitch/src/levels/level.dart';
 import 'package:snitch/src/utils/ansi_colors.dart';

@@ -1,5 +1,5 @@
 import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/formatters/_format_patterns.dart';
+import 'package:snitch/src/formatters/_patterns.dart';
 import 'package:snitch/src/levels/level.dart';
 
 /// Super class for output formatters.

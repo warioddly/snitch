@@ -1,20 +1,19 @@
-import 'package:snitch/src/formatters/_format_patterns.dart';
 import 'package:snitch/src/formatters/_output_formatter.dart';
+import 'package:snitch/src/formatters/_patterns.dart';
 import 'package:snitch/src/log_record.dart';
 import 'package:snitch/src/utils/ansi_colors.dart';
-
-typedef DateTimeFormatter = String Function(DateTime);
+import 'package:snitch/src/utils/typedefs.dart';
 
 String _defaultTimeFormatter(DateTime time) => time.toIso8601String();
 
 class ConsoleOutputFormatter extends OutputFormatter {
   ConsoleOutputFormatter({
     Map<Type, String>? patterns = defaultConsolePatterns,
-    DateTimeFormatter? timeFormatter,
+    TimeFormatter? timeFormatter,
   }) : timeFormatter = timeFormatter ?? _defaultTimeFormatter,
        super(patterns);
 
-  final DateTimeFormatter timeFormatter;
+  final TimeFormatter timeFormatter;
   static final _buffer = StringBuffer();
 
   @override

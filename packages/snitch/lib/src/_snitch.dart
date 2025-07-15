@@ -4,7 +4,7 @@ import 'package:snitch/src/adapters/_output_adapter.dart';
 import 'package:snitch/src/levels/level.dart';
 import 'package:snitch/src/log_record.dart';
 
-abstract class Snitch {
+abstract final class Snitch {
   factory Snitch({
     int maxLogs = 1000,
     List<OutputAdapter> adapters = const [],
@@ -40,7 +40,7 @@ abstract class Snitch {
   Future<void> closeStream();
 }
 
-class _Snitch implements Snitch {
+final class _Snitch implements Snitch {
   _Snitch({required this.maxLogs, required this.adapters});
 
   /// Maximum number of logs to keep in memory.
