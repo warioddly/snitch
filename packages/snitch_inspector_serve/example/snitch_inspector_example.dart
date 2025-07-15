@@ -1,5 +1,5 @@
 import 'package:snitch/snitch.dart';
-import 'package:snitch_inspector/snitch_inspector.dart';
+import 'package:snitch_inspector_serve/snitch_inspector.dart';
 
 void main() {
   final snitch = Snitch();

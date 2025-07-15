@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:snitch/snitch.dart';
-import 'package:snitch_inspector/src/assets/index.dart';
+import 'package:snitch_inspector_serve/src/assets/index.dart';
 
 
 class SnitchInspector {

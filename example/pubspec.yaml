@@ -37,7 +37,7 @@ dependencies:
   snitch:
     path: ../packages/snitch
   snitch_inspector:
-    path: ../packages/snitch_inspector
+    path: ../packages/snitch_inspector_serve
 
 dev_dependencies:
   flutter_test:
