@@ -38,6 +38,13 @@ abstract final class Snitch {
   Stream<LogRecord> stream();
 
   Future<void> closeStream();
+
+
+  bool get paused;
+
+  void pause();
+
+  void resume();
 }
 
 final class _Snitch implements Snitch {
@@ -85,6 +92,10 @@ final class _Snitch implements Snitch {
   }) {
     try {
 
+      if (_paused) {
+        return;
+      }
+
       if (_logs.length >= maxLogs) {
         _logs.removeAt(0);
       }
@@ -111,4 +122,15 @@ final class _Snitch implements Snitch {
       print('$error $stacktrace');
     }
   }
+
+  bool _paused = false;
+
+  @override
+  bool get paused => _paused;
+
+  @override
+  void pause() => _paused = true;
+
+  @override
+  void resume() => _paused = false;
 }

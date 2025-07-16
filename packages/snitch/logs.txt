@@ -269,3 +269,45 @@
 -----------------------------------------------
 
 [FATAL] [2025-07-15T13:34:41.078246] Fatal message
+[ERROR] [2025-07-16T13:11:52.071807] Error message
+------------------STACK TRACE------------------
+#0      main.<anonymous closure> (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:77:53)
+#1      _rootRun (dart:async/zone.dart:1525:13)
+#2      _CustomZone.run (dart:async/zone.dart:1422:19)
+#3      _runZoned (dart:async/zone.dart:2033:6)
+#4      runZonedGuarded (dart:async/zone.dart:2019:12)
+#5      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:68:9)
+#6      _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:314:19)
+#7      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:193:12)
+
+-----------------------------------------------
+
+[FATAL] [2025-07-16T13:11:52.073638] Fatal message
+[ERROR] [2025-07-16T17:31:04.334089] Error message
+------------------STACK TRACE------------------
+#0      main.<anonymous closure> (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:77:53)
+#1      _rootRun (dart:async/zone.dart:1525:13)
+#2      _CustomZone.run (dart:async/zone.dart:1422:19)
+#3      _runZoned (dart:async/zone.dart:2033:6)
+#4      runZonedGuarded (dart:async/zone.dart:2019:12)
+#5      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:68:9)
+#6      _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:314:19)
+#7      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:193:12)
+
+-----------------------------------------------
+
+[FATAL] [2025-07-16T17:31:04.336055] Fatal message
+[ERROR] [2025-07-16T17:34:27.493806] Error message
+------------------STACK TRACE------------------
+#0      main.<anonymous closure> (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:77:53)
+#1      _rootRun (dart:async/zone.dart:1525:13)
+#2      _CustomZone.run (dart:async/zone.dart:1422:19)
+#3      _runZoned (dart:async/zone.dart:2033:6)
+#4      runZonedGuarded (dart:async/zone.dart:2019:12)
+#5      main (file:///Users/coffeen/Development/Coding/Mobile/snitch/packages/snitch/example/snitch_example.dart:68:9)
+#6      _delayEntrypointInvocation.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:314:19)
+#7      _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:193:12)
+
+-----------------------------------------------
+
+[FATAL] [2025-07-16T17:34:27.496108] Fatal message
