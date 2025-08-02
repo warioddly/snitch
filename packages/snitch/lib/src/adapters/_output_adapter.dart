@@ -1,17 +1,19 @@
-import 'package:snitch/src/levels/_levels.dart';
-import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/formatters/_output_formatter.dart';
+import 'package:snitch/src/formatters/_log_formatter.dart';
+import 'package:snitch/src/level.dart';
+import 'package:snitch/src/log.dart';
 
-bool _levelFilter(Level level) => true;
+typedef LevelFilter = bool Function(Level level);
+
+bool _levelFilter(Level _) => true;
 
 /// Abstract class for output adapters.
 abstract class OutputAdapter {
-  OutputAdapter({OutputFormatter? formatter, LevelFilter? filter})
-    : formatter = formatter ?? OutputFormatter(),
+  OutputAdapter({LogFormatter? formatter, LevelFilter? filter})
+    : formatter = formatter ?? LogFormatter(),
       filter = filter ?? _levelFilter;
 
-  final OutputFormatter formatter;
+  final LogFormatter formatter;
   final LevelFilter filter;
 
-  void log(LogRecord logRecord);
+  void log(Log logRecord);
 }

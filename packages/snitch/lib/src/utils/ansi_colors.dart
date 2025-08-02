@@ -1,5 +1,5 @@
 
-class AnsiColors {
+abstract final class AnsiColors {
   static const reset = '\x1B[0m';
 
   static const black = '\x1B[30m';
@@ -42,7 +42,7 @@ class AnsiColors {
   static const underline = '\x1B[4m';
   static const reversed = '\x1B[7m';
 
-  static String colorize(String text, String color) {
+  static String colorize(dynamic text, String color) {
     return '$color$text$reset';
   }
 }

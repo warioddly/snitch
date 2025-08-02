@@ -1,12 +1,7 @@
 import 'dart:async';
 
 import 'package:snitch/snitch.dart';
-import 'package:snitch/src/adapters/console_output_adapter.dart';
-import 'package:snitch/src/adapters/file_output_adapter.dart';
-import 'package:snitch/src/formatters/_patterns.dart';
-import 'package:snitch/src/formatters/console_output_formatter.dart';
-import 'package:snitch/src/levels/level.dart';
-import 'package:snitch/src/utils/ansi_colors.dart';
+import 'package:snitch/src/patterns.dart';
 
 extension TimeFormatting on DateTime {
   String formatTimeWithMicroseconds() {
@@ -29,8 +24,7 @@ extension TimeFormatting on DateTime {
 Future<void> delay() => Future.delayed(Duration(milliseconds: 500));
 
 class FatalLevel extends Level {
-  const FatalLevel()
-    : super(level: 101, name: 'FATAL', description: 'Fatal Level');
+  const FatalLevel() : super(level: 101, name: 'FATAL');
 }
 
 extension on Snitch {
@@ -39,26 +33,18 @@ extension on Snitch {
 
 void main() async {
   final consoleAdapter = ConsoleOutputAdapter(
-    formatter: ConsoleOutputFormatter(
+    formatter: ConsoleLogFormatter(
       timeFormatter: (time) => time.formatTimeWithMicroseconds(),
       patterns: {
         ...defaultConsolePatterns,
-        FatalLevel: '${AnsiColors.red}[ℹ️{level}]${AnsiColors.reset} {message}',
+        FatalLevel: '${AnsiColors.red}[ℹ️{name}]${AnsiColors.reset} {message}',
       },
     ),
   );
 
-  final fileAdapter = FileOutputAdapter(
-    "logs.txt",
-    filter: (Level level) => level is ErrorLevel || level is FatalLevel,
+  final snitch = Snitch(
+    maxLogs: 50, adapters: [consoleAdapter]
   );
-
-  // final remoteOutputAdapter = RemoteOutputAdapter(
-  //   filter: (Level level) =>
-  //       level.level >= VerboseLevel.value && level.level <= WarningLevel.value,
-  // );
-
-  final snitch = Snitch(maxLogs: 50, adapters: [consoleAdapter, fileAdapter]);
 
   final subscription = snitch.stream().listen(
     (log) => print('Stream event: $log'),
@@ -67,7 +53,8 @@ void main() async {
 
   await runZonedGuarded(
     () async {
-      print('Application started');
+      snitch.log('message', name: 'NOT DEBUG');
+      snitch.logWith<ConsoleOutputAdapter>('awdawd');
 
       snitch
         ..t('Trace message')
@@ -87,8 +74,6 @@ void main() async {
       print('This print is captured by Snitch too!');
 
       await delay();
-
-      await fileAdapter.close();
 
       print('Done. Logs stored: ${snitch.logs.length}');
     },

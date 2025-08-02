@@ -1,20 +1,20 @@
 import 'dart:async';
 
 import 'package:snitch/snitch.dart' show OutputAdapter;
-import 'package:snitch/src/log_record.dart';
-import 'package:snitch/src/formatters/_output_formatter.dart';
-import 'package:snitch/src/formatters/console_output_formatter.dart';
+import 'package:snitch/src/formatters/_log_formatter.dart';
+import 'package:snitch/src/formatters/console_log_formatter.dart';
+import 'package:snitch/src/log.dart';
 
 class ConsoleOutputAdapter extends OutputAdapter {
-  ConsoleOutputAdapter({OutputFormatter? formatter, super.filter})
-    : super(formatter: formatter ?? ConsoleOutputFormatter());
+  ConsoleOutputAdapter({LogFormatter? formatter, super.filter})
+    : super(formatter: formatter ?? ConsoleLogFormatter());
 
   @override
-  void log(LogRecord logRecord) {
-    if (!filter.call(logRecord.level)) {
+  void log(Log log) {
+    if (!filter.call(log.level)) {
       return;
     }
 
-    Zone.root.print(formatter.format(logRecord));
+    Zone.root.print(formatter.format(log));
   }
 }

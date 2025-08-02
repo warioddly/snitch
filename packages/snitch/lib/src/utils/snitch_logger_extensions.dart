@@ -1,5 +1,5 @@
 import 'package:snitch/snitch.dart';
-import 'package:snitch/src/levels/level.dart';
+import 'package:snitch/src/level.dart';
 
 extension SnitchLoggerExtension on Snitch {
   void e(

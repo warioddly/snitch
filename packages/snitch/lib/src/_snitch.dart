@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:snitch/src/adapters/_output_adapter.dart';
-import 'package:snitch/src/levels/level.dart';
-import 'package:snitch/src/log_record.dart';
+import 'package:snitch/src/level.dart';
+import 'package:snitch/src/log.dart';
 
-abstract final class Snitch {
+abstract base class Snitch {
   factory Snitch({
     int maxLogs = 1000,
     List<OutputAdapter> adapters = const [],
+    bool enabled = true,
   }) {
     assert(maxLogs > 0, 'maxLogs must be greater than 0.');
     assert(
@@ -15,11 +16,21 @@ abstract final class Snitch {
       'No output adapters provided. '
       'Please provide at least one OutputAdapter to handle the logs.',
     );
-    return _Snitch(maxLogs: maxLogs, adapters: List.unmodifiable(adapters));
+    return _Snitch(
+      enabled: enabled,
+      maxLogs: maxLogs,
+      adapters: List.unmodifiable(adapters),
+    );
   }
 
+  /// Whether the Snitch is enabled.
+  bool get enabled;
+
+  /// Maximum number of logs to keep in memory.
+  int get maxLogs;
+
   /// Log records are stored in memory.
-  List<LogRecord> get logs;
+  List<Log> get logs;
 
   /// Output adapters to handle the logs.
   List<OutputAdapter> get adapters;
@@ -35,43 +46,53 @@ abstract final class Snitch {
     Map<String, dynamic>? metadata,
   });
 
-  Stream<LogRecord> stream();
+  /// Logs a message with a specific type.
+  void logWith<T extends OutputAdapter>(
+    String message, {
+    Level level = const DebugLevel(),
+    DateTime? time,
+    String name = '',
+    Object? error,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? metadata,
+  });
+
+  Stream<Log> stream();
 
   Future<void> closeStream();
-
-
-  bool get paused;
-
-  void pause();
-
-  void resume();
 }
 
 final class _Snitch implements Snitch {
-  _Snitch({required this.maxLogs, required this.adapters});
+  _Snitch({
+    required this.enabled,
+    required this.maxLogs,
+    required this.adapters,
+  });
 
-  /// Maximum number of logs to keep in memory.
+  @override
+  final bool enabled;
+
+  @override
   final int maxLogs;
 
   @override
   final List<OutputAdapter> adapters;
 
-  final List<LogRecord> _logs = [];
+  final List<Log> _logs = [];
 
   @override
-  List<LogRecord> get logs => List.unmodifiable(_logs);
+  List<Log> get logs => List.unmodifiable(_logs);
 
-  StreamController<LogRecord>? _logStreamController;
+  StreamController<Log>? _logStreamController;
 
   @override
-  Stream<LogRecord> stream() {
+  Stream<Log> stream() {
     if (_logStreamController != null) {
       return _logStreamController!.stream.asBroadcastStream();
     }
 
     closeStream();
-    return (_logStreamController = StreamController<LogRecord>.broadcast())
-        .stream;
+    return (_logStreamController = StreamController<Log>.broadcast()).stream;
   }
 
   @override
@@ -90,47 +111,90 @@ final class _Snitch implements Snitch {
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
-    try {
+    final log = _log(
+      message,
+      level: level,
+      time: time,
+      name: name,
+      error: error,
+      stackTrace: stackTrace,
+      metadata: metadata,
+    );
 
-      if (_paused) {
-        return;
-      }
+    if (log == null) {
+      return;
+    }
 
-      if (_logs.length >= maxLogs) {
-        _logs.removeAt(0);
-      }
-
-      final log = LogRecord(
-        message: message,
-        time: time ?? DateTime.now(),
-        name: name,
-        error: error,
-        stackTrace: stackTrace,
-        level: level,
-      );
-
-      _logs.add(log);
-
-      if (!(_logStreamController?.isClosed ?? true)) {
-        _logStreamController?.add(log);
-      }
-
-      for (final adapter in adapters) {
-        adapter.log(log);
-      }
-    } catch (error, stacktrace) {
-      print('$error $stacktrace');
+    for (final adapter in adapters) {
+      adapter.log(log);
     }
   }
 
-  bool _paused = false;
-
   @override
-  bool get paused => _paused;
+  void logWith<T extends OutputAdapter>(
+    String message, {
+    Level level = const DebugLevel(),
+    DateTime? time,
+    String name = '',
+    Object? error,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? metadata,
+  }) {
+    final log = _log(
+      message,
+      level: level,
+      time: time,
+      name: name,
+      error: error,
+      stackTrace: stackTrace,
+      metadata: metadata,
+    );
 
-  @override
-  void pause() => _paused = true;
+    if (log == null) {
+      return;
+    }
 
-  @override
-  void resume() => _paused = false;
+    final adapters = this.adapters.whereType<T>();
+
+    for (final adapter in adapters) {
+      adapter.log(log);
+    }
+  }
+
+  Log? _log(
+    String message, {
+    Level level = const DebugLevel(),
+    DateTime? time,
+    String name = '',
+    Object? error,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? metadata,
+  }) {
+    if (!enabled) {
+      print('Snitch is disabled. Log not recorded');
+      return null;
+    }
+
+    if (_logs.length >= maxLogs) {
+      _logs.removeAt(0);
+    }
+
+    final log = Log(
+      message: message,
+      time: time ?? DateTime.now(),
+      name: name,
+      error: error,
+      stackTrace: stackTrace,
+      level: level,
+      metadata: metadata,
+    );
+
+    _logs.add(log);
+
+    if (!(_logStreamController?.isClosed ?? true)) {
+      _logStreamController?.add(log);
+    }
+
+    return log;
+  }
 }
