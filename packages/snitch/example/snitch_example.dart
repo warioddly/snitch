@@ -43,7 +43,8 @@ void main() async {
   );
 
   final snitch = Snitch(
-    maxLogs: 50, adapters: [consoleAdapter]
+    maxLogs: 50,
+    adapters: [consoleAdapter]
   );
 
   final subscription = snitch.stream().listen(

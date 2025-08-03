@@ -4,10 +4,7 @@ version: 1.0.0
 repository: https://github.com/warioddly/snitch/tree/main/packages/snitch
 
 environment:
-  sdk: ^3.8.1
-
-dependencies:
-  meta: ^1.17.0
+  sdk: ^3.0.0
 
 dev_dependencies:
   lints: ^5.0.0
