@@ -32,7 +32,7 @@ extension on Snitch {
 }
 
 void main() async {
-  final consoleAdapter = ConsoleOutputAdapter(
+  final consoleAdapter = ConsoleAdapter(
     formatter: ConsoleLogFormatter(
       timeFormatter: (time) => time.formatTimeWithMicroseconds(),
       patterns: {
@@ -55,7 +55,7 @@ void main() async {
   await runZonedGuarded(
     () async {
       snitch.log('message', name: 'NOT DEBUG');
-      snitch.logWith<ConsoleOutputAdapter>('awdawd');
+      snitch.logWith<ConsoleAdapter>('awdawd');
 
       snitch
         ..t('Trace message')
