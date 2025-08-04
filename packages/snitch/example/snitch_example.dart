@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:snitch/snitch.dart';
-import 'package:snitch/src/patterns.dart';
 
 extension TimeFormatting on DateTime {
   String formatTimeWithMicroseconds() {

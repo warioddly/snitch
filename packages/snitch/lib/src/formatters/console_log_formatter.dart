@@ -1,7 +1,7 @@
 import 'package:snitch/src/formatters/_log_formatter.dart';
 import 'package:snitch/src/patterns.dart';
 import 'package:snitch/src/log.dart';
-import 'package:snitch/src/utils/ansi_colors.dart';
+import 'package:snitch/src/ansi_colors.dart';
 
 typedef TimeFormatter = String Function(DateTime);
 

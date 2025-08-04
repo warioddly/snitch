@@ -1,4 +1,4 @@
-import 'package:snitch/src/utils/ansi_colors.dart';
+import 'package:snitch/src/ansi_colors.dart';
 import 'package:snitch/src/level.dart';
 
 const defaultPattern = '[{name}] [{time}] {message}';
