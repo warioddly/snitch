@@ -21,6 +21,7 @@ jobs:
       - name: Run Flutter build
         run: |
           cd ./packages/snitch_inspector/
+          ls
           flutter config --enable-web
           flutter pub get
           flutter build web --release --wasm --base-href="/snitch/"
