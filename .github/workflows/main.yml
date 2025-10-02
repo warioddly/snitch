@@ -23,7 +23,7 @@ jobs:
           cd ./packages/snitch_inspector/
           flutter config --enable-web
           flutter pub get
-          flutter build web --release --wasm --base-href="/snitch_inspector/"
+          flutter build web --release --wasm --base-href="/snitch/"
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
