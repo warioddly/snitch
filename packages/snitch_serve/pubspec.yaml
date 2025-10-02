@@ -32,6 +32,9 @@ flutter:
   # All these are used by the tooling to maintain consistency when
   # adding or updating assets for this project.
 
+  assets:
+    - certs/
+
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

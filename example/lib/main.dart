@@ -32,27 +32,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final snitch = Snitch();
-
-  late final snitchServe = SnitchServe(
-    address: InternetAddress.anyIPv6,
-    port: 8080,
+  final snitch = Snitch(
+    adapters: [
+      ConsoleAdapter()
+    ]
   );
 
-  @override
-  void initState() {
-    super.initState();
-
-    snitchServe.startServe();
-
-    for (final log in snitch.logs) {
-      snitchServe.addLog({
-        'message': log.message,
-        'name': log.name,
-        'level': log.level,
-      });
-    }
-  }
+  final snitchServe = SnitchServe(
+    address: InternetAddress.anyIPv6,
+    port: 4040,
+  )
+    ..printAddresses()
+    ..startServe();
 
   @override
   void dispose() {
@@ -61,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void addLogs() {
+
     snitch
       ..t("message")
       ..i("info")
@@ -68,6 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ..e("error")
       ..d("debug")
       ..v("verbose");
+
+    for (final log in snitch.logs) {
+      snitchServe.addLog({ 'message': log.message, 'name': log.name });
+    }
 
     setState(() {});
   }

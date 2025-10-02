@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:snitch_serve/src/certificates.dart';
+import 'package:flutter/services.dart';
 
 final class SnitchServe {
   SnitchServe({this.port = 4040, InternetAddress? address})
@@ -12,10 +12,7 @@ final class SnitchServe {
   final InternetAddress _address;
 
   HttpServer? _server;
-
-  final _context = SecurityContext()
-    ..useCertificateChainBytes(certificateKeyBytes)
-    ..usePrivateKeyBytes(privateKeyBytes);
+  SecurityContext? _context;
 
   final _logs = <Map<String, dynamic>>[];
 
@@ -27,7 +24,18 @@ final class SnitchServe {
     try {
       _log('Start serve...');
 
-      _server = await HttpServer.bindSecure(_address, port, _context);
+      if (_context == null) {
+        final (certificateKeyBytes, privateKeyBytes) = await (
+          rootBundle.load('packages/snitch_serve/certs/localhost+2.pem'),
+          rootBundle.load('packages/snitch_serve/certs/localhost+2-key.pem'),
+        ).wait;
+
+        _context = SecurityContext()
+          ..useCertificateChainBytes(certificateKeyBytes.asListUint8())
+          ..usePrivateKeyBytes(privateKeyBytes.asListUint8());
+      }
+
+      _server = await HttpServer.bindSecure(_address, port, _context!);
 
       if (_server == null) {
         throw Exception('Can\'t bind server');
@@ -46,7 +54,7 @@ final class SnitchServe {
         if (request.uri.path == '/logs') {
           request.response
             ..statusCode = HttpStatus.ok
-            ..write(jsonEncode(_logs.map((e) => e).toList()))
+            ..write(jsonEncode(_logs))
             ..close();
         } else {
           request.response
@@ -54,10 +62,9 @@ final class SnitchServe {
             ..write(jsonEncode({'message': 'Page not found', 'status': 404}))
             ..close();
         }
-
       }
     } catch (e, s) {
-      log('', error: e, stackTrace: s, name: 'SnitchServe');
+      _log('Error: $e \n$s');
     }
   }
 
@@ -71,10 +78,14 @@ final class SnitchServe {
   Future<void> printAddresses() async {
     for (var interface in await NetworkInterface.list()) {
       for (var addr in interface.addresses) {
-        _log('https://${addr.address}:$port');
+        Zone.root.print('https://${addr.address}:$port');
       }
     }
   }
 
-  void _log(String message) => log(message, name: 'SnitchServe');
+  void _log(String message) => Zone.root.print('[SnitchServe] $message');
+}
+
+extension on ByteData {
+  List<int> asListUint8() => List<int>.generate(lengthInBytes, getUint8);
 }
