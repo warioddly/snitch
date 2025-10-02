@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:snitch/snitch.dart';
+import 'package:snitch_serve/snitch_serve.dart';
 // import 'package:snitch_inspector_serve/snitch_inspector.dart';
 
 void main() {
@@ -31,54 +32,58 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final snitch = Snitch();
 
-  // final snitch = Snitch();
-  // late final inspector = SnitchInspector(
-  //   internetAddress: InternetAddress.anyIPv6,
-  //   port: 8080,
-  //   snitch: snitch,
-  // );
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   snitch
-  //     ..t("message")
-  //     ..i("info")
-  //     ..w("warning")
-  //     ..e("error")
-  //     ..d("debug")
-  //     ..v("verbose");
-  //
-  //   inspector.serve();
-  // }
-  //
-  // @override
-  // void dispose() {
-  //   inspector.close();
-  //   super.dispose();
-  // }
+  late final snitchServe = SnitchServe(
+    address: InternetAddress.anyIPv6,
+    port: 8080,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    snitchServe.startServe();
+
+    for (final log in snitch.logs) {
+      snitchServe.addLog({
+        'message': log.message,
+        'name': log.name,
+        'level': log.level,
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    snitchServe.close();
+    super.dispose();
+  }
+
+  void addLogs() {
+    snitch
+      ..t("message")
+      ..i("info")
+      ..w("warning")
+      ..e("error")
+      ..d("debug")
+      ..v("verbose");
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            // Text(snitch.logs.length.toString(),
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: snitch.logs.length,
+        itemBuilder: (context, index) {
+          final log = snitch.logs[index];
+          return Text('${log.name} ${log.message}');
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // snitch.t("Button pressed");
-          setState(() { });
-        },
-        tooltip: 'Increment',
+        onPressed: addLogs,
         child: const Icon(Icons.add),
       ),
     );
