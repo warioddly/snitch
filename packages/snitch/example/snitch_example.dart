@@ -2,24 +2,6 @@ import 'dart:async';
 
 import 'package:snitch/snitch.dart';
 
-extension TimeFormatting on DateTime {
-  String formatTimeWithMicroseconds() {
-    final hour = toUtc().hour;
-    final minute = this.minute;
-    final second = this.second;
-    final millisecond = this.millisecond;
-
-    return '${_twoDigits(hour)}:'
-        '${_twoDigits(minute)}:'
-        '${_twoDigits(second)}.'
-        '${_threeDigits(millisecond)}';
-  }
-
-  String _twoDigits(int n) => n.toString().padLeft(2, '0');
-
-  String _threeDigits(int n) => n.toString().padLeft(3, '0');
-}
-
 Future<void> delay() => Future.delayed(Duration(milliseconds: 500));
 
 class FatalLevel extends Level {
@@ -31,22 +13,13 @@ extension on Snitch {
 }
 
 void main() async {
-  final consoleAdapter = ConsoleAdapter(
-    formatter: ConsoleLogFormatter(
-      timeFormatter: (time) => time.formatTimeWithMicroseconds(),
-      patterns: {
-        ...defaultConsolePatterns,
-        FatalLevel: '${AnsiColors.red}[ℹ️{name}]${AnsiColors.reset} {message}',
-      },
-    ),
-  );
 
   final snitch = Snitch(
     maxLogs: 50,
-    adapters: [consoleAdapter]
+    adapters: [ConsoleAdapter()]
   );
 
-  final subscription = snitch.stream().listen(
+  final subscription = snitch.stream.listen(
     (log) => print('Stream event: $log'),
     onDone: () => print('Stream closed'),
   );
@@ -86,4 +59,16 @@ void main() async {
       },
     ),
   );
+}
+
+class ConsoleAdapter extends OutputAdapter {
+  ConsoleAdapter();
+
+  @override
+  void log(Log record) {
+    // if (!filter.call(log.level)) {
+    //   return;
+    // }
+    Zone.root.print(record.message);
+  }
 }

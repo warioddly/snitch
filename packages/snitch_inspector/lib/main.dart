@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 void main() => runApp(const MyApp());
 
@@ -45,6 +48,32 @@ class _InspectorState extends State<Inspector> {
     setState(() {});
   }
 
+  void getSocketLogs() async {
+    final channel = WebSocketChannel.connect(Uri.parse(uriController.text));
+
+    await channel.ready;
+
+    channel.stream.listen(
+      (event) {
+        try {
+          final data = jsonDecode(event);
+          logs.add(data.toString());
+        } catch (_) {
+          logs.add(event.toString());
+        }
+        setState(() {});
+      },
+      onError: (error) {
+        logs.add('WebSocket error: $error');
+        setState(() {});
+      },
+      onDone: () {
+        logs.add('WebSocket closed');
+        setState(() {});
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +94,19 @@ class _InspectorState extends State<Inspector> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getLogs,
-        child: const Icon(Icons.http),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: getLogs,
+            child: const Icon(Icons.http),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: getSocketLogs,
+            child: const Icon(Icons.send),
+          ),
+        ],
       ),
     );
   }

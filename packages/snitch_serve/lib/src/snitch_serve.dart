@@ -3,81 +3,139 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:snitch/snitch.dart';
 
-final class SnitchServe {
-  SnitchServe({this.port = 4040, InternetAddress? address})
-    : _address = address ?? InternetAddress.anyIPv6;
+/// Основной API сервера
+abstract final class SnitchServe {
+  factory SnitchServe({
+    required Snitch snitch,
+    InternetAddress? address,
+    int? port,
+  }) => _SnitchServe(snitch: snitch, address: address, port: port);
 
+  Future<void> start();
+
+  Future<void> close();
+
+  Future<void> printAddresses();
+}
+
+base class _SnitchServe implements SnitchServe {
+  _SnitchServe({required this.snitch, InternetAddress? address, int? port})
+    : port = port ?? 4040,
+      address = address ?? InternetAddress.anyIPv6;
+
+  final Snitch snitch;
+  final InternetAddress address;
   final int port;
-  final InternetAddress _address;
 
   HttpServer? _server;
   SecurityContext? _context;
+  final _clients = <WebSocket>{};
 
-  final _logs = <Map<String, dynamic>>[];
+  @override
+  Future<void> start() async {
+    _log('Starting server on $address:$port...');
 
-  void addLog(Map<String, dynamic> data) => _logs.add(data);
-
-  void clearLogs() => _logs.clear();
-
-  Future<void> startServe() async {
     try {
-      _log('Start serve...');
-
-      if (_context == null) {
-        final (certificateKeyBytes, privateKeyBytes) = await (
-          rootBundle.load('packages/snitch_serve/certs/localhost+2.pem'),
-          rootBundle.load('packages/snitch_serve/certs/localhost+2-key.pem'),
-        ).wait;
-
-        _context = SecurityContext()
-          ..useCertificateChainBytes(certificateKeyBytes.asListUint8())
-          ..usePrivateKeyBytes(privateKeyBytes.asListUint8());
-      }
-
-      _server = await HttpServer.bindSecure(_address, port, _context!);
-
-      if (_server == null) {
-        throw Exception('Can\'t bind server');
-      }
+      _context ??= await _loadSecurityContext();
+      _server = await HttpServer.bindSecure(address, port, _context!);
 
       await for (final request in _server!) {
-        _log('Request [${request.method}] ${request.uri}');
-
-        request.response.headers.add('Access-Control-Allow-Origin', '*');
-        request.response.headers.add(
-          'Access-Control-Allow-Methods',
-          'GET, POST, OPTIONS',
-        );
-        request.response.headers.add('Access-Control-Allow-Headers', '*');
-
-        if (request.uri.path == '/logs') {
-          request.response
-            ..statusCode = HttpStatus.ok
-            ..write(jsonEncode(_logs))
-            ..close();
-        } else {
-          request.response
-            ..statusCode = HttpStatus.notFound
-            ..write(jsonEncode({'message': 'Page not found', 'status': 404}))
-            ..close();
-        }
+        _handleRequest(request);
       }
     } catch (e, s) {
-      _log('Error: $e \n$s');
+      _log('Server error: $e\n$s');
     }
   }
 
+  @override
   Future<void> close() async {
     if (_server == null) {
-      _log('Server while not run');
+      _log('Server is not running');
+      return;
     }
-    return _server?.close();
+    await _server?.close();
+    _log('Server stopped');
   }
 
+  Future<SecurityContext> _loadSecurityContext() async {
+    final (certificateKeyBytes, privateKeyBytes) = await (
+      rootBundle.load('packages/snitch_serve/certs/localhost+2.pem'),
+      rootBundle.load('packages/snitch_serve/certs/localhost+2-key.pem'),
+    ).wait;
+
+    return SecurityContext()
+      ..useCertificateChainBytes(certificateKeyBytes.asListUint8())
+      ..usePrivateKeyBytes(privateKeyBytes.asListUint8());
+  }
+
+  Future<void> _handleRequest(HttpRequest request) async {
+    _log('Request [${request.method}] ${request.uri}');
+
+    _addCorsHeaders(request.response);
+
+    switch (request.uri.path) {
+      case '/ws':
+        await _handleWebSocket(request);
+        break;
+
+      case '/logs':
+        final logsJson = jsonEncode(
+          snitch.logs.map((e) => e.toJson()).toList(),
+        );
+        request.response
+          ..statusCode = HttpStatus.ok
+          ..write(logsJson)
+          ..close();
+        break;
+
+      default:
+        request.response
+          ..statusCode = HttpStatus.notFound
+          ..write(jsonEncode({'message': 'Page not found', 'status': 404}))
+          ..close();
+    }
+  }
+
+  Future<void> _handleWebSocket(HttpRequest request) async {
+    if (!WebSocketTransformer.isUpgradeRequest(request)) return;
+
+    final socket = await WebSocketTransformer.upgrade(request);
+    _clients.add(socket);
+
+    final subscription = snitch.stream.listen((log) {
+      final data = jsonEncode(log.toJson());
+      for (final client in _clients) {
+        client.add(data);
+      }
+    });
+
+    socket.listen(
+      (message) => _log('WS[$socket]: $message'),
+      onDone: () {
+        _clients.remove(socket);
+        subscription.cancel();
+      },
+      onError: (e) {
+        _log('WebSocket error: $e');
+        _clients.remove(socket);
+        subscription.cancel();
+      },
+    );
+  }
+
+  void _addCorsHeaders(HttpResponse response) {
+    response.headers
+      ..add('Access-Control-Allow-Origin', '*')
+      ..add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      ..add('Access-Control-Allow-Headers', '*');
+  }
+
+  @override
   Future<void> printAddresses() async {
-    for (var interface in await NetworkInterface.list()) {
-      for (var addr in interface.addresses) {
+    for (final interface in await NetworkInterface.list()) {
+      for (final addr in interface.addresses) {
         Zone.root.print('https://${addr.address}:$port');
       }
     }

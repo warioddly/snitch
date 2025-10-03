@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,17 +34,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final snitch = Snitch(
-    adapters: [
-      ConsoleAdapter()
-    ]
+    adapters: [ ]
   );
 
-  final snitchServe = SnitchServe(
+  late final snitchServe = SnitchServe(
     address: InternetAddress.anyIPv6,
     port: 4040,
+    snitch: snitch,
   )
     ..printAddresses()
-    ..startServe();
+    ..start();
 
   @override
   void dispose() {
@@ -60,10 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ..e("error")
       ..d("debug")
       ..v("verbose");
-
-    for (final log in snitch.logs) {
-      snitchServe.addLog({ 'message': log.message, 'name': log.name });
-    }
 
     setState(() {});
   }
@@ -83,5 +79,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+
+class ConsoleAdapter extends OutputAdapter {
+  ConsoleAdapter();
+
+  @override
+  void log(Log record) {
+    // if (!filter.call(log.level)) {
+    //   return;
+    // }
+    Zone.root.print(record.message);
   }
 }

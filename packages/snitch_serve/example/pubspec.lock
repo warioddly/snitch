@@ -183,6 +183,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  snitch:
+    dependency: transitive
+    description:
+      path: "../../snitch"
+      relative: true
+    source: path
+    version: "1.0.0"
   snitch_serve:
     dependency: "direct main"
     description:

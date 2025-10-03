@@ -15,16 +15,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _snitchServe = SnitchServe();
+  // final _snitchServe = SnitchServe();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    // initPlatformState();
   }
 
-  Future<void> initPlatformState() =>
-      [_snitchServe.startServe(), _snitchServe.printAddresses()].wait;
+  // Future<void> initPlatformState() =>
+  //     [_snitchServe.start(), _snitchServe.printAddresses()].wait;
 
   @override
   Widget build(BuildContext context) {

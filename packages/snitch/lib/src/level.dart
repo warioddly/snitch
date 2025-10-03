@@ -9,6 +9,13 @@ abstract class Level {
   String toString() {
     return 'Level(level: $level, name: $name)';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'level': level,
+      'name': name,
+    };
+  }
 }
 
 class ErrorLevel extends Level {

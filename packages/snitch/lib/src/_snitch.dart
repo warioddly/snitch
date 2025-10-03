@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:snitch/src/adapters/_output_adapter.dart';
+import 'package:snitch/src/output_adapter.dart';
 import 'package:snitch/src/level.dart';
 import 'package:snitch/src/log.dart';
 
@@ -11,15 +11,15 @@ abstract base class Snitch {
     bool enabled = true,
   }) {
     assert(maxLogs > 0, 'maxLogs must be greater than 0.');
-    assert(
-      adapters.isNotEmpty,
-      'No output adapters provided. '
-      'Please provide at least one OutputAdapter to handle the logs.',
-    );
+    // assert(
+    //   adapters.isNotEmpty,
+    //   'No output adapters provided. '
+    //   'Please provide at least one OutputAdapter to handle the logs.',
+    // );
     return _Snitch(
       enabled: enabled,
       maxLogs: maxLogs,
-      adapters: List.unmodifiable(adapters),
+      adapters: adapters,
     );
   }
 
@@ -40,7 +40,7 @@ abstract base class Snitch {
     String message, {
     Level level = const DebugLevel(),
     DateTime? time,
-    String name = '',
+    String? name,
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
@@ -51,13 +51,13 @@ abstract base class Snitch {
     String message, {
     Level level = const DebugLevel(),
     DateTime? time,
-    String name = '',
+    String? name,
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   });
 
-  Stream<Log> stream();
+  Stream<Log> get stream;
 
   Future<void> closeStream();
 }
@@ -83,34 +83,29 @@ final class _Snitch implements Snitch {
   @override
   List<Log> get logs => List.unmodifiable(_logs);
 
-  StreamController<Log>? _logStreamController;
+  final _streamController = StreamController<Log>.broadcast();
 
   @override
-  Stream<Log> stream() {
-    if (_logStreamController != null) {
-      return _logStreamController!.stream.asBroadcastStream();
-    }
-
-    closeStream();
-    return (_logStreamController = StreamController<Log>.broadcast()).stream;
-  }
+  Stream<Log> get stream => _streamController.stream.asBroadcastStream();
 
   @override
-  Future<void> closeStream() async {
-    await _logStreamController?.close();
-    _logStreamController = null;
-  }
+  Future<void> closeStream() => _streamController.close();
 
   @override
   void log(
     String message, {
     Level level = const DebugLevel(),
     DateTime? time,
-    String name = '',
+    String? name,
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
+    if (!enabled) {
+      print('Snitch is disabled. Log not recorded');
+      return;
+    }
+
     final log = _log(
       message,
       level: level,
@@ -120,10 +115,6 @@ final class _Snitch implements Snitch {
       stackTrace: stackTrace,
       metadata: metadata,
     );
-
-    if (log == null) {
-      return;
-    }
 
     for (final adapter in adapters) {
       adapter.log(log);
@@ -135,11 +126,16 @@ final class _Snitch implements Snitch {
     String message, {
     Level level = const DebugLevel(),
     DateTime? time,
-    String name = '',
+    String? name,
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
+    if (!enabled) {
+      print('Snitch is disabled. Log not recorded');
+      return;
+    }
+
     final log = _log(
       message,
       level: level,
@@ -150,10 +146,6 @@ final class _Snitch implements Snitch {
       metadata: metadata,
     );
 
-    if (log == null) {
-      return;
-    }
-
     final adapters = this.adapters.whereType<T>();
 
     for (final adapter in adapters) {
@@ -161,20 +153,15 @@ final class _Snitch implements Snitch {
     }
   }
 
-  Log? _log(
+  Log _log(
     String message, {
     Level level = const DebugLevel(),
     DateTime? time,
-    String name = '',
+    String? name,
     Object? error,
     StackTrace? stackTrace,
     Map<String, dynamic>? metadata,
   }) {
-    if (!enabled) {
-      print('Snitch is disabled. Log not recorded');
-      return null;
-    }
-
     if (_logs.length >= maxLogs) {
       _logs.removeAt(0);
     }
@@ -191,8 +178,8 @@ final class _Snitch implements Snitch {
 
     _logs.add(log);
 
-    if (!(_logStreamController?.isClosed ?? true)) {
-      _logStreamController?.add(log);
+    if (!_streamController.isClosed) {
+      _streamController.add(log);
     }
 
     return log;
