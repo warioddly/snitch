@@ -2,9 +2,14 @@ name: snitch
 description: Just A Simple Logger
 version: 1.0.0
 repository: https://github.com/warioddly/snitch/tree/main/packages/snitch
+publish_to: none
 
 environment:
   sdk: ^3.0.0
+
+dependencies:
+  snitch_interface:
+    path: ../snitch_interface
 
 dev_dependencies:
   lints: ^5.0.0

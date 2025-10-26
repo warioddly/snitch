@@ -2,15 +2,6 @@ import 'dart:async';
 
 import 'package:snitch/snitch.dart';
 
-Future<void> delay() => Future.delayed(Duration(milliseconds: 500));
-
-class FatalLevel extends Level {
-  const FatalLevel() : super(level: 101, name: 'FATAL');
-}
-
-extension on Snitch {
-  void f(String message) => log(message, level: const FatalLevel());
-}
 
 void main() async {
 
@@ -34,8 +25,8 @@ void main() async {
         ..d('Debug message')
         ..i('Info message')
         ..w('Warning message')
-        ..e('Error message', stackTrace: StackTrace.current)
-        ..f('Fatal message');
+        ..e('Error message', stackTrace: StackTrace.current);
+        // ..f('Fatal message');
 
       await delay();
 
@@ -59,6 +50,16 @@ void main() async {
       },
     ),
   );
+}
+
+Future<void> delay() => Future.delayed(Duration(milliseconds: 500));
+
+class FatalLevel extends Level {
+  const FatalLevel() : super(level: 101, name: 'FATAL');
+}
+
+extension on Snitch {
+  void f(String message) => log(message, level: const FatalLevel());
 }
 
 class ConsoleAdapter extends OutputAdapter {

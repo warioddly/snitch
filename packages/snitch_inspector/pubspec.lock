@@ -168,6 +168,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  snitch_interface:
+    dependency: "direct main"
+    description:
+      path: "../snitch_interface"
+      relative: true
+    source: path
+    version: "1.0.0"
   source_span:
     dependency: transitive
     description:
@@ -265,5 +272,5 @@ packages:
     source: hosted
     version: "3.0.3"
 sdks:
-  dart: ">=3.8.1 <4.0.0"
+  dart: ">=3.9.0 <4.0.0"
   flutter: ">=3.18.0-18.0.pre.54"

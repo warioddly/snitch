@@ -11,7 +11,11 @@ abstract final class SnitchServe {
     required Snitch snitch,
     InternetAddress? address,
     int? port,
-  }) => _SnitchServe(snitch: snitch, address: address, port: port);
+  }) => _SnitchServe(
+    snitch: snitch,
+    address: address,
+    port: port,
+  );
 
   Future<void> start();
 
@@ -21,9 +25,12 @@ abstract final class SnitchServe {
 }
 
 base class _SnitchServe implements SnitchServe {
-  _SnitchServe({required this.snitch, InternetAddress? address, int? port})
-    : port = port ?? 4040,
-      address = address ?? InternetAddress.anyIPv6;
+  _SnitchServe({
+    required this.snitch,
+    InternetAddress? address,
+    int? port,
+  }) : port = port ?? 4040,
+       address = address ?? InternetAddress.anyIPv6;
 
   final Snitch snitch;
   final InternetAddress address;
@@ -77,13 +84,11 @@ base class _SnitchServe implements SnitchServe {
 
     switch (request.uri.path) {
       case '/ws':
-        await _handleWebSocket(request);
+        unawaited(_handleWebSocket(request));
         break;
 
       case '/logs':
-        final logsJson = jsonEncode(
-          snitch.logs.map((e) => e.toJson()).toList(),
-        );
+        final logsJson = jsonEncode(snitch.logs.map((e) => e.toJson()).toList());
         request.response
           ..statusCode = HttpStatus.ok
           ..write(logsJson)
@@ -125,18 +130,17 @@ base class _SnitchServe implements SnitchServe {
     );
   }
 
-  void _addCorsHeaders(HttpResponse response) {
-    response.headers
-      ..add('Access-Control-Allow-Origin', '*')
-      ..add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-      ..add('Access-Control-Allow-Headers', '*');
-  }
+  void _addCorsHeaders(HttpResponse response) => {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': '*',
+  }.forEach(response.headers.add);
 
   @override
   Future<void> printAddresses() async {
     for (final interface in await NetworkInterface.list()) {
-      for (final addr in interface.addresses) {
-        Zone.root.print('https://${addr.address}:$port');
+      for (final address in interface.addresses) {
+        Zone.root.print('https://${address.address}:$port');
       }
     }
   }

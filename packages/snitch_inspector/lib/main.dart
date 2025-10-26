@@ -1,10 +1,18 @@
-import 'dart:convert';
+import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:snitch_inspector/feature/inspector/inspector_view.dart';
+import 'package:snitch_inspector/feature/inspector_entry/inspector_entry_view.dart';
+import 'package:snitch_inspector/shared/ui/theme/ui_theme.dart';
 
-void main() => runApp(const MyApp());
+void main() => runZonedGuarded($runner, $onCrash);
+
+void $runner() => runApp(const MyApp());
+
+void $onCrash(Object? error, StackTrace stackTrace) {
+  log('App Crashed', error: error, stackTrace: stackTrace,);
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,101 +21,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Snitch Inspector',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Inspector(),
-    );
-  }
-}
-
-class Inspector extends StatefulWidget {
-  const Inspector({super.key});
-
-  @override
-  State<Inspector> createState() => _InspectorState();
-}
-
-class _InspectorState extends State<Inspector> {
-  final uriController = TextEditingController();
-  final logs = <String>[];
-
-  void getLogs() async {
-    try {
-      final response = await http.get(Uri.parse(uriController.text));
-      if (response.statusCode == 200) {
-        logs.add(response.body);
-      } else {
-        logs.add('Ошибка сервера: ${response.statusCode}');
-      }
-    } catch (e, s) {
-      logs.add('$e $s');
-    }
-
-    setState(() {});
-  }
-
-  void getSocketLogs() async {
-    final channel = WebSocketChannel.connect(Uri.parse(uriController.text));
-
-    await channel.ready;
-
-    channel.stream.listen(
-      (event) {
-        try {
-          final data = jsonDecode(event);
-          logs.add(data.toString());
-        } catch (_) {
-          logs.add(event.toString());
-        }
-        setState(() {});
+      themeMode: ThemeMode.dark,
+      theme: UITheme.darkTheme,
+      darkTheme: UITheme.darkTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const InspectorEntryView(),
+        '/inspector': (context) => const InspectorView(),
       },
-      onError: (error) {
-        logs.add('WebSocket error: $error');
-        setState(() {});
-      },
-      onDone: () {
-        logs.add('WebSocket closed');
-        setState(() {});
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Snitch Console')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(controller: uriController),
-            Expanded(
-              child: ListView.builder(
-                itemCount: logs.length,
-                itemBuilder: (context, index) {
-                  return Text(logs[index]);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            onPressed: getLogs,
-            child: const Icon(Icons.http),
-          ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            onPressed: getSocketLogs,
-            child: const Icon(Icons.send),
-          ),
-        ],
-      ),
     );
   }
 }

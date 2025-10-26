@@ -1,21 +1,33 @@
 
-abstract class Level {
+class Level {
   final int level;
   final String name;
 
   const Level({required this.level, required this.name});
 
   @override
-  String toString() {
-    return 'Level(level: $level, name: $name)';
-  }
+  String toString() => 'Level{name: $name, level: $level}';
 
-  Map<String, dynamic> toJson() {
-    return {
-      'level': level,
-      'name': name,
+  Map<String, dynamic> toJson() => {
+    'level': level,
+    'name': name,
+  };
+
+  factory Level.fromJson(Map<String, dynamic> json) {
+    final levelValue = json['level'] as int;
+    final nameValue = json['name'] as String;
+
+    return switch (levelValue) {
+      InfoLevel.value => const InfoLevel(),
+      ErrorLevel.value => const ErrorLevel(),
+      DebugLevel.value => const DebugLevel(),
+      TraceLevel.value => const TraceLevel(),
+      VerboseLevel.value => const VerboseLevel(),
+      WarningLevel.value => const WarningLevel(),
+      _ => Level(level: levelValue, name: nameValue),
     };
   }
+
 }
 
 class ErrorLevel extends Level {

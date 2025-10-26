@@ -190,6 +190,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  snitch_interface:
+    dependency: transitive
+    description:
+      path: "../../snitch_interface"
+      relative: true
+    source: path
+    version: "1.0.0"
   snitch_serve:
     dependency: "direct main"
     description:

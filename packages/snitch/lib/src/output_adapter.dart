@@ -1,4 +1,4 @@
-import 'package:snitch/src/log.dart';
+import 'package:snitch_interface/snitch_interface.dart';
 
 /// Abstract class for output adapters.
 abstract class OutputAdapter {

@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:snitch/src/output_adapter.dart';
-import 'package:snitch/src/level.dart';
-import 'package:snitch/src/log.dart';
+import 'package:snitch_interface/snitch_interface.dart';
 
 abstract base class Snitch {
   factory Snitch({
@@ -11,11 +10,6 @@ abstract base class Snitch {
     bool enabled = true,
   }) {
     assert(maxLogs > 0, 'maxLogs must be greater than 0.');
-    // assert(
-    //   adapters.isNotEmpty,
-    //   'No output adapters provided. '
-    //   'Please provide at least one OutputAdapter to handle the logs.',
-    // );
     return _Snitch(
       enabled: enabled,
       maxLogs: maxLogs,
@@ -39,7 +33,7 @@ abstract base class Snitch {
   void log(
     String message, {
     Level level = const DebugLevel(),
-    DateTime? time,
+    int? timestamp,
     String? name,
     Object? error,
     StackTrace? stackTrace,
@@ -50,7 +44,7 @@ abstract base class Snitch {
   void logWith<T extends OutputAdapter>(
     String message, {
     Level level = const DebugLevel(),
-    DateTime? time,
+    int? timestamp,
     String? name,
     Object? error,
     StackTrace? stackTrace,
@@ -78,7 +72,7 @@ final class _Snitch implements Snitch {
   @override
   final List<OutputAdapter> adapters;
 
-  final List<Log> _logs = [];
+  final _logs = <Log>[];
 
   @override
   List<Log> get logs => List.unmodifiable(_logs);
@@ -95,7 +89,7 @@ final class _Snitch implements Snitch {
   void log(
     String message, {
     Level level = const DebugLevel(),
-    DateTime? time,
+    int? timestamp,
     String? name,
     Object? error,
     StackTrace? stackTrace,
@@ -109,7 +103,7 @@ final class _Snitch implements Snitch {
     final log = _log(
       message,
       level: level,
-      time: time,
+      timestamp: timestamp,
       name: name,
       error: error,
       stackTrace: stackTrace,
@@ -125,7 +119,7 @@ final class _Snitch implements Snitch {
   void logWith<T extends OutputAdapter>(
     String message, {
     Level level = const DebugLevel(),
-    DateTime? time,
+    int? timestamp,
     String? name,
     Object? error,
     StackTrace? stackTrace,
@@ -139,7 +133,7 @@ final class _Snitch implements Snitch {
     final log = _log(
       message,
       level: level,
-      time: time,
+      timestamp: timestamp,
       name: name,
       error: error,
       stackTrace: stackTrace,
@@ -156,7 +150,7 @@ final class _Snitch implements Snitch {
   Log _log(
     String message, {
     Level level = const DebugLevel(),
-    DateTime? time,
+    int? timestamp,
     String? name,
     Object? error,
     StackTrace? stackTrace,
@@ -168,7 +162,7 @@ final class _Snitch implements Snitch {
 
     final log = Log(
       message: message,
-      time: time ?? DateTime.now(),
+      timestamp: timestamp ?? DateTime.now().millisecondsSinceEpoch,
       name: name,
       error: error,
       stackTrace: stackTrace,

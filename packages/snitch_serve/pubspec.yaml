@@ -1,7 +1,6 @@
 name: snitch_serve
 description: "Snitch Serve"
 version: 0.0.1
-homepage:
 publish_to: none
 
 environment:
@@ -13,6 +12,8 @@ dependencies:
     sdk: flutter
   snitch:
     path: ../snitch
+  snitch_interface:
+    path: ../snitch_interface
 
 dev_dependencies:
   flutter_test:

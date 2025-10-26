@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: const MyHomePage(),
     );
   }
@@ -33,15 +30,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final snitch = Snitch(
-    adapters: [ ]
-  );
+  final snitch = Snitch(adapters: []);
 
-  late final snitchServe = SnitchServe(
-    address: InternetAddress.anyIPv6,
-    port: 4040,
-    snitch: snitch,
-  )
+  late final snitchServe = SnitchServe(address: InternetAddress.anyIPv6, port: 4040, snitch: snitch)
     ..printAddresses()
     ..start();
 
@@ -52,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void addLogs() {
-
     snitch
       ..t("message")
       ..i("info")
@@ -74,23 +64,21 @@ class _MyHomePageState extends State<MyHomePage> {
           return Text('${log.name} ${log.message}');
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addLogs,
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: addLogs, child: const Icon(Icons.add)),
     );
   }
 }
 
-
-class ConsoleAdapter extends OutputAdapter {
-  ConsoleAdapter();
-
-  @override
-  void log(Log record) {
-    // if (!filter.call(log.level)) {
-    //   return;
-    // }
-    Zone.root.print(record.message);
-  }
-}
+//
+//
+// class ConsoleAdapter extends OutputAdapter {
+//   ConsoleAdapter();
+//
+//   @override
+//   void log(Log record) {
+//     // if (!filter.call(log.level)) {
+//     //   return;
+//     // }
+//     Zone.root.print(record.message);
+//   }
+// }
