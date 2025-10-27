@@ -24,18 +24,25 @@ class _InspectorEntryViewState extends State<InspectorEntryView> {
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width / 2,
+            maxWidth: 478,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: 8.0,
             children: [
-              TextField(
-                controller: vm.urlController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Snitch Server URL',
-                ),
+
+              ListenableBuilder(
+                listenable: vm,
+                builder: (_, _) {
+                  return TextField(
+                    controller: vm.urlController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter Snitch Server URL',
+                      errorText: vm.errorMessage,
+                    ),
+                  );
+                },
               ),
 
               ElevatedButton(
@@ -51,7 +58,7 @@ class _InspectorEntryViewState extends State<InspectorEntryView> {
                     return;
                   }
                   await vm.save();
-                  if (context.mounted) {
+                  if (context.mounted && vm.errorMessage == null) {
                     Navigator.pushNamed(context, '/inspector');
                   }
                 },

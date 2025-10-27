@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snitch_inspector/feature/inspector/inspector_view.dart';
 import 'package:snitch_inspector/feature/inspector_entry/inspector_entry_view.dart';
+import 'package:snitch_inspector/shared/configs/scroll_behavior.dart';
 import 'package:snitch_inspector/shared/ui/theme/ui_theme.dart';
 import 'package:snitch_inspector/shared/utils/local_storage.dart';
 
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       theme: UITheme.darkTheme,
       darkTheme: UITheme.darkTheme,
+      scrollBehavior: const WebScrollBehavior(),
       initialRoute: '/',
       routes: {
         '/': (context) => const InspectorEntryView(),

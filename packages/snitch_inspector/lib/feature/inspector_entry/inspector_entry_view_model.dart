@@ -7,22 +7,35 @@ class InspectorEntryViewModel extends ViewModel {
   final _storage = LocalStorage.instance;
   final urlController = TextEditingController();
   bool isSaving = false;
+  String? errorMessage;
 
   Future<void> save() async {
     if (urlController.text.isEmpty) {
+      errorMessage = 'URL cannot be empty';
+      notifyListeners();
       return;
     }
+    errorMessage = null;
     isSaving = true;
     notifyListeners();
-    // _checkConnectivity();
+    if (!(await _checkConnectivity())) {
+      errorMessage = 'Unable to connect to the provided URL';
+      isSaving = false;
+      notifyListeners();
+      return;
+    }
     await _storage.set(StorageKey.targetUrl, urlController.text);
     isSaving = false;
     notifyListeners();
   }
 
-  // void _checkConnectivity() {
-  //   throw UnimplementedError();
-  // }
+  Future<bool> _checkConnectivity() async {
+    // Here you can implement actual connectivity check logic.
+    // For demonstration, we will just simulate a delay.
+    await Future.delayed(const Duration(seconds: 1));
+
+    return true;
+  }
 
   @override
   void dispose() {

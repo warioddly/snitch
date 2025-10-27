@@ -37,6 +37,7 @@ dependencies:
   http: ^1.5.0
   web_socket_channel: ^3.0.3
   shared_preferences: ^2.5.3
+  markdown: ^7.3.0
   snitch_interface:
     path: ../snitch_interface
 
