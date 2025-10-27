@@ -5,13 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:snitch_inspector/feature/inspector/inspector_view.dart';
 import 'package:snitch_inspector/feature/inspector_entry/inspector_entry_view.dart';
 import 'package:snitch_inspector/shared/ui/theme/ui_theme.dart';
+import 'package:snitch_inspector/shared/utils/local_storage.dart';
 
 void main() => runZonedGuarded($runner, $onCrash);
 
-void $runner() => runApp(const MyApp());
+Future<void> $runner() async {
+  await LocalStorage.instance.init();
+
+  runApp(const MyApp());
+}
 
 void $onCrash(Object? error, StackTrace stackTrace) {
-  log('App Crashed', error: error, stackTrace: stackTrace,);
+  log(
+    'App Crashed',
+    error: error,
+    stackTrace: stackTrace,
+  );
 }
 
 class MyApp extends StatelessWidget {
