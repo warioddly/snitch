@@ -27,6 +27,15 @@ class InspectorViewModel extends ViewModel {
     ),
   );
 
+  Log? get selectedLog => _selectedLog;
+
+  Log? _selectedLog;
+
+  void selectLog(Log? log) {
+    _selectedLog = log;
+    notifyListeners();
+  }
+
   List<Log> get logs => _logs;
 
   Log getLogAt(int index) => _logs[index];
